@@ -3,6 +3,8 @@ package com.xelitexirish.elitedeveloperbot.commands;
 import com.xelitexirish.elitedeveloperbot.Project;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.JsonReader;
+import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
+import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,7 +35,7 @@ public class ListProjectsCommand implements ICommand {
                     event.getTextChannel().sendMessage("Showing info for project ID = " + projectId);
                     sendProjectInfoMessage(event, projects.get(x));
                 }else{
-                    event.getTextChannel().sendMessage("Project ID is invalid");
+                    event.getTextChannel().sendMessage(MessageUtils.appendSenderUsername(event, "Project ID is invalid"));
                 }
             }
         }else{
@@ -54,14 +56,18 @@ public class ListProjectsCommand implements ICommand {
     }
 
     private static void sendProjectListMessage(MessageReceivedEvent event){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Current projects: ");
         for (Project p : projects) {
-            event.getTextChannel().sendMessage(p.toString());
+            stringBuilder.append(p.getTitle() + " ID=" + p.getId());
         }
+        MessageUtils.sendMessageInCodeBlock(event, stringBuilder.toString());
+
     }
 
     private static void sendProjectInfoMessage(MessageReceivedEvent event, Project project){
         String infoMessage = project.toString();
-        event.getTextChannel().sendMessage(infoMessage);
+        MessageUtils.sendMessageInCodeBlock(event, infoMessage);
     }
 
     /**

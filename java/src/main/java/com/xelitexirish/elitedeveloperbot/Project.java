@@ -27,6 +27,6 @@ public class Project {
 
     @Override
     public String toString() {
-        return getTitle().toUpperCase() + " by " + getAuthor() + ".  Download it at " + getDownloadLink() + " Info: " + getInfoMessage();
+        return getTitle().toUpperCase() + " by " + getAuthor() + ".  Download it at " + getDownloadLink() + " Additional Info: " + getInfoMessage();
     }
 }
