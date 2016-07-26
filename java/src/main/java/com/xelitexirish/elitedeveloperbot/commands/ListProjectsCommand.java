@@ -26,7 +26,7 @@ public class ListProjectsCommand implements ICommand {
 
         if (args.length >= 1){
             String projectId = args[0];
-            event.getTextChannel().sendMessage("ID = " + projectId);
+            event.getTextChannel().sendMessage("Showing info for project ID = " + projectId);
         }else{
             sendProjectListMessage(event);
         }
