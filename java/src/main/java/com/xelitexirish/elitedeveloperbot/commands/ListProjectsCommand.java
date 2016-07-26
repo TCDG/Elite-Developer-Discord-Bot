@@ -41,18 +41,20 @@ public class ListProjectsCommand implements ICommand {
 
     public static class Project {
         String title;
+        String id;
         String author;
         String website;
 
-        public Project(String title, String author, String website) {
+        public Project(String title, String id, String author, String website) {
             this.title = title;
+            this.id = id;
             this.author = author;
             this.website = website;
         }
 
         @Override
         public String toString() {
-            return title.toUpperCase() + " : " + author + " : " + website;
+            return title.toUpperCase() + " : " + author + " : " + website + " ID=" + id;
         }
     }
 
@@ -66,10 +68,11 @@ public class ListProjectsCommand implements ICommand {
                     JSONObject jsonItem = jsonArray.getJSONObject(x);
 
                     String title = jsonItem.getString("title");
+                    String id = jsonItem.getString("id");
                     String author = jsonItem.getString("author");
                     String website = jsonItem.getString("website");
 
-                    Project project = new Project(title, author, website);
+                    Project project = new Project(title, id, author, website);
                     projects.add(project);
                 }
             }

@@ -2,6 +2,7 @@
   "projects": [
     {
       "title": "Scammer Bingo",
+      "id": "sb",
       "author": "XeliteXirish",
       "website": "www.xelitexirish.com"
     }
