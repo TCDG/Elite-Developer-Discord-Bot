@@ -3,7 +3,7 @@ package com.xelitexirish.elitedeveloperbot.commands;
 import com.xelitexirish.elitedeveloperbot.utils.Logger;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
-public class UsageCommand implements ICommand{
+public class UsageCommand implements ICommand {
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
@@ -12,12 +12,10 @@ public class UsageCommand implements ICommand{
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        if(event.getAuthor().getUsername().equals("XeliteXirish")) {
-            String usageMessage = "```" + "Developer Bot Usage: !Usage" + "```";
-            event.getTextChannel().sendMessage(usageMessage);
+        String usageMessage = "```" + "Developer Bot Usage: !Usage " + "!Projects" + "```";
+        event.getTextChannel().sendMessage(usageMessage);
 
-            Logger.command("usage", event.getMessage().getAuthor().getUsername());
-        }
+        Logger.command("usage", event.getMessage().getAuthor().getUsername());
     }
 
     @Override

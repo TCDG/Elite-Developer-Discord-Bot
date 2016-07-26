@@ -3,8 +3,8 @@ package com.xelitexirish.elitedeveloperbot.commands;
 import com.xelitexirish.elitedeveloperbot.Project;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.JsonReader;
+import com.xelitexirish.elitedeveloperbot.utils.Logger;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
-import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,27 +23,20 @@ public class ListProjectsCommand implements ICommand {
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        if(event.getAuthor().getUsername().equals("XeliteXirish")) {
-            if (projects.isEmpty()) {
-                fillProjectList();
-            }
+        updateProjectList();
 
-            if (args.length >= 1) {
-                String projectId = args[0];
-                for (int x = 0; x < projects.size(); x++) {
-                    if (projectId.equals(projects.get(x).getId())) {
-                        // If the project id is in the list
-                        event.getTextChannel().sendMessage("Showing info for project ID = " + projectId);
-                        sendProjectInfoMessage(event, projects.get(x));
-                    } else {
-                        event.getTextChannel().sendMessage(MessageUtils.appendSenderUsername(event.getAuthor(), "Project ID is invalid"));
-                    }
+        if (args.length >= 1) {
+            String projectId = args[0];
+            for (int x = 0; x < projects.size(); x++) {
+                if (projectId.equals(projects.get(x).getId())) {
+                    // If the project id is in the list
+                    sendProjectInfoMessage(event, projects.get(x));
+                    return;
                 }
-            } else {
-                sendProjectListMessage(event);
             }
-
-            System.out.println(args);
+            event.getTextChannel().sendMessage(MessageUtils.appendSenderUsername(event.getAuthor(), "Project ID is invalid"));
+        } else {
+            sendProjectListMessage(event);
         }
     }
 
@@ -57,25 +50,27 @@ public class ListProjectsCommand implements ICommand {
 
     }
 
-    private static void sendProjectListMessage(MessageReceivedEvent event){
+    private static void sendProjectListMessage(MessageReceivedEvent event) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Current projects: ");
         for (Project p : projects) {
-            stringBuilder.append(p.getTitle() + " ID=" + p.getId());
+            stringBuilder.append(p.getTitle() + " ID=" + p.getId() + "  ");
         }
         MessageUtils.sendMessageInCodeBlock(event, stringBuilder.toString());
+        Logger.command("Project list", event.getAuthor().getUsername());
 
     }
 
-    private static void sendProjectInfoMessage(MessageReceivedEvent event, Project project){
+    private static void sendProjectInfoMessage(MessageReceivedEvent event, Project project) {
         String infoMessage = project.toString();
         MessageUtils.sendMessageInCodeBlock(event, infoMessage);
+        Logger.command("Project info", event.getAuthor().getUsername());
     }
 
     /**
      * Utils
      */
-    private static void fillProjectList() {
+    private static void updateProjectList() {
 
         try {
             JSONObject jsonObject = JsonReader.readJsonFromUrl(Constants.PROJECTS_LIST_URL);
