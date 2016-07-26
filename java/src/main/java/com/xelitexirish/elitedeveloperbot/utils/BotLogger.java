@@ -12,7 +12,7 @@ public class BotLogger {
 
     public static void initLogger(){
         try {
-            fileHandler = new FileHandler("logs.log");
+            fileHandler = new FileHandler("logs.log", false);
             logger.addHandler(fileHandler);
             SimpleFormatter formatter = new SimpleFormatter();
             fileHandler.setFormatter(formatter);

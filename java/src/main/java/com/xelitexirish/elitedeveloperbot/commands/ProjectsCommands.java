@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ListProjectsCommand implements ICommand {
+public class ProjectsCommands implements ICommand {
 
     public static ArrayList<Project> projects = new ArrayList<>();
 
@@ -23,18 +23,23 @@ public class ListProjectsCommand implements ICommand {
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
+        projects.clear();
         updateProjectList();
 
         if (args.length >= 1) {
-            String projectId = args[0];
+            String argument = args[0];
             for (int x = 0; x < projects.size(); x++) {
-                if (projectId.equals(projects.get(x).getId())) {
+                if (argument.equals(projects.get(x).getId())) {
                     // If the project id is in the list
                     sendProjectInfoMessage(event, projects.get(x));
                     return;
                 }
             }
-            event.getTextChannel().sendMessage(MessageUtils.appendSenderUsername(event.getAuthor(), "Project ID is invalid"));
+            if(argument.equals("add")){
+                event.getTextChannel().sendMessage(MessageUtils.appendSenderUsername(event.getAuthor(), "Please fill in this form to add your project: https://goo.gl/forms/6aQ8vUkkF2nGnNy62"));
+            }else {
+                event.getTextChannel().sendMessage(MessageUtils.appendSenderUsername(event.getAuthor(), "Project ID is invalid"));
+            }
         } else {
             sendProjectListMessage(event);
         }
