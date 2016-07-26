@@ -15,3 +15,6 @@
 *.ipr
 *.iws
 /out/
+*.log
+*.log.lck
+*.txt

@@ -1,6 +1,6 @@
 package com.xelitexirish.elitedeveloperbot.commands;
 
-import com.xelitexirish.elitedeveloperbot.utils.Logger;
+import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
 public class UsageCommand implements ICommand {
@@ -15,7 +15,7 @@ public class UsageCommand implements ICommand {
         String usageMessage = "```" + "Developer Bot Usage: !Usage " + "!Projects" + "```";
         event.getTextChannel().sendMessage(usageMessage);
 
-        Logger.command("usage", event.getMessage().getAuthor().getUsername());
+        BotLogger.command("usage", event.getMessage().getAuthor().getUsername());
     }
 
     @Override

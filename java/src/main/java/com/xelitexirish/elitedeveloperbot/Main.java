@@ -5,11 +5,9 @@ import com.xelitexirish.elitedeveloperbot.commands.ListProjectsCommand;
 import com.xelitexirish.elitedeveloperbot.commands.UsageCommand;
 import com.xelitexirish.elitedeveloperbot.listeners.BotListener;
 import com.xelitexirish.elitedeveloperbot.utils.CommandParser;
-import com.xelitexirish.elitedeveloperbot.utils.Logger;
-import com.xelitexirish.elitedeveloperbot.utils.SneakyConstants;
+import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
-import org.apache.commons.logging.Log;
 
 import java.util.HashMap;
 
@@ -36,13 +34,14 @@ public class Main {
             return;
         }
 
+        BotLogger.initLogger();
+
         try {
             jda = new JDABuilder().setBotToken(DISCORD_TOKEN).setAudioEnabled(false).addListener(new BotListener()).buildBlocking();
             jda.setAutoReconnect(true);
         }catch (Exception e){
             e.printStackTrace();
         }
-        Logger.initLogger();
 
         registerCommands();
     }

@@ -3,7 +3,7 @@ package com.xelitexirish.elitedeveloperbot.commands;
 import com.xelitexirish.elitedeveloperbot.Project;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.JsonReader;
-import com.xelitexirish.elitedeveloperbot.utils.Logger;
+import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import org.json.JSONArray;
@@ -57,14 +57,14 @@ public class ListProjectsCommand implements ICommand {
             stringBuilder.append(p.getTitle() + " ID=" + p.getId() + "  ");
         }
         MessageUtils.sendMessageInCodeBlock(event, stringBuilder.toString());
-        Logger.command("Project list", event.getAuthor().getUsername());
+        BotLogger.command("Project list", event.getAuthor().getUsername());
 
     }
 
     private static void sendProjectInfoMessage(MessageReceivedEvent event, Project project) {
         String infoMessage = project.toString();
         MessageUtils.sendMessageInCodeBlock(event, infoMessage);
-        Logger.command("Project info", event.getAuthor().getUsername());
+        BotLogger.command("Project info", event.getAuthor().getUsername());
     }
 
     /**
