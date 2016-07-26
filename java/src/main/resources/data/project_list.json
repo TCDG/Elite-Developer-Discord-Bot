@@ -7,6 +7,14 @@
       "website": "www.xelitexirish.com",
       "infoMessage": "Just testing this right now!",
       "downloadLink": "https://play.google.com/store/apps/details?id=com.xelitexirish.scammerbingo"
+    },
+    {
+      "title": "Scammer Bingo Community Edition",
+      "id": "sbce",
+      "author": "JoeTheHuman",
+      "website": "https://github.com/JoeTheHuman",
+      "infoMessage": "Just testing this right now!",
+      "downloadLink": "https://github.com/JoeTheHuman/Scammer-Bingo-Reborn"
     }
   ]
 }
