@@ -25,6 +25,7 @@ public class ListProjectsCommand implements ICommand {
         }
         for (Project p : projects) {
             event.getTextChannel().sendMessage(p.toString());
+
         }
     }
 
