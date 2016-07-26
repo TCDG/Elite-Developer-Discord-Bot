@@ -1,5 +1,6 @@
 package com.xelitexirish.elitedeveloperbot.commands;
 
+import com.xelitexirish.elitedeveloperbot.Project;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.JsonReader;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
@@ -26,7 +27,12 @@ public class ListProjectsCommand implements ICommand {
 
         if (args.length >= 1){
             String projectId = args[0];
-            event.getTextChannel().sendMessage("Showing info for project ID = " + projectId);
+            for(int x = 0; x < projects.size(); x++){
+                if(projectId.equals(projects.get(x).getId())){
+                    // If the project id is in the list
+                    event.getTextChannel().sendMessage("Showing info for project ID = " + projectId);
+                }
+            }
         }else{
             sendProjectListMessage(event);
         }
@@ -53,24 +59,6 @@ public class ListProjectsCommand implements ICommand {
     /**
      * Utils
      */
-    public static class Project {
-        String title;
-        String id;
-        String author;
-        String website;
-
-        public Project(String title, String id, String author, String website) {
-            this.title = title;
-            this.id = id;
-            this.author = author;
-            this.website = website;
-        }
-
-        @Override
-        public String toString() {
-            return title.toUpperCase() + " : " + author + " : " + website + " ID=" + id;
-        }
-    }
 
     private static void fillProjectList() {
 
