@@ -17,10 +17,25 @@ public class Main {
     public static final CommandParser parser = new CommandParser();
     public static HashMap<String, ICommand> commands = new HashMap<>();
 
+    public static String DISCORD_TOKEN;
+    public static boolean enableMessages = true;
+
+    /**
+     * 1:
+     * @param args
+     */
     public static void main(String[] args) {
 
+        if(args.length >= 2){
+            DISCORD_TOKEN = args[0];
+            enableMessages = Boolean.parseBoolean(args[1]);
+        }else{
+            System.out.println("Please enter a valid Discord Token!");
+            return;
+        }
+
         try {
-            jda = new JDABuilder().setBotToken(SneakyConstants.DISCORD_TOKEN).setAudioEnabled(false).addListener(new BotListener()).buildBlocking();
+            jda = new JDABuilder().setBotToken(DISCORD_TOKEN).setAudioEnabled(false).addListener(new BotListener()).buildBlocking();
             jda.setAutoReconnect(true);
         }catch (Exception e){
             e.printStackTrace();

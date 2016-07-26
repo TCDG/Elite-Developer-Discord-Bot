@@ -23,26 +23,28 @@ public class ListProjectsCommand implements ICommand {
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        if (projects.isEmpty()) {
-            fillProjectList();
-        }
-
-        if (args.length >= 1){
-            String projectId = args[0];
-            for(int x = 0; x < projects.size(); x++){
-                if(projectId.equals(projects.get(x).getId())){
-                    // If the project id is in the list
-                    event.getTextChannel().sendMessage("Showing info for project ID = " + projectId);
-                    sendProjectInfoMessage(event, projects.get(x));
-                }else{
-                    event.getTextChannel().sendMessage(MessageUtils.appendSenderUsername(event, "Project ID is invalid"));
-                }
+        if(event.getAuthor().getUsername().equals("XeliteXirish")) {
+            if (projects.isEmpty()) {
+                fillProjectList();
             }
-        }else{
-            sendProjectListMessage(event);
-        }
 
-        System.out.println(args);
+            if (args.length >= 1) {
+                String projectId = args[0];
+                for (int x = 0; x < projects.size(); x++) {
+                    if (projectId.equals(projects.get(x).getId())) {
+                        // If the project id is in the list
+                        event.getTextChannel().sendMessage("Showing info for project ID = " + projectId);
+                        sendProjectInfoMessage(event, projects.get(x));
+                    } else {
+                        event.getTextChannel().sendMessage(MessageUtils.appendSenderUsername(event.getAuthor(), "Project ID is invalid"));
+                    }
+                }
+            } else {
+                sendProjectListMessage(event);
+            }
+
+            System.out.println(args);
+        }
     }
 
     @Override

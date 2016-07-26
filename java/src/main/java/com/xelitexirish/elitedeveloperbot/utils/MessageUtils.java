@@ -2,6 +2,7 @@ package com.xelitexirish.elitedeveloperbot.utils;
 
 import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.entities.Message;
+import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
 public class MessageUtils {
@@ -15,9 +16,9 @@ public class MessageUtils {
         return newMessage;
     }
 
-    public static Message appendSenderUsername(MessageReceivedEvent event, String message){
+    public static Message appendSenderUsername(User user, String message){
         MessageBuilder messageBuilder = new MessageBuilder();
-        messageBuilder.appendMention(event.getAuthor());
+        messageBuilder.appendMention(user);
         messageBuilder.appendString(" " + message);
         return messageBuilder.build();
     }

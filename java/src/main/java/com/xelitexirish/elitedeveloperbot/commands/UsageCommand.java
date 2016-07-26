@@ -12,10 +12,12 @@ public class UsageCommand implements ICommand{
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        String usageMessage = "```" + "Developer Bot Usage: !Usage" + "```";
-        event.getTextChannel().sendMessage(usageMessage);
+        if(event.getAuthor().getUsername().equals("XeliteXirish")) {
+            String usageMessage = "```" + "Developer Bot Usage: !Usage" + "```";
+            event.getTextChannel().sendMessage(usageMessage);
 
-        Logger.command("usage", event.getMessage().getAuthor().getUsername());
+            Logger.command("usage", event.getMessage().getAuthor().getUsername());
+        }
     }
 
     @Override

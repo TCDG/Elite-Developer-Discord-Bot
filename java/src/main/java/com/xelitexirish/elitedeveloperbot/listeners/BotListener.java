@@ -28,7 +28,7 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberBan(GuildMemberBanEvent event) {
-        String banMessage = "The ban hammer has spoken!";
+        String banMessage = "The ban hammer has spoken! Goodbye " + event.getUser().getUsername();
         event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(banMessage));
     }
 
