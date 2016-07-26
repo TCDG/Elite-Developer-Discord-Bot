@@ -1,17 +1,13 @@
 package com.xelitexirish.elitedeveloperbot.commands;
 
-import com.xelitexirish.elitedeveloperbot.utils.FileHelper;
+import com.xelitexirish.elitedeveloperbot.utils.Constants;
+import com.xelitexirish.elitedeveloperbot.utils.JsonReader;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ListProjectsCommand implements ICommand {
 
@@ -60,27 +56,22 @@ public class ListProjectsCommand implements ICommand {
     }
 
     private static void fillProjectList() {
-        JSONParser jsonParser = new JSONParser();
 
-        try{
-            FileHelper fileHelper = new FileHelper();
-            JSONArray array = (JSONArray) jsonParser.parse(new FileReader(fileHelper.getResourceFile("project_list.json")));
+        try {
+            JSONObject jsonObject = JsonReader.readJsonFromUrl(Constants.PROJECTS_LIST_URL);
+            JSONArray jsonArray = jsonObject.getJSONArray("projects");
+            if (jsonArray != null) {
+                for (int x = 0; x < jsonArray.length(); x++) {
+                    JSONObject jsonItem = jsonArray.getJSONObject(x);
 
-            for(Object object : array){
-                JSONObject jsonObject = (JSONObject) object;
+                    String title = jsonItem.getString("title");
+                    String author = jsonItem.getString("author");
+                    String website = jsonItem.getString("website");
 
-                String title = (String) jsonObject.get("title");
-                String author = (String) jsonObject.get("author");
-                String website = (String) jsonObject.get("website");
-
-                Project project = new Project(title, author, website);
-                projects.add(project);
+                    Project project = new Project(title, author, website);
+                    projects.add(project);
+                }
             }
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
