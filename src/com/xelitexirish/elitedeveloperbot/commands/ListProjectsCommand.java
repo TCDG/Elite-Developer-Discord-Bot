@@ -1,9 +1,9 @@
 package com.xelitexirish.elitedeveloperbot.commands;
 
-import com.xelitexirish.elitedeveloperbot.utils.Logger;
+import jdk.nashorn.internal.parser.JSONParser;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
-public class UsageCommand implements ICommand{
+public class ListProjectsCommand implements ICommand{
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
@@ -12,10 +12,8 @@ public class UsageCommand implements ICommand{
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        String usageMessage = "```" + "Developer Bot Usage: !Usage" + "```";
-        event.getTextChannel().sendMessage(usageMessage);
+        JSONParser parser = new JSONParser();
 
-        Logger.command("usage", event.getMessage().getAuthor().getUsername());
     }
 
     @Override
@@ -26,5 +24,17 @@ public class UsageCommand implements ICommand{
     @Override
     public void executed(boolean success, MessageReceivedEvent event) {
 
+    }
+
+    public static class Projects {
+        String title;
+        String author;
+        String website;
+
+        public Projects(String title, String author, String website){
+            this.title = title;
+            this.author = author;
+            this.website = website;
+        }
     }
 }
