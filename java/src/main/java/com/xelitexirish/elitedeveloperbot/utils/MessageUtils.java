@@ -22,4 +22,11 @@ public class MessageUtils {
         messageBuilder.appendString(" " + message);
         return messageBuilder.build();
     }
+
+    public static Message appendEveryone(String message){
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.appendEveryoneMention();
+        messageBuilder.appendString(" " + message);
+        return messageBuilder.build();
+    }
 }

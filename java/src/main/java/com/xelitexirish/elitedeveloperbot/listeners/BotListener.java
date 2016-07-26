@@ -23,7 +23,7 @@ public class BotListener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         String welcomeMessage = "Welcome " + event.getUser().getUsername() + " make sure you read the rules!";
-        event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
+        event.getGuild().getPublicChannel().sendMessage(MessageUtils.appendEveryone(welcomeMessage));
         BotLogger.log("Player Join", "User has joined:" + event.getUser().getUsername());
     }
 
