@@ -7,6 +7,7 @@ import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.events.ReadyEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberBanEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.events.guild.member.GuildMemberUnbanEvent;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
 
@@ -31,6 +32,11 @@ public class BotListener extends ListenerAdapter {
         String banMessage = "The ban hammer has spoken! Goodbye " + event.getUser().getUsername();
         event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(banMessage));
         BotLogger.log("Player Ban", "User has been banned:" + event.getUser().getUsername());
+    }
+
+    @Override
+    public void onGuildMemberUnban(GuildMemberUnbanEvent event) {
+        BotLogger.log("Player Unban", "User has been unban:" + event.getUser().getUsername());
     }
 
     @Override
