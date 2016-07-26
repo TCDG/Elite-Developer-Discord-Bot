@@ -23,10 +23,15 @@ public class ListProjectsCommand implements ICommand {
         if (projects.isEmpty()) {
             fillProjectList();
         }
-        for (Project p : projects) {
-            event.getTextChannel().sendMessage(p.toString());
 
+        if (args.length >= 1){
+            String projectId = args[0];
+            event.getTextChannel().sendMessage("ID = " + projectId);
+        }else{
+            sendProjectListMessage(event);
         }
+
+        System.out.println(args);
     }
 
     @Override
@@ -39,6 +44,15 @@ public class ListProjectsCommand implements ICommand {
 
     }
 
+    private static void sendProjectListMessage(MessageReceivedEvent event){
+        for (Project p : projects) {
+            event.getTextChannel().sendMessage(p.toString());
+        }
+    }
+
+    /**
+     * Utils
+     */
     public static class Project {
         String title;
         String id;
