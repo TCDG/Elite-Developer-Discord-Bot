@@ -1,9 +1,17 @@
 package com.xelitexirish.elitedeveloperbot.commands;
 
-import jdk.nashorn.internal.parser.JSONParser;
+import com.xelitexirish.elitedeveloperbot.utils.Constants;
+import com.xelitexirish.elitedeveloperbot.utils.JSONParser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class ListProjectsCommand implements ICommand{
+
+    public static ArrayList<Project> projects = new ArrayList<>();
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
@@ -12,8 +20,12 @@ public class ListProjectsCommand implements ICommand{
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        JSONParser parser = new JSONParser();
-
+        if (projects.isEmpty()){
+            fillProjectList();
+        }
+        for(Project p : projects){
+            event.getTextChannel().sendMessage(p.toString());
+        }
     }
 
     @Override
@@ -26,15 +38,39 @@ public class ListProjectsCommand implements ICommand{
 
     }
 
-    public static class Projects {
+    public static class Project {
         String title;
         String author;
         String website;
 
-        public Projects(String title, String author, String website){
+        public Project(String title, String author, String website){
             this.title = title;
             this.author = author;
             this.website = website;
+        }
+
+        @Override
+        public String toString() {
+            return title.toUpperCase() + " : " + author + " : " + website;
+        }
+    }
+
+    private static void fillProjectList(){
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = jsonParser.makeHttpRequest(Constants.URL_PROJCTS_LIST, "GET", new HashMap<String, String>());
+
+        JSONArray jsonArray = jsonObject.getJSONArray("projects");
+        if(jsonArray != null){
+            for(int x = 0; x < jsonArray.length(); x++){
+                JSONObject jsonItem = jsonArray.getJSONObject(x);
+
+                String title = jsonItem.getString("title");
+                String author = jsonItem.getString("author");
+                String website = jsonItem.getString("website");
+
+                Project project = new Project(title, author, website);
+                projects.add(project);
+            }
         }
     }
 }

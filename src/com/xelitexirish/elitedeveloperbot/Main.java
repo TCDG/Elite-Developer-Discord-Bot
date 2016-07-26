@@ -1,6 +1,7 @@
 package com.xelitexirish.elitedeveloperbot;
 
 import com.xelitexirish.elitedeveloperbot.commands.ICommand;
+import com.xelitexirish.elitedeveloperbot.commands.ListProjectsCommand;
 import com.xelitexirish.elitedeveloperbot.commands.UsageCommand;
 import com.xelitexirish.elitedeveloperbot.listeners.BotListener;
 import com.xelitexirish.elitedeveloperbot.utils.CommandParser;
@@ -30,6 +31,7 @@ public class Main {
 
     private static void registerCommands(){
         commands.put("usage", new UsageCommand());
+        commands.put("projects", new ListProjectsCommand());
     }
 
     public static void handleCommand(CommandParser.CommandContainer cmd){
