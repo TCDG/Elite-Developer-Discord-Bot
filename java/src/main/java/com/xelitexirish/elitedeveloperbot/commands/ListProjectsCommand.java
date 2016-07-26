@@ -31,6 +31,9 @@ public class ListProjectsCommand implements ICommand {
                 if(projectId.equals(projects.get(x).getId())){
                     // If the project id is in the list
                     event.getTextChannel().sendMessage("Showing info for project ID = " + projectId);
+                    sendProjectInfoMessage(event, projects.get(x));
+                }else{
+                    event.getTextChannel().sendMessage("Project ID is invalid");
                 }
             }
         }else{
@@ -56,10 +59,14 @@ public class ListProjectsCommand implements ICommand {
         }
     }
 
+    private static void sendProjectInfoMessage(MessageReceivedEvent event, Project project){
+        String infoMessage = project.toString();
+        event.getTextChannel().sendMessage(infoMessage);
+    }
+
     /**
      * Utils
      */
-
     private static void fillProjectList() {
 
         try {
@@ -73,8 +80,10 @@ public class ListProjectsCommand implements ICommand {
                     String id = jsonItem.getString("id");
                     String author = jsonItem.getString("author");
                     String website = jsonItem.getString("website");
+                    String infoMessage = jsonItem.getString("infoMessage");
+                    String downloadLink = jsonItem.getString("downloadLink");
 
-                    Project project = new Project(title, id, author, website);
+                    Project project = new Project(title, id, author, website, infoMessage, downloadLink);
                     projects.add(project);
                 }
             }

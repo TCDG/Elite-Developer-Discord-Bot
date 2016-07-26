@@ -4,7 +4,9 @@
       "title": "Scammer Bingo",
       "id": "sb",
       "author": "XeliteXirish",
-      "website": "www.xelitexirish.com"
+      "website": "www.xelitexirish.com",
+      "infoMessage": "Just testing this right now!",
+      "downloadLink": "https://play.google.com/store/apps/details?id=com.xelitexirish.scammerbingo"
     }
   ]
 }
