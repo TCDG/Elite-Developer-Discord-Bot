@@ -8,11 +8,11 @@ public class Logger {
 
     public static PrintWriter writer;
 
-    public void initLogger(){
+    public static void initLogger(){
         try {
             writer = new PrintWriter("logger.txt", "UTF-8");
             writer.println("#Start of log file");
-            
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
