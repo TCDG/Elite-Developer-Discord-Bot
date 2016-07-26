@@ -24,12 +24,14 @@ public class BotListener extends ListenerAdapter {
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         String welcomeMessage = "Welcome " + event.getUser().getUsername() + " make sure you read the rules!";
         event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
+        Logger.log("Player Join", "User has joined:" + event.getUser().getUsername());
     }
 
     @Override
     public void onGuildMemberBan(GuildMemberBanEvent event) {
         String banMessage = "The ban hammer has spoken! Goodbye " + event.getUser().getUsername();
         event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(banMessage));
+        Logger.log("Player Ban", "User has been banned:" + event.getUser().getUsername());
     }
 
     @Override
