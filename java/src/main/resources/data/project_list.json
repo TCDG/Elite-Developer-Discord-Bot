@@ -5,7 +5,7 @@
       "id": "sb",
       "author": "XeliteXirish",
       "website": "www.xelitexirish.com",
-      "infoMessage": "Just testing this right now!",
+      "infoMessage": "See how high of a score you can get!",
       "downloadLink": "https://play.google.com/store/apps/details?id=com.xelitexirish.scammerbingo"
     },
     {
@@ -15,6 +15,14 @@
       "website": "https://github.com/JoeTheHuman",
       "infoMessage": "Just testing this right now!",
       "downloadLink": "https://github.com/JoeTheHuman/Scammer-Bingo-Reborn"
+    },
+    {
+      "title": "Malware Shield",
+      "id": "ms",
+      "author": "XeliteXirish",
+      "website": "www.xelitexirish.com",
+      "infoMessage": "Block malicious websites and scam servers on your phone!",
+      "downloadLink": "https://play.google.com/apps/testing/com.xelitexirish.malwareshield"
     }
   ]
 }
