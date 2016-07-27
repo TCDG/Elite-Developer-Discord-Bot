@@ -6,10 +6,13 @@ import com.xelitexirish.elitedeveloperbot.commands.UsageCommand;
 import com.xelitexirish.elitedeveloperbot.listeners.BotListener;
 import com.xelitexirish.elitedeveloperbot.utils.CommandParser;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
+import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
+import net.dv8tion.jda.entities.Guild;
 
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main {
 
@@ -18,7 +21,7 @@ public class Main {
     public static HashMap<String, ICommand> commands = new HashMap<>();
 
     public static String DISCORD_TOKEN;
-    public static boolean enableMessages = true;
+    public static boolean enableAutoMessages = true;
 
     /**
      * 1: Discord Token
@@ -29,7 +32,7 @@ public class Main {
 
         if(args.length >= 2){
             DISCORD_TOKEN = args[0];
-            enableMessages = Boolean.parseBoolean(args[1]);
+            enableAutoMessages = Boolean.parseBoolean(args[1]);
         }else{
             System.out.println("Please enter a valid Discord Token!");
             return;
@@ -45,6 +48,8 @@ public class Main {
         }
 
         registerCommands();
+
+        enableCommandLineMessenger();
     }
 
     private static void registerCommands(){
@@ -61,6 +66,23 @@ public class Main {
                 commands.get(cmd.invoke).executed(safe, cmd.event);
             }else {
                 commands.get(cmd.invoke).executed(safe, cmd.event);
+            }
+        }
+    }
+
+    public static void enableCommandLineMessenger(){
+        Scanner consoleScanner = new Scanner(System.in);
+        String input = consoleScanner.nextLine();
+
+        if(input.startsWith("console")) {
+            String message = input.substring(7);
+
+            for (int x = 0; x < jda.getGuilds().size(); x++) {
+                Guild guild = jda.getGuilds().get(x);
+
+                if(!guild.getId().equals("194533269180514305")) {
+                    guild.getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("[CONSOLE] " + message));
+                }
             }
         }
     }
