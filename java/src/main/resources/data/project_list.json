@@ -23,6 +23,14 @@
       "website": "www.xelitexirish.com",
       "infoMessage": "Block malicious websites and scam servers on your phone!",
       "downloadLink": "https://play.google.com/apps/testing/com.xelitexirish.malwareshield"
+    },
+    {
+      "title": "Scammers Phone Number List",
+      "id": "spnl",
+      "author": "Aussie and KingGold171",
+      "website": "http://spnl.tk",
+      "infoMessage": "On this website you will find a list of many scammers with known information about them.",
+      "downloadLink": ""
     }
   ]
 }

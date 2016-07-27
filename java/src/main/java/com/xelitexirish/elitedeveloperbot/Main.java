@@ -6,6 +6,7 @@ import com.xelitexirish.elitedeveloperbot.commands.UsageCommand;
 import com.xelitexirish.elitedeveloperbot.listeners.BotListener;
 import com.xelitexirish.elitedeveloperbot.utils.CommandParser;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
+import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
@@ -80,10 +81,16 @@ public class Main {
             for (int x = 0; x < jda.getGuilds().size(); x++) {
                 Guild guild = jda.getGuilds().get(x);
 
-                if(!guild.getId().equals("194533269180514305")) {
+                if(guild.getId().equals(Constants.SSL_DISCORD_ID)) {
                     guild.getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("[CONSOLE] " + message));
+                    BotLogger.log("console ", message);
                 }
             }
+        }else if(input.startsWith("allowUsers")){
+            String message = input.substring(11);
+            boolean enable = Boolean.parseBoolean(message);
+
+            System.out.println(enable);
         }
     }
 }

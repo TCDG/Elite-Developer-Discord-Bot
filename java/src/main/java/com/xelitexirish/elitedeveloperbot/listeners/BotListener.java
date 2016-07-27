@@ -39,6 +39,8 @@ public class BotListener extends ListenerAdapter {
         BotLogger.log("Player Unban", "User has been unban:" + event.getUser().getUsername());
     }
 
+
+
     @Override
     public void onReady(ReadyEvent event) {
         BotLogger.info("Successfully logged in as: " + event.getJDA().getSelfInfo().getUsername());
