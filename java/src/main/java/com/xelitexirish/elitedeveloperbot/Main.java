@@ -1,9 +1,6 @@
 package com.xelitexirish.elitedeveloperbot;
 
-import com.xelitexirish.elitedeveloperbot.commands.ICommand;
-import com.xelitexirish.elitedeveloperbot.commands.PlayerIdCommand;
-import com.xelitexirish.elitedeveloperbot.commands.ProjectsCommands;
-import com.xelitexirish.elitedeveloperbot.commands.UsageCommand;
+import com.xelitexirish.elitedeveloperbot.commands.*;
 import com.xelitexirish.elitedeveloperbot.listeners.BotListener;
 import com.xelitexirish.elitedeveloperbot.utils.CommandParser;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
@@ -50,12 +47,13 @@ public class Main {
         }
 
         registerCommands();
-
+        UserPrivs.setupUsers();
         enableCommandLineMessenger();
     }
 
     private static void registerCommands(){
         commands.put("usage", new UsageCommand());
+        commands.put("admin", new AdminCommand());
         commands.put("projects", new ProjectsCommands());
         commands.put("userid", new PlayerIdCommand());
     }

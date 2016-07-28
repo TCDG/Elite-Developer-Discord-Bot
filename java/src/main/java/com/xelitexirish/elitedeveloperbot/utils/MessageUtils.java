@@ -29,4 +29,9 @@ public class MessageUtils {
         messageBuilder.appendString(" " + message);
         return messageBuilder.build();
     }
+
+    public static void sendNoPermissionMessage(MessageReceivedEvent event){
+        String message = "Sorry but you don't have the required permission to use this command.";
+        event.getTextChannel().sendMessage(appendSenderUsername(event.getAuthor(), wrapStringInCodeBlock(message)));
+    }
 }

@@ -4,7 +4,7 @@ import com.xelitexirish.elitedeveloperbot.UserPrivs;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
-public class PlayerIdCommand implements ICommand{
+public class AdminCommand implements ICommand{
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
@@ -13,10 +13,18 @@ public class PlayerIdCommand implements ICommand{
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        String userId = event.getAuthor().getId();
-
-        event.getTextChannel().sendMessage(MessageUtils.appendSenderUsername(event.getAuthor(), "Your user id is: " + userId));
-
+        if(UserPrivs.isUserAdmin(event.getAuthor())){
+            if(args.length == 2){
+                if(args[0].equalsIgnoreCase("add")){
+                    String playerId = args[1];
+                    UserPrivs.addUserToAdmin(event.getJDA().getUserById(playerId));
+                }
+            }else {
+             event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Use admin add <player id>"));
+            }
+        }else{
+            MessageUtils.sendNoPermissionMessage(event);
+        }
     }
 
     @Override

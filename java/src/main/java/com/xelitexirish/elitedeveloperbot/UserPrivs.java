@@ -35,7 +35,7 @@ public class UserPrivs {
                     JSONObject jsonItem = jsonArray.getJSONObject(x);
 
                     String username = jsonItem.getString("username");
-                    String id = jsonItem.getString("id");
+                    String id = String.valueOf(jsonItem.get("id"));
 
                     adminUsers.add(Main.jda.getUserById(id));
                 }
