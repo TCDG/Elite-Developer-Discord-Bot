@@ -19,7 +19,9 @@ public class BotListener extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getMessage().getContent().startsWith(Constants.COMMAND_PREFIX) && event.getMessage().getAuthor().getId() != event.getJDA().getSelfInfo().getId()) {
             Main.handleCommand(Main.parser.parse(event.getMessage().getContent().toLowerCase(), event));
-        }else if(event.getMessage().equals("Hey developer bot")){
+        }
+
+        if(event.getMessage().getContent().equalsIgnoreCase("Hey developer bot")){
             String message = "Hey my name is Elite Developer Bot, you can view my commands by entering the command " + Constants.COMMAND_PREFIX;
             event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(message));
         }
