@@ -1,6 +1,7 @@
 package com.xelitexirish.elitedeveloperbot;
 
 import com.xelitexirish.elitedeveloperbot.commands.ICommand;
+import com.xelitexirish.elitedeveloperbot.commands.PlayerIdCommand;
 import com.xelitexirish.elitedeveloperbot.commands.ProjectsCommands;
 import com.xelitexirish.elitedeveloperbot.commands.UsageCommand;
 import com.xelitexirish.elitedeveloperbot.listeners.BotListener;
@@ -17,7 +18,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static JDA jda;
+    public static JDA jda;
     public static final CommandParser parser = new CommandParser();
     public static HashMap<String, ICommand> commands = new HashMap<>();
 
@@ -56,6 +57,7 @@ public class Main {
     private static void registerCommands(){
         commands.put("usage", new UsageCommand());
         commands.put("projects", new ProjectsCommands());
+        commands.put("userid", new PlayerIdCommand());
     }
 
     public static void handleCommand(CommandParser.CommandContainer cmd){
