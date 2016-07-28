@@ -52,7 +52,7 @@ public class Main {
     }
 
     private static void registerCommands(){
-        commands.put("usage", new UsageCommand());
+        commands.put("help", new HelpCommand());
         commands.put("admin", new AdminCommand());
         commands.put("projects", new ProjectsCommands());
         commands.put("userid", new PlayerIdCommand());

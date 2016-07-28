@@ -11,4 +11,6 @@ public interface ICommand {
     String help();
 
     void executed(boolean success, MessageReceivedEvent event);
+
+    String getTag();
 }

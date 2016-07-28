@@ -4,8 +4,8 @@ public class Constants {
 
     public static final String COMMAND_PREFIX = "!eb ";
 
-    public static final int OLD_VERSION = 1;
-    public static final int CURRENT_VERSION = 1;
+    public static final double OLD_VERSION = 1;
+    public static final double CURRENT_VERSION = 1;
 
     public static final String SSL_DISCORD_ID = "194533269180514305";
 

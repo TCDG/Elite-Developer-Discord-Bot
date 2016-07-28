@@ -36,4 +36,9 @@ public class AdminCommand implements ICommand{
     public void executed(boolean success, MessageReceivedEvent event) {
 
     }
+
+    @Override
+    public String getTag() {
+        return "admin";
+    }
 }

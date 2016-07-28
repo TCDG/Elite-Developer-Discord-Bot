@@ -55,6 +55,11 @@ public class ProjectsCommands implements ICommand {
 
     }
 
+    @Override
+    public String getTag() {
+        return "projects";
+    }
+
     private static void sendProjectListMessage(MessageReceivedEvent event) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Current projects: ");
