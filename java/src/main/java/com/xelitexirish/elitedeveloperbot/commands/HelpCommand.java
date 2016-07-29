@@ -9,6 +9,7 @@ import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class HelpCommand implements ICommand{
 
@@ -19,12 +20,16 @@ public class HelpCommand implements ICommand{
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
+        if(event.getMessage().getContent().equalsIgnoreCase("eb")){
+            sendGeneralHelpMessage(event);
+        }
+
         if(args.length == 0){
             sendGeneralHelpMessage(event);
 
         }else if(args.length == 1){
             // eb help (command)
-            String helpCommand = args[1];
+            String helpCommand = args[0];
 
             ICommand command = getCommandFromString(helpCommand);
             sendHelpMessage(event, command);
@@ -51,11 +56,12 @@ public class HelpCommand implements ICommand{
         stringBuilder.append("You can use the following commands with this bot: ");
         Iterator entries = Main.commands.entrySet().iterator();
         while (entries.hasNext()){
-            ICommand command = (ICommand) entries.next();
+            Map.Entry pair = (Map.Entry) entries.next();
+            ICommand command = (ICommand) pair.getValue();
             stringBuilder.append(command.getTag() + ", ");
         }
-        stringBuilder.append("\n  The bot prefix is: " + Constants.COMMAND_PREFIX);
-        stringBuilder.append("\n The current bot version is: " + Constants.CURRENT_VERSION);
+        stringBuilder.append("\n  The bot prefix is: " + Constants.COMMAND_PREFIX + "\n");
+        stringBuilder.append("The current bot version is: " + Constants.CURRENT_VERSION);
         event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(stringBuilder.toString()));
     }
 

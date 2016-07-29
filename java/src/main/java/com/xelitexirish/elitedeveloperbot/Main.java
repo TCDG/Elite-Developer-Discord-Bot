@@ -22,6 +22,8 @@ public class Main {
     public static String DISCORD_TOKEN;
     public static boolean enableAutoMessages = true;
 
+    // https://discordapp.com/oauth2/authorize?client_id=207593082328186880&scope=bot&permissions=0
+
     /**
      * 1: Discord Token
      * 2: Display messages when a user joins/bans/unbans

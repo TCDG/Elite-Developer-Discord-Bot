@@ -3,7 +3,7 @@ package com.xelitexirish.elitedeveloperbot.commands;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
-public class PlayerIdCommand implements ICommand{
+public class PlayerIdCommand implements ICommand {
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
@@ -12,10 +12,12 @@ public class PlayerIdCommand implements ICommand{
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        String userId = event.getAuthor().getId();
+        if (args.length == 0) {
+            String userId = event.getAuthor().getId();
 
-        event.getTextChannel().sendMessage(MessageUtils.appendSenderUsername(event.getAuthor(), "Your user id is: " + userId));
-        event.getAuthor().getPrivateChannel().sendMessage("Your user id is: " + userId);
+            event.getTextChannel().sendMessage(MessageUtils.appendSenderUsername(event.getAuthor(), "Your user id is: " + userId));
+            event.getAuthor().getPrivateChannel().sendMessage("Your user id is: " + userId);
+        }
     }
 
     @Override

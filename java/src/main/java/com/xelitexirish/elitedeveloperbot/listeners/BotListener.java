@@ -39,9 +39,9 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        String welcomeMessage = "Welcome " + MessageUtils.appendSenderUsername(event.getUser(), " make sure you read the rules!");
+        String welcomeMessage = "Welcome make sure you read the rules!";
         event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
-        BotLogger.log("Player Join", "User has joined: " + event.getUser().getUsername() + " on server" + event.getGuild().getName());
+        BotLogger.log("Player Join", "Welcome make sure you read the rules! " + event.getGuild().getName());
     }
 
     @Override
@@ -54,7 +54,7 @@ public class BotListener extends ListenerAdapter {
     public void onGuildMemberBan(GuildMemberBanEvent event) {
         String banMessage = "The ban hammer has spoken! Goodbye " + event.getUser().getUsername();
         event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(banMessage));
-        BotLogger.log("Player Ban", "User has been banned: " + event.getUser().getUsername() + " on server" + event.getGuild().getName());
+        BotLogger.log("Player Ban", "User has been banned: " + event.getUser().getUsername() + " on server " + event.getGuild().getName());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
-        BotLogger.log("Message deleted: ", event.getMessage().getContent() + " on server" + event.getGuild().getName());
+        //BotLogger.log("Message deleted: ", event.getMessage().getContent() + " on server" + event.getGuild().getName());
     }
 
     @Override

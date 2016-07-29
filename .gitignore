@@ -18,3 +18,5 @@
 *.log
 *.log.lck
 *.txt
+*.log.1.lck
+*.log.1
