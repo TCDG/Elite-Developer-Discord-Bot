@@ -39,7 +39,7 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        String welcomeMessage = "Welcome " + event.getUser().getUsername() + " make sure you read the rules!";
+        String welcomeMessage = "Welcome " + event.getUser().getUsername() + " make sure you read the rules!  If have a new account you wont be able to speak for 5 minutes!";
         event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
         BotLogger.log("Player Join", "Player " + event.getUser().getUsername() + " has joined server " + event.getGuild().getName());
     }
@@ -59,16 +59,8 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberUnban(GuildMemberUnbanEvent event) {
-        BotLogger.log("Player Unban", "User has been unbaned: NPE ERROR" + " on server" + event.getGuild().getName());
-    }
-
-    @Override
-    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
-        //BotLogger.log("Message deleted: ", event.getMessage().getContent() + " on server" + event.getGuild().getName());
-    }
-
-    @Override
-    public void onReady(ReadyEvent event) {
-        BotLogger.info("Successfully logged in as: " + event.getJDA().getSelfInfo().getUsername());
+        String unbanMessage = "The ban hammer has been lifted on " + event.getUserName();
+        event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(unbanMessage));
+        BotLogger.log("Player Unban", "User has been unbaned: " + event.getUserName() + " on server " + event.getGuild().getName());
     }
 }

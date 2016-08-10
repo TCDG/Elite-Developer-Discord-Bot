@@ -1,9 +1,10 @@
 package com.xelitexirish.elitedeveloperbot.utils;
 
+import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.MessageBuilder;
-import net.dv8tion.jda.entities.Message;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.entities.*;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
+import net.sourceforge.jaad.Main;
 
 public class MessageUtils {
 
@@ -33,5 +34,15 @@ public class MessageUtils {
     public static void sendNoPermissionMessage(MessageReceivedEvent event){
         String message = "Sorry but you don't have the required permission to use this command.";
         event.getTextChannel().sendMessage(appendSenderUsername(event.getAuthor(), wrapStringInCodeBlock(message)));
+    }
+
+    public static void sendMessageToStaffChat(JDA jda, String message){
+       for (Guild guild : jda.getGuilds()){
+           for (TextChannel channel : guild.getTextChannels()){
+               if(channel.getId().equals(Constants.STAFFCHAT_CHANNEL_ID)){
+                   channel.sendMessage(message);
+               }
+           }
+       }
     }
 }
