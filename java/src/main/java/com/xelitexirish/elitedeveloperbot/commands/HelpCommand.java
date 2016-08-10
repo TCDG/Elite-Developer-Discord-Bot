@@ -1,17 +1,14 @@
 package com.xelitexirish.elitedeveloperbot.commands;
 
 import com.xelitexirish.elitedeveloperbot.Main;
-import com.xelitexirish.elitedeveloperbot.Project;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class HelpCommand implements ICommand{
+public class HelpCommand implements ICommand {
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
@@ -20,14 +17,14 @@ public class HelpCommand implements ICommand{
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        if(event.getMessage().getContent().equalsIgnoreCase("eb")){
+        if (event.getMessage().getContent().equalsIgnoreCase(Constants.COMMAND_PREFIX)) {
             sendGeneralHelpMessage(event);
         }
 
-        if(args.length == 0){
+        if (args.length == 0) {
             sendGeneralHelpMessage(event);
 
-        }else if(args.length == 1){
+        } else if (args.length == 1) {
             // eb help (command)
             String helpCommand = args[0];
 
@@ -38,7 +35,8 @@ public class HelpCommand implements ICommand{
 
     @Override
     public String help() {
-        return null;
+        String message = "Use '" + Constants.COMMAND_PREFIX + " help <command name>' to view more information about that command!";
+        return message;
     }
 
     @Override
@@ -51,31 +49,31 @@ public class HelpCommand implements ICommand{
         return "help";
     }
 
-    public static void sendGeneralHelpMessage(MessageReceivedEvent event){
+    public static void sendGeneralHelpMessage(MessageReceivedEvent event) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("You can use the following commands with this bot: ");
         Iterator entries = Main.commands.entrySet().iterator();
-        while (entries.hasNext()){
+        while (entries.hasNext()) {
             Map.Entry pair = (Map.Entry) entries.next();
             ICommand command = (ICommand) pair.getValue();
-            stringBuilder.append(command.getTag() + ", ");
+            stringBuilder.append(command.getTag() + ",  Just add " + Constants.COMMAND_PREFIX + " before the command!");
         }
-        stringBuilder.append("\n  The bot prefix is: " + Constants.COMMAND_PREFIX + "\n");
-        stringBuilder.append("The current bot version is: " + Constants.CURRENT_VERSION);
+        stringBuilder.append("\n\nThe bot prefix is: " + Constants.COMMAND_PREFIX + "\n");
+        stringBuilder.append("The current bot version is: " + Constants.CURRENT_VERSION + "\n");
         event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(stringBuilder.toString()));
     }
 
-    private static ICommand getCommandFromString(String commandName){
-        if(Main.commands.containsKey(commandName)){
+    private static ICommand getCommandFromString(String commandName) {
+        if (Main.commands.containsKey(commandName)) {
             return Main.commands.get(commandName);
         }
         return null;
     }
 
-    private static void sendHelpMessage(MessageReceivedEvent event, ICommand command){
-        if(command.help() != null) {
+    private static void sendHelpMessage(MessageReceivedEvent event, ICommand command) {
+        if (command.help() != null) {
             event.getTextChannel().sendMessage(command.help());
-        }else {
+        } else {
             event.getTextChannel().sendMessage("Sorry there is no info available for this command, please contact a bot admin.");
         }
     }

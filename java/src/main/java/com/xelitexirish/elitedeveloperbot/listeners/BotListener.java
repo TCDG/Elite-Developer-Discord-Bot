@@ -39,9 +39,9 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        String welcomeMessage = "Welcome make sure you read the rules!";
+        String welcomeMessage = "Welcome " + event.getUser().getUsername() + " make sure you read the rules!";
         event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
-        BotLogger.log("Player Join", "Welcome make sure you read the rules! " + event.getGuild().getName());
+        BotLogger.log("Player Join", "Player " + event.getUser().getUsername() + " has joined server " + event.getGuild().getName());
     }
 
     @Override

@@ -2,10 +2,7 @@ package com.xelitexirish.elitedeveloperbot;
 
 import com.xelitexirish.elitedeveloperbot.commands.*;
 import com.xelitexirish.elitedeveloperbot.listeners.BotListener;
-import com.xelitexirish.elitedeveloperbot.utils.CommandParser;
-import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
-import com.xelitexirish.elitedeveloperbot.utils.Constants;
-import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
+import com.xelitexirish.elitedeveloperbot.utils.*;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
 import net.dv8tion.jda.entities.Guild;
@@ -51,6 +48,7 @@ public class Main {
         registerCommands();
         UserPrivs.setupUsers();
         enableCommandLineMessenger();
+        WarningHandler.setup();
     }
 
     private static void registerCommands(){
@@ -58,6 +56,7 @@ public class Main {
         commands.put("admin", new AdminCommand());
         commands.put("projects", new ProjectsCommands());
         commands.put("userid", new PlayerIdCommand());
+        commands.put("warn", new WarningCommand());
     }
 
     public static void handleCommand(CommandParser.CommandContainer cmd){
