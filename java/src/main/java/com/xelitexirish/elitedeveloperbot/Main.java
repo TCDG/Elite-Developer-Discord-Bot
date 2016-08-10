@@ -2,6 +2,7 @@ package com.xelitexirish.elitedeveloperbot;
 
 import com.xelitexirish.elitedeveloperbot.commands.*;
 import com.xelitexirish.elitedeveloperbot.listeners.BotListener;
+import com.xelitexirish.elitedeveloperbot.listeners.SpellCheckerListener;
 import com.xelitexirish.elitedeveloperbot.utils.*;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
@@ -49,6 +50,7 @@ public class Main {
         UserPrivs.setupUsers();
         enableCommandLineMessenger();
         WarningHandler.setup();
+        SpellCheckerListener.init();
     }
 
     private static void registerCommands(){
