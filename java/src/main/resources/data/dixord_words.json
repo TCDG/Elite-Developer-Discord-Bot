@@ -1,12 +1,10 @@
 {
   "dixordWords": [
     {
-      "baseWord": "desktop",
-      "dixordWord": "dextop"
+      "dixcordWord": "desktop-dextop"
     },
     {
-      "baseWord": "virus",
-      "dixordWord": "wirus"
+      "dixcordWord": "virus-wirus"
     }
   ]
 }

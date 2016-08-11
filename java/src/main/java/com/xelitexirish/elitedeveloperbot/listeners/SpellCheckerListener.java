@@ -1,6 +1,5 @@
 package com.xelitexirish.elitedeveloperbot.listeners;
 
-import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.JsonReader;
 import net.dv8tion.jda.entities.User;
@@ -14,24 +13,27 @@ import java.util.List;
 
 public class SpellCheckerListener {
 
-    private static final List<String> baseWords = new ArrayList<>();
     private static final List<String> replaceWords = new ArrayList<>();
 
-    public static void init(){
+    public static void init() {
         fillLists();
     }
 
     public static void handleMessage(MessageReceivedEvent event) {
+        fillLists();
         User sender = event.getAuthor();
-        String[] messageSplit = event.getMessage().toString().split(" ");
+        String[] messageSplit = event.getMessage().getContent().split(" ");
 
-        for (int x = 0; x < messageSplit.length; x++) {
-            String word = baseWords.get(x);
-            if (baseWords.contains(word.toLowerCase())) {
-                // Tell user
-                notifyUser(sender, word, replaceWords.get(x));
-            }else if (baseWords.contains(word.toUpperCase())){
-                notifyUser(sender, word, replaceWords.get(x));
+        if (!replaceWords.isEmpty()) {
+            for (int x = 0; x < messageSplit.length; x++) {
+                String word = messageSplit[x];
+
+                for (int y = 0; y < replaceWords.size(); y++) {
+                    String[] lineParts = replaceWords.get(y).split("-");
+                    if (lineParts[0].equalsIgnoreCase(word)) {
+                        notifyUser(sender, lineParts[0], lineParts[1]);
+                    }
+                }
             }
         }
     }
@@ -44,11 +46,9 @@ public class SpellCheckerListener {
                 for (int x = 0; x < jsonArray.length(); x++) {
                     JSONObject jsonItem = jsonArray.getJSONObject(x);
 
-                    String baseWord = jsonItem.getString("baseWord");
-                    String dixordWord = String.valueOf(jsonItem.get("dixordWord"));
+                    String replaceWord = jsonItem.getString("dixcordWord");
 
-                    baseWords.add(baseWord);
-                    replaceWords.add(dixordWord);
+                    replaceWords.add(replaceWord);
                 }
             }
 
