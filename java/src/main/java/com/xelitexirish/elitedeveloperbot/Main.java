@@ -46,11 +46,11 @@ public class Main {
             e.printStackTrace();
         }
 
+        SpellCheckerListener.init();
         registerCommands();
         UserPrivs.setupUsers();
         enableCommandLineMessenger();
-        WarningHandler.setup();
-        SpellCheckerListener.init();
+        //WarningHandler.setup();
     }
 
     private static void registerCommands(){

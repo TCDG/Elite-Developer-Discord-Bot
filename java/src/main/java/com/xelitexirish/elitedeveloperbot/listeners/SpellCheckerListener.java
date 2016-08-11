@@ -20,7 +20,6 @@ public class SpellCheckerListener {
     }
 
     public static void handleMessage(MessageReceivedEvent event) {
-        fillLists();
         User sender = event.getAuthor();
         String[] messageSplit = event.getMessage().getContent().split(" ");
 
@@ -58,8 +57,12 @@ public class SpellCheckerListener {
     }
 
     private static void notifyUser(User user, String baseWord, String dixordWord) {
-        String message = "Oi you spelt " + baseWord + " wrong, it's spelt " + dixordWord;
+        try {
+            String message = "Oi you spelt " + baseWord + " wrong, it's spelt " + dixordWord;
 
-        user.getPrivateChannel().sendMessage(message);
+            user.getPrivateChannel().sendMessage(message);
+        }catch (Exception e){
+
+        }
     }
 }
