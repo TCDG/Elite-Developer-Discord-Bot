@@ -4,9 +4,11 @@ import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
+import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.events.ReadyEvent;
 import net.dv8tion.jda.events.ResumedEvent;
 import net.dv8tion.jda.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberBanEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberLeaveEvent;
@@ -41,7 +43,7 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        String welcomeMessage = "Welcome " + event.getUser().getUsername() + " make sure you read the rules!  If have a new account you wont be able to speak for 5 minutes!";
+        String welcomeMessage = "Welcome " + event.getUser().getAsMention() + " make sure you read the rules!  If have a new account you wont be able to speak for 5 minutes!";
         event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
 
         String logMessage = "Player " + event.getUser().getUsername() + " has joined server " + event.getGuild().getName();
@@ -74,9 +76,25 @@ public class BotListener extends ListenerAdapter {
         String unbanMessage = "The ban hammer has been lifted on " + event.getUserName();
         event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(unbanMessage));
 
-        String logMessage = "User has been unbaned: " + event.getUserName() + " on server " + event.getGuild().getName();
+        String logMessage = "User has been unbanned: " + event.getUserName() + " on server " + event.getGuild().getName();
         BotLogger.log("Player Unban", logMessage);
 
         MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
+    }
+
+    @Override
+    public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
+        String leaveMessage = "User " + event.getUser().getAsMention() + " has either been kicked and/or banned.";
+
+        BotLogger.log("Player Leave", leaveMessage.toString());
+        MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), leaveMessage);
+    }
+
+    @Override
+    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
+        String messageDelete = "Message has been deleted by: " + event.getMessage().getAuthor();
+
+        BotLogger.log("Message Deleted", messageDelete + " on server " + event.getGuild().getName());
+        MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), messageDelete);
     }
 }

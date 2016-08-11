@@ -65,4 +65,9 @@ public class SpellCheckerListener {
 
         }
     }
+
+    public static void reloadLists(){
+        replaceWords.clear();
+        fillLists();
+    }
 }
