@@ -3,7 +3,6 @@ package com.xelitexirish.elitedeveloperbot.utils;
 public class Constants {
 
     public static final String COMMAND_PREFIX = "!dev ";
-    public static final boolean ENABLE_SPELLCHECKER = false;
 
     public static final double OLD_VERSION = 1;
     public static final double CURRENT_VERSION = 1;

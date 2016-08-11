@@ -26,7 +26,7 @@ public class BotListener extends ListenerAdapter {
         } else if(event.getMessage().getContent().equalsIgnoreCase("Hey developer bot")){
             String message = "Hey my name is Elite Developer Bot, you can view my commands by entering the command " + Constants.COMMAND_PREFIX + " help";
             event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(message));
-        }else if(Constants.ENABLE_SPELLCHECKER){
+        }else if(Main.enableSpellChecker){
             SpellCheckerListener.handleMessage(event);
         }
     }

@@ -19,6 +19,7 @@ public class Main {
 
     public static String DISCORD_TOKEN;
     public static boolean enableAutoMessages = true;
+    public static boolean enableSpellChecker = true;
 
     // https://discordapp.com/oauth2/authorize?client_id=207593082328186880&scope=bot&permissions=0
 
@@ -29,9 +30,10 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        if(args.length >= 2){
+        if(args.length >= 3){
             DISCORD_TOKEN = args[0];
             enableAutoMessages = Boolean.parseBoolean(args[1]);
+            enableAutoMessages = Boolean.parseBoolean(args[2]);
         }else{
             System.out.println("Please enter a valid Discord Token!");
             return;
