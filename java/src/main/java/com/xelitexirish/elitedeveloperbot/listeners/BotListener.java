@@ -43,26 +43,40 @@ public class BotListener extends ListenerAdapter {
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         String welcomeMessage = "Welcome " + event.getUser().getUsername() + " make sure you read the rules!  If have a new account you wont be able to speak for 5 minutes!";
         event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
-        BotLogger.log("Player Join", "Player " + event.getUser().getUsername() + " has joined server " + event.getGuild().getName());
+
+        String logMessage = "Player " + event.getUser().getUsername() + " has joined server " + event.getGuild().getName();
+        BotLogger.log("Player Join", logMessage);
+
+        MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
     }
 
     @Override
     public void onUserNameUpdate(UserNameUpdateEvent event) {
         String changeNameMessage = "Player " + event.getPreviousUsername() + " is now known as " + event.getUser().getUsername();
         BotLogger.log("Username change", changeNameMessage);
+
+        MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), changeNameMessage);
     }
 
     @Override
     public void onGuildMemberBan(GuildMemberBanEvent event) {
         String banMessage = "The ban hammer has spoken! Goodbye " + event.getUser().getUsername();
         event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(banMessage));
-        BotLogger.log("Player Ban", "User has been banned: " + event.getUser().getUsername() + " on server " + event.getGuild().getName());
+
+        String logMessage = "User has been banned: " + event.getUser().getUsername() + " on server " + event.getGuild().getName();
+        BotLogger.log("Player Ban", logMessage);
+
+        MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
     }
 
     @Override
     public void onGuildMemberUnban(GuildMemberUnbanEvent event) {
         String unbanMessage = "The ban hammer has been lifted on " + event.getUserName();
         event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(unbanMessage));
-        BotLogger.log("Player Unban", "User has been unbaned: " + event.getUserName() + " on server " + event.getGuild().getName());
+
+        String logMessage = "User has been unbaned: " + event.getUserName() + " on server " + event.getGuild().getName();
+        BotLogger.log("Player Unban", logMessage);
+
+        MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
     }
 }

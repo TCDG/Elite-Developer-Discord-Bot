@@ -58,7 +58,7 @@ public class Main {
         commands.put("admin", new AdminCommand());
         commands.put("projects", new ProjectsCommands());
         commands.put("userid", new PlayerIdCommand());
-        commands.put("warn", new WarningCommand());
+        //commands.put("warn", new WarningCommand());
     }
 
     public static void handleCommand(CommandParser.CommandContainer cmd){
