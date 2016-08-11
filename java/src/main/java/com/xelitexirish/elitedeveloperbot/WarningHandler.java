@@ -5,81 +5,112 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class WarningHandler {
 
-    private static final File userList = new File("UserWarningList.json");
-    private static JSONObject jsonObject = new JSONObject();
-    private static JSONArray jsonArrayUsers = new JSONArray();
+    private static final File userWarningList = new File("UserWarningList.json");
+    public static List<String> warnedUsers = new ArrayList<>();
 
-    public static void setup() {
+    public static void init() {
 
-        if (doesJsonExist()) {
-            readJsonArray();
-        } else {
-            // Lets set it up
-            jsonObject.put(jsonArrayUsers, "userWarnings");
+    }
+
+    public static void warnUser(String userId) {
+
+        warnedUsers.clear();
+        loadWarningData();
+
+        for (int x = 0; x < warnedUsers.size(); x++) {
+            String[] warnedParts = warnedUsers.get(x).split("-");
+
+            if(warnedParts[0].equalsIgnoreCase(userId)){
+                int currentWarnings = getUserWarnings(userId);
+                int newWarning = currentWarnings + 1;
+
+                warnedUsers.remove(x);
+                warnedUsers.add(userId + "-" + newWarning);
+            }
+        }
+        writeWarningData();
+    }
+
+    public static void unWarnUser(String userId){
+        warnedUsers.clear();
+        loadWarningData();
+
+        for(int x = 0; x < warnedUsers.size(); x++){
+            String[] lineParts = warnedUsers.get(x).split("-");
+
+            if(lineParts[0].equalsIgnoreCase(userId)){
+                int currentWarnings = getUserWarnings(userId);
+                int newWarnings = currentWarnings - 1;
+
+                warnedUsers.remove(x);
+                warnedUsers.add(userId + "-" + newWarnings);
+            }
         }
     }
 
-    public static int getUserWarnings(String username){
-        for(int x = 0; x < jsonArrayUsers.size(); x++){
-            String text = jsonArrayUsers.get(x).toString();
-            String[] textSplit = text.split("-");
+    public static int getUserWarnings(String userId) {
+        for (int x = 0; x < warnedUsers.size(); x++) {
+            String[] lineSplit = warnedUsers.get(x).split("-");
 
-            if(textSplit[0].equalsIgnoreCase(username)){
-                return Integer.parseInt(textSplit[1]);
+            if (lineSplit[0].equalsIgnoreCase(userId)) {
+                int warnings = Integer.parseInt(lineSplit[1]);
+                return warnings;
             }
         }
         return 0;
     }
 
-    public static void addWarning(String username){
-        readJsonArray();
-        if(!jsonArrayUsers.isEmpty()) {
-            for (int x = 0; x < jsonArrayUsers.size(); x++) {
-                String text = jsonArrayUsers.get(x).toString();
-                String[] textSplit = text.split("-");
+    private static void loadWarningData() {
+        if (userWarningList.exists()) {
+            JSONParser parser = new JSONParser();
 
-                // Has the user been warned
-                if (getUserWarnings(username) == 0) {
-                    jsonArrayUsers.add(username + "-" + "1");
+            try {
+                Object obj = parser.parse(new FileReader(userWarningList));
+                JSONObject jsonObject = (JSONObject) obj;
 
-                } else if (getUserWarnings(username) >= 0) {
-                    int warnings = Integer.parseInt(textSplit[1]);
-                    jsonArrayUsers.remove(x);
-                    int newWarnings = warnings + 1;
-                    jsonArrayUsers.add(username + "-" + newWarnings++);
+                JSONArray jsonArray = (JSONArray) jsonObject.get("arrayWarnings");
+                if (jsonArray != null) {
+                    Iterator<String> iterator = jsonArray.iterator();
+                    while (iterator.hasNext()) {
+                        warnedUsers.add(iterator.next());
+                    }
                 }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }else {
-            jsonArrayUsers.add(username + "-" + "1");
-        }
-        writeJsonToFile();
-    }
-
-    private static void readJsonArray() {
-        JSONParser parser = new JSONParser();
-        try {
-            Object obj = parser.parse(new FileReader(userList));
-            JSONObject jsonObject = (JSONObject) obj;
-            JSONArray users = (JSONArray) jsonObject.get("userWarnings");
-            jsonArrayUsers = users;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } else {
+            writeWarningData();
         }
     }
 
-    public static void writeJsonToFile() {
+    private static void writeWarningData() {
         try {
-            FileWriter fileWriter = new FileWriter(userList);
+            if (!userWarningList.exists()) {
+                userWarningList.createNewFile();
+            }
+            JSONObject jsonObject = new JSONObject();
+            JSONArray arrayWarnedUsers = new JSONArray();
+
+            jsonObject.put("arrayWarnings", arrayWarnedUsers);
+            for (int x = 0; x < warnedUsers.size(); x++) {
+                String line = warnedUsers.get(x);
+
+                arrayWarnedUsers.add(line);
+            }
+
+            FileWriter fileWriter = new FileWriter(userWarningList);
             fileWriter.write(jsonObject.toJSONString());
             fileWriter.flush();
             fileWriter.close();
@@ -87,9 +118,5 @@ public class WarningHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private static boolean doesJsonExist() {
-        return userList.exists();
     }
 }
