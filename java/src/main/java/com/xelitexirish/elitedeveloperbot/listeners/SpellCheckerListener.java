@@ -67,8 +67,9 @@ public class SpellCheckerListener {
     private static void notifyUser(User user, String baseWord, String dixordWord) {
         try {
             String message = "Oi you spelt " + baseWord + " wrong, it's spelt " + dixordWord;
+            String blockMessage = "\n You can blacklist yourself from these messages by entering '" + Constants.COMMAND_PREFIX + " correction block' in chat";
 
-            user.getPrivateChannel().sendMessage(message);
+            user.getPrivateChannel().sendMessage(message + blockMessage);
         } catch (Exception e) {
 
         }

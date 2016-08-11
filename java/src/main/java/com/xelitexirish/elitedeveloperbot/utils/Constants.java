@@ -8,6 +8,7 @@ public class Constants {
     public static final double CURRENT_VERSION = 1;
 
     public static final String SSL_DISCORD_ID = "194533269180514305";
+    public static final String BOT_TESTING_DISCORD = "198135332808425483";
     public static final String USER_ID_XELITEXIRISH = "182210823630880768";
 
     public static final String STAFF_DEBUG_CHANNEL_ID = "213094602700226562";
