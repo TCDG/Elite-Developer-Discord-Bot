@@ -4,6 +4,8 @@ import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
+import net.dv8tion.jda.entities.Channel;
+import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.events.ReadyEvent;
 import net.dv8tion.jda.events.ResumedEvent;
@@ -15,6 +17,7 @@ import net.dv8tion.jda.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberUnbanEvent;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.events.message.guild.GuildMessageDeleteEvent;
+import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.events.user.UserNameUpdateEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
 
@@ -84,17 +87,22 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
-        String leaveMessage = "User " + event.getUser().getAsMention() + " has either been kicked and/or banned.";
+        String leaveMessage = "User " + event.getUser().getAsMention() + " has either been kicked and/or banned or has left themselves.";
 
         BotLogger.log("Player Leave", leaveMessage.toString());
         MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), leaveMessage);
     }
 
     @Override
-    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
-        String messageDelete = "Message has been deleted by: " + event.getMessage().getAuthor();
+    public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
+        if(event.getAuthor().getId().equals(Constants.USER_ID_XELITEXIRISH)){
+            String message = event.getMessage().getContent();
 
-        BotLogger.log("Message Deleted", messageDelete + " on server " + event.getGuild().getName());
-        MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), messageDelete);
+            for(Guild guild : event.getJDA().getGuilds()){
+                if(guild.getId().equals(Constants.SSL_DISCORD_ID)){
+                    guild.getPublicChannel().sendMessage(message);
+                }
+            }
+        }
     }
 }

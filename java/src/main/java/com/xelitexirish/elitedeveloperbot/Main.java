@@ -60,7 +60,7 @@ public class Main {
         commands.put("admin", new AdminCommand());
         commands.put("projects", new ProjectsCommands());
         commands.put("userid", new PlayerIdCommand());
-        commands.put("spelling", new SpellCheckerCommand());
+        commands.put("correction", new SpellCheckerCommand());
         //commands.put("warn", new WarningCommand());
     }
 
