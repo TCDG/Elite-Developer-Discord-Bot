@@ -18,7 +18,7 @@ public class WarningCommand implements ICommand{
         }else if(args.length == 1){
             String username = args[0];
 
-            WarningHandler.addWarning(username);
+            //WarningHandler.addWarning(username);
             event.getTextChannel().sendMessage(username.toUpperCase() + " now has " + WarningHandler.getUserWarnings(username) + " warnings");
         }
     }

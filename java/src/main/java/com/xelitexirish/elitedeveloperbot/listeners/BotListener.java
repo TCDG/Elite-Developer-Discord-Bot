@@ -4,19 +4,13 @@ import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
-import net.dv8tion.jda.entities.Channel;
 import net.dv8tion.jda.entities.Guild;
-import net.dv8tion.jda.entities.Message;
-import net.dv8tion.jda.events.ReadyEvent;
-import net.dv8tion.jda.events.ResumedEvent;
 import net.dv8tion.jda.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberBanEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberUnbanEvent;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.events.user.UserNameUpdateEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
@@ -99,7 +93,7 @@ public class BotListener extends ListenerAdapter {
             String message = event.getMessage().getContent();
 
             for(Guild guild : event.getJDA().getGuilds()){
-                if(guild.getId().equals(Constants.SSL_DISCORD_ID)){
+                if(guild.getId().equals(Constants.SUPPORT_DISCORD_ID)){
                     guild.getPublicChannel().sendMessage(message);
                 }
             }

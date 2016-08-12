@@ -67,7 +67,7 @@ public class SpellCheckerListener {
     private static void notifyUser(User user, String baseWord, String dixordWord) {
         try {
             String message = "Oi you spelt " + baseWord + " wrong, it's spelt " + dixordWord;
-            String blockMessage = "\n You can blacklist yourself from these messages by entering '" + Constants.COMMAND_PREFIX + " correction block' in chat";
+            String blockMessage = "\n You can blacklist yourself from these messages by entering '" + Constants.COMMAND_PREFIX + " correction false' in chat";
 
             user.getPrivateChannel().sendMessage(message + blockMessage);
         } catch (Exception e) {
@@ -89,11 +89,11 @@ public class SpellCheckerListener {
         loadBlackListData();
 
         if (blackListUsers.contains(userId)) {
-            user.getPrivateChannel().sendMessage("You are already blacklisted to receive spell check messages.  Use '" + Constants.COMMAND_PREFIX + " correction unblock' tp unblock yourself");
+            user.getPrivateChannel().sendMessage("You are already blacklisted to receive spell check messages.  Use '" + Constants.COMMAND_PREFIX + " correction true' tp unblock yourself");
 
         } else {
             blackListUsers.add(userId);
-            user.getPrivateChannel().sendMessage("You are now on the bot blacklist. Use '" + Constants.COMMAND_PREFIX + " correction block' to unblock yourself.");
+            user.getPrivateChannel().sendMessage("You are now on the bot blacklist. Use '" + Constants.COMMAND_PREFIX + " correction false' to unblock yourself.");
         }
 
         writeBlacklist();
@@ -107,10 +107,10 @@ public class SpellCheckerListener {
 
         if (blackListUsers.contains(userId)) {
             blackListUsers.remove(userId);
-            user.getPrivateChannel().sendMessage("You are now removed from the bot blacklist. Use '" + Constants.COMMAND_PREFIX + " correction block' to block yourself.");
+            user.getPrivateChannel().sendMessage("You are now removed from the bot blacklist. Use '" + Constants.COMMAND_PREFIX + " correction false' to block yourself.");
 
         } else {
-            user.getPrivateChannel().sendMessage("You are currently not on the blacklist. Use '" + Constants.COMMAND_PREFIX + " correction block' to block yourself.");
+            user.getPrivateChannel().sendMessage("You are currently not on the blacklist. Use '" + Constants.COMMAND_PREFIX + " correction false' to block yourself.");
         }
         writeBlacklist();
     }
