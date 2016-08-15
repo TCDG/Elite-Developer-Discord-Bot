@@ -23,20 +23,20 @@ public class ChatMessageListener {
             event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(message));
         }else if(event.getMessage().getContent().equalsIgnoreCase("Dont cut the red wire")){
             String message = "Hey " + event.getAuthor().getAsMention() + " even I'm a bot and I know not to cut the red wire, check out the rules!";
-            event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(message));
+            event.getTextChannel().sendMessage(message);
         } else if (Main.enableSpellChecker) {
             SpellCheckerListener.handleMessage(event);
         }
     }
 
     public static void onGuildMemberJoin(GuildMemberJoinEvent event){
-        if(Main.isTT142Offline()) {
+
             String welcomeMessage = "Welcome " + event.getUser().getAsMention() + " make sure you read the rules!  If have a new account you wont be able to speak for 5 minutes!";
             event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
 
             String logMessage = "Player " + event.getUser().getUsername() + " has joined server " + event.getGuild().getName();
             BotLogger.log("Player Join", logMessage);
-
+        if(Main.isTT142Offline()) {
             MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
         }
     }
@@ -49,25 +49,25 @@ public class ChatMessageListener {
     }
 
     public static void onMemberBan(GuildMemberBanEvent event){
-        if(Main.isTT142Offline()) {
+
             String banMessage = "The ban hammer has spoken! Goodbye " + event.getUser().getUsername();
             event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(banMessage));
 
             String logMessage = "User has been banned: " + event.getUser().getUsername() + " on server " + event.getGuild().getName();
             BotLogger.log("Player Ban", logMessage);
-
+        if(Main.isTT142Offline()) {
             MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
         }
     }
 
     public static void onMemberUnban(GuildMemberUnbanEvent event){
-        if(Main.isTT142Offline()) {
+
             String unbanMessage = "The ban hammer has been lifted on " + event.getUserName();
             event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(unbanMessage));
 
             String logMessage = "User has been unbanned: " + event.getUserName() + " on server " + event.getGuild().getName();
             BotLogger.log("Player Unban", logMessage);
-
+        if(Main.isTT142Offline()) {
             MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
         }
     }

@@ -8,6 +8,8 @@ import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
+import java.time.LocalDate;
+
 public class AdminCommand implements ICommand {
 
     private static String helpMessage = "Use !dev admin add/reload/playing";
@@ -60,14 +62,15 @@ public class AdminCommand implements ICommand {
                 if (args.length == 2){
                     String userId = args[1];
                     User user = event.getJDA().getUserById(userId);
-                    String date = event.getGuild().getJoinDateForUser(user).toString();
+                    LocalDate date = event.getGuild().getJoinDateForUser(user).toLocalDate();
                     event.getTextChannel().sendMessage(user.getAsMention() + " has joined the server on " + date);
                 }else {
-                    event.getTextChannel().sendMessage(event.getAuthor().getAsMention() + " use '!dev admin joindate <userid>'");
+                    LocalDate date = event.getGuild().getJoinDateForUser(event.getAuthor()).toLocalDate();
+                    event.getTextChannel().sendMessage("You joined the server on " + date);
                 }
             }
         } else {
-            MessageUtils.sendNoPermissionMessage(event);
+            MessageUtils.sendNoPermissionMessage(event.getAuthor(), event.getGuild());
         }
     }
 

@@ -28,9 +28,7 @@ public class UserPrivs {
         if (adminUsers.contains(user)) {
             return true;
         }else {
-            for (Role role : user.getJDA().getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getRolesForUser(user)) {
-                return role.hasPermission(Permission.MANAGE_SERVER);
-            }
+           hasPermission(user, Permission.MANAGE_SERVER);
         }
         return false;
     }
@@ -60,5 +58,12 @@ public class UserPrivs {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean hasPermission(User user, Permission permission){
+        for (Role role : user.getJDA().getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getRolesForUser(user)) {
+            return role.hasPermission(permission);
+        }
+        return false;
     }
 }

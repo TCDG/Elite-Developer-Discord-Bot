@@ -80,7 +80,7 @@ public class Main {
     }
 
     public static boolean isTT142Offline(){
-        if(jda.getUserById(Constants.BOT_TT142_ID).getOnlineStatus() == OnlineStatus.ONLINE){
+        if(jda.getUserById(Constants.BOT_TT142_ID).getOnlineStatus() != OnlineStatus.ONLINE){
             return true;
         }
         return false;

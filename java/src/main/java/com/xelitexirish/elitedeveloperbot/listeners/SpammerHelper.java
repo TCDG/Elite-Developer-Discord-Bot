@@ -1,8 +1,10 @@
 package com.xelitexirish.elitedeveloperbot.listeners;
 
+import com.xelitexirish.elitedeveloperbot.UserPrivs;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
+import net.dv8tion.jda.Permission;
 import net.dv8tion.jda.entities.Role;
 import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.events.guild.member.GuildMemberJoinEvent;
@@ -21,9 +23,13 @@ public class SpammerHelper {
             // Is a spammer
             for(Role role : event.getGuild().getRoles()){
                 if(role.getId().equalsIgnoreCase(Constants.ROLE_MUTED_ID)){
-                    event.getGuild().getPublicChannel().sendMessage(MessageUtils.appendEveryone("Oi " + event.getUser().getAsMention() + " your still in spammers! Don't try to evade punishments"));
-
-                    event.getGuild().getManager().addRoleToUser(event.getUser(), role);
+                    if(UserPrivs.hasPermission(event.getUser(), Permission.MANAGE_ROLES)) {
+                        event.getGuild().getManager().addRoleToUser(event.getUser(), role);
+                        event.getGuild().getManager().update();
+                    }else{
+                        MessageUtils.sendNoPermissionMessage(event.getUser(), event.getGuild());
+                    }
+                    event.getGuild().getPublicChannel().sendMessage("Oi " + event.getUser().getAsMention() + " your still in spammers! Don't try to evade punishments");
 
                 }
             }
