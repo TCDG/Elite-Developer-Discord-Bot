@@ -56,6 +56,15 @@ public class AdminCommand implements ICommand {
                 }else {
                     event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Use '!dev playing <title>'"));
                 }
+            }else if (args[0].equalsIgnoreCase("joindate")) {
+                if (args.length == 2){
+                    String userId = args[1];
+                    User user = event.getJDA().getUserById(userId);
+                    String date = event.getGuild().getJoinDateForUser(user).toString();
+                    event.getTextChannel().sendMessage(user.getAsMention() + " has joined the server on " + date);
+                }else {
+                    event.getTextChannel().sendMessage(event.getAuthor().getAsMention() + " use '!dev admin joindate <userid>'");
+                }
             }
         } else {
             MessageUtils.sendNoPermissionMessage(event);

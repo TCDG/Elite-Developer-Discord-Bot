@@ -6,7 +6,9 @@ import com.xelitexirish.elitedeveloperbot.listeners.SpellCheckerListener;
 import com.xelitexirish.elitedeveloperbot.utils.*;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
+import net.dv8tion.jda.OnlineStatus;
 import net.dv8tion.jda.entities.Guild;
+import net.dv8tion.jda.entities.User;
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -51,7 +53,7 @@ public class Main {
 
         SpellCheckerListener.init();
         registerCommands();
-        UserPrivs.setupUsers(jda);
+        UserPrivs.setupUsers();
         //WarningHandler.setup();
     }
 
@@ -75,5 +77,12 @@ public class Main {
                 commands.get(cmd.invoke).executed(safe, cmd.event);
             }
         }
+    }
+
+    public static boolean isTT142Offline(){
+        if(jda.getUserById(Constants.BOT_TT142_ID).getOnlineStatus() == OnlineStatus.ONLINE){
+            return true;
+        }
+        return false;
     }
 }
