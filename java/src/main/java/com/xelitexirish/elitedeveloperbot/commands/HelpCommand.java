@@ -58,7 +58,7 @@ public class HelpCommand implements ICommand {
             ICommand command = (ICommand) pair.getValue();
             stringBuilder.append(command.getTag() + ",  Just add " + Constants.COMMAND_PREFIX + " before the command!");
         }
-        stringBuilder.append("\n\nThe bot prefix is: " + Constants.COMMAND_PREFIX + "\n");
+        stringBuilder.append("\nThe bot prefix is: " + Constants.COMMAND_PREFIX + "\n");
         stringBuilder.append("The current bot version is: " + Constants.CURRENT_VERSION + "\n");
         event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(stringBuilder.toString()));
     }

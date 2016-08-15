@@ -40,9 +40,9 @@ public class MessageUtils {
 
     public static void sendMessageToStaffDebugChat(JDA jda, String message) {
         for (Guild guild : jda.getGuilds()) {
-            if (guild.getId().equals(Constants.SUPPORT_DISCORD_ID)) {
+            if (guild.getId().equals(Constants.SCAMMER_SUB_LOUNGE_ID)) {
                 for (TextChannel channel : guild.getTextChannels()) {
-                    if (channel.getId().equals(Constants.STAFF_DEBUG_CHANNEL_ID)) {
+                    if (channel.getId().equals(Constants.STAFF_LOG_CHANNEL_ID)) {
                         channel.sendMessage(message);
                     }
                 }

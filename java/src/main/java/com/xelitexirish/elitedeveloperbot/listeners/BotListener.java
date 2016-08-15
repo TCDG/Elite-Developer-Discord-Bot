@@ -13,6 +13,7 @@ import net.dv8tion.jda.events.guild.member.GuildMemberUnbanEvent;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.events.user.UserNameUpdateEvent;
+import net.dv8tion.jda.events.voice.VoiceServerMuteEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
 
 public class BotListener extends ListenerAdapter {
@@ -93,10 +94,18 @@ public class BotListener extends ListenerAdapter {
             String message = event.getMessage().getContent();
 
             for(Guild guild : event.getJDA().getGuilds()){
-                if(guild.getId().equals(Constants.SUPPORT_DISCORD_ID)){
+                if(guild.getId().equals(Constants.SCAMMER_SUB_LOUNGE_ID)){
                     guild.getPublicChannel().sendMessage(message);
                 }
             }
         }
+    }
+
+    @Override
+    public void onVoiceServerMute(VoiceServerMuteEvent event) {
+        String logMessage = "User " + event.getUser().getAsMention() + " has been server muted. Status: " + event.getVoiceStatus();
+
+        BotLogger.log("Player Muted", logMessage);
+        MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
     }
 }

@@ -2,6 +2,11 @@ package com.xelitexirish.elitedeveloperbot;
 
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.JsonReader;
+import jdk.nashorn.internal.scripts.JD;
+import net.dv8tion.jda.JDA;
+import net.dv8tion.jda.Permission;
+import net.dv8tion.jda.entities.Guild;
+import net.dv8tion.jda.entities.Role;
 import net.dv8tion.jda.entities.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,8 +18,8 @@ public class UserPrivs {
 
     private static ArrayList<User> adminUsers = new ArrayList<>();
 
-    public static void setupUsers(){
-        addDefaultUsers();
+    public static void setupUsers(JDA jda){
+        addDefaultUsers(jda);
     }
 
     public static void addUserToAdmin(User user){
@@ -25,7 +30,7 @@ public class UserPrivs {
         return adminUsers.contains(user);
     }
 
-    public static void addDefaultUsers(){
+    public static void addDefaultUsers(JDA jda){
 
         try {
             JSONObject jsonObject = JsonReader.readJsonFromUrl(Constants.ADMIN_USERS_URL);
@@ -43,6 +48,18 @@ public class UserPrivs {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        for (Guild guild : jda.getGuilds()){
+            if(guild.getId().equals(Constants.SCAMMER_SUB_LOUNGE_ID)){
+                for (User user : guild.getUsers()){
+                    for (Role role : guild.getRolesForUser(user)){
+                        if(role.hasPermission(Permission.MANAGE_ROLES)){
+                            addUserToAdmin(user);
+                        }
+                    }
+                }
+            }
         }
     }
 }

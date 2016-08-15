@@ -14,10 +14,10 @@ public class SpellCheckerCommand implements ICommand{
     public void action(String[] args, MessageReceivedEvent event) {
 
         if(args.length == 1){
-            if(args[0].equalsIgnoreCase("block")){
+            if(args[0].equalsIgnoreCase("false")){
                 SpellCheckerListener.blockUser(event.getAuthor());
 
-            }else if (args[0].equalsIgnoreCase("unblock")){
+            }else if (args[0].equalsIgnoreCase("true")){
                 SpellCheckerListener.unblockUser(event.getAuthor());
             }
         }

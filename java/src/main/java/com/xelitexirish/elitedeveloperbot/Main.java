@@ -44,13 +44,14 @@ public class Main {
         try {
             jda = new JDABuilder().setBotToken(DISCORD_TOKEN).setAudioEnabled(false).addListener(new BotListener()).buildBlocking();
             jda.setAutoReconnect(true);
+            jda.getAccountManager().setGame("Use '" + Constants.COMMAND_PREFIX + " help' to view the bot information!");
         }catch (Exception e){
             e.printStackTrace();
         }
 
         SpellCheckerListener.init();
         registerCommands();
-        UserPrivs.setupUsers();
+        UserPrivs.setupUsers(jda);
         //WarningHandler.setup();
     }
 
