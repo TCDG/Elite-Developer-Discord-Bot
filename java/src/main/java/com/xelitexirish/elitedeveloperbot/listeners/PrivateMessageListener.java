@@ -1,5 +1,6 @@
 package com.xelitexirish.elitedeveloperbot.listeners;
 
+import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.UserPrivs;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
@@ -43,7 +44,7 @@ public class PrivateMessageListener {
                 }
                 event.getAuthor().getPrivateChannel().sendMessage("Thank you for submitting your report.  Staff will get back to you shortly");
             } else {
-                if (!event.getAuthor().isBot()) {
+                if (!event.getAuthor().getId().equals(Main.jda.getSelfInfo().getId())) {
                     BotLogger.messageLog("PM", message);
                 }
             }

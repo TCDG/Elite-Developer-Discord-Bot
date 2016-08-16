@@ -1,14 +1,18 @@
 package com.xelitexirish.elitedeveloperbot.commands;
 
+import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.UserPrivs;
 import com.xelitexirish.elitedeveloperbot.listeners.SpellCheckerListener;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.entities.Guild;
+import net.dv8tion.jda.entities.Message;
+import net.dv8tion.jda.entities.MessageChannel;
 import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class AdminCommand implements ICommand {
 
@@ -70,6 +74,31 @@ public class AdminCommand implements ICommand {
                         event.getTextChannel().sendMessage(event.getAuthor().getAsMention() + " the username ``" + user.getUsername() + "`` has the id: " + userId);
                     } else {
                         event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Use '!dev admin username <user id>'"));
+                    }
+                } else if (args[0].equalsIgnoreCase("clear")) {
+                    MessageChannel messageChannel = event.getChannel();
+                    int clearedMessages = 0;
+
+                    if (args.length == 2) {
+                        int clearMessages = Integer.parseInt(args[1]);
+                        List<Message> recentMessages = messageChannel.getHistory().retrieve(clearMessages);
+
+                        for (Message message : recentMessages) {
+                            if (message.getAuthor().getId().equals(Main.jda.getSelfInfo().getId())) {
+                                message.deleteMessage();
+                                clearedMessages++;
+                            }
+                        }
+                    } else {
+                        List<Message> recentMessages = messageChannel.getHistory().retrieve(10);
+
+                        for (Message message : recentMessages) {
+                            if (message.getAuthor().getId().equals(Main.jda.getSelfInfo().getId())) {
+                                message.deleteMessage();
+                                clearedMessages++;
+                            }
+                        }
+                        event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Cleared " + clearedMessages + " messages from chat."));
                     }
                 }
             } else {
