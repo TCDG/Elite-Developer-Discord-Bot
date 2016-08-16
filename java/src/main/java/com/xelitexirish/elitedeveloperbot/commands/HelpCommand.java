@@ -51,12 +51,13 @@ public class HelpCommand implements ICommand {
 
     public static void sendGeneralHelpMessage(MessageReceivedEvent event) {
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Hey im Elite Developer Bot, my master is XeliteXirish!\n");
         stringBuilder.append("You can use the following commands with this bot: ");
         Iterator entries = Main.commands.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry pair = (Map.Entry) entries.next();
             ICommand command = (ICommand) pair.getValue();
-            stringBuilder.append(command.getTag() + ",  Just add " + Constants.COMMAND_PREFIX + " before the command!");
+            stringBuilder.append(command.getTag() + ", ");
         }
         stringBuilder.append("\nThe bot prefix is: " + Constants.COMMAND_PREFIX + "\n");
         stringBuilder.append("The current bot version is: " + Constants.CURRENT_VERSION + "\n");

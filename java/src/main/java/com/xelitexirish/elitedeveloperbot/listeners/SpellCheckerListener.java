@@ -1,5 +1,6 @@
 package com.xelitexirish.elitedeveloperbot.listeners;
 
+import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.JsonReader;
 import net.dv8tion.jda.entities.User;
@@ -70,6 +71,7 @@ public class SpellCheckerListener {
             String blockMessage = "\n You can blacklist yourself from these messages by entering '" + Constants.COMMAND_PREFIX + " correction false' in chat";
 
             user.getPrivateChannel().sendMessage(message + blockMessage);
+            BotLogger.messageLog("spelling", user.getUsername() + " has said " + baseWord);
         } catch (Exception e) {
 
         }

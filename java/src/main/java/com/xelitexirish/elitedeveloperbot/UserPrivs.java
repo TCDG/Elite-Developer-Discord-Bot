@@ -2,7 +2,6 @@ package com.xelitexirish.elitedeveloperbot;
 
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.JsonReader;
-import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.Permission;
 import net.dv8tion.jda.entities.Role;
 import net.dv8tion.jda.entities.User;
@@ -20,22 +19,20 @@ public class UserPrivs {
         addDefaultUsers();
     }
 
-    public static void addUserToAdmin(User user) {
-        adminUsers.add(user);
-    }
-
     public static boolean isUserAdmin(User user) {
         if (adminUsers.contains(user)) {
             return true;
-        }else {
-           hasPermission(user, Permission.MANAGE_SERVER);
+        } else {
+            hasPermission(user, Permission.MANAGE_SERVER);
         }
         return false;
     }
 
     public static boolean isUserStaff(User user) {
         for (Role role : user.getJDA().getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getRolesForUser(user)) {
-            return role.getName().equalsIgnoreCase("staff");
+            if(role.getId().equalsIgnoreCase(Constants.ROLE_STAFF_ID)) {
+                return true;
+            }
         }
         return false;
     }
@@ -60,10 +57,20 @@ public class UserPrivs {
         }
     }
 
-    public static boolean hasPermission(User user, Permission permission){
+    public static boolean hasPermission(User user, Permission permission) {
         for (Role role : user.getJDA().getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getRolesForUser(user)) {
             return role.hasPermission(permission);
         }
         return false;
+    }
+
+    public static ArrayList<User> getAllStaff() {
+        ArrayList<User> allStaff = new ArrayList<>();
+        for (User user : Main.jda.getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getUsers()) {
+            if (isUserStaff(user)) {
+                allStaff.add(user);
+            }
+        }
+        return allStaff;
     }
 }

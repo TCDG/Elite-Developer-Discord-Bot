@@ -35,6 +35,6 @@ public class SpellCheckerCommand implements ICommand{
 
     @Override
     public String getTag() {
-        return null;
+        return "correction";
     }
 }
