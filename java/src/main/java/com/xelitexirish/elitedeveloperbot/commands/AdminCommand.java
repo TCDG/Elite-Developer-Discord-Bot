@@ -12,6 +12,8 @@ import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class AdminCommand implements ICommand {
@@ -78,6 +80,7 @@ public class AdminCommand implements ICommand {
                 } else if (args[0].equalsIgnoreCase("clear")) {
                     MessageChannel messageChannel = event.getChannel();
                     int clearedMessages = 0;
+                    Collection<Message> messageCollection = new ArrayList<>();
 
                     if (args.length == 2) {
                         int clearMessages = Integer.parseInt(args[1]);
@@ -85,10 +88,11 @@ public class AdminCommand implements ICommand {
 
                         for (Message message : recentMessages) {
                             if (message.getAuthor().getId().equals(Main.jda.getSelfInfo().getId())) {
-                                message.deleteMessage();
+                                messageCollection.add(message);
                                 clearedMessages++;
                             }
                         }
+                        event.getTextChannel().deleteMessages(messageCollection);
                     } else {
                         List<Message> recentMessages = messageChannel.getHistory().retrieve(10);
 
@@ -98,8 +102,8 @@ public class AdminCommand implements ICommand {
                                 clearedMessages++;
                             }
                         }
-                        event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Cleared " + clearedMessages + " messages from chat."));
                     }
+                    event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Cleared " + clearedMessages + " messages from chat."));
                 }
             } else {
                 event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(helpMessage));

@@ -22,6 +22,7 @@ public class Main {
     public static String DISCORD_TOKEN;
     public static boolean enableAutoMessages = true;
     public static boolean enableSpellChecker = true;
+    public static boolean enableTimerMessages = true;
 
     // https://discordapp.com/oauth2/authorize?client_id=207593082328186880&scope=bot&permissions=0
 
@@ -54,6 +55,7 @@ public class Main {
         SpellCheckerListener.init();
         registerCommands();
         UserPrivs.setupUsers();
+        //MessageTimer.init();
         //WarningHandler.setup();
     }
 

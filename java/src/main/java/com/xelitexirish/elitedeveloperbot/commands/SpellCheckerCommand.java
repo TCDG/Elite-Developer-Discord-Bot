@@ -15,10 +15,10 @@ public class SpellCheckerCommand implements ICommand{
 
         if(args.length == 1){
             if(args[0].equalsIgnoreCase("false")){
-                SpellCheckerListener.blockUser(event.getAuthor());
+                SpellCheckerListener.blockUser(event.getGuild(), event.getAuthor());
 
             }else if (args[0].equalsIgnoreCase("true")){
-                SpellCheckerListener.unblockUser(event.getAuthor());
+                SpellCheckerListener.unblockUser(event.getGuild(), event.getAuthor());
             }
         }
     }

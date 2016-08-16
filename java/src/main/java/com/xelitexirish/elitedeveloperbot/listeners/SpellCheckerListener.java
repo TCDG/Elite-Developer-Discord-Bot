@@ -1,8 +1,11 @@
 package com.xelitexirish.elitedeveloperbot.listeners;
 
+import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.JsonReader;
+import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
+import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import org.json.JSONArray;
@@ -68,7 +71,7 @@ public class SpellCheckerListener {
     private static void notifyUser(User user, String baseWord, String dixordWord) {
         try {
             String message = "Oi you spelt " + baseWord + " wrong, it's spelt " + dixordWord;
-            String blockMessage = "\n You can blacklist yourself from these messages by entering '" + Constants.COMMAND_PREFIX + " correction false' in chat";
+            String blockMessage = "\n You can blacklist yourself from these messages by entering '" + Constants.COMMAND_PREFIX + "correction false' in chat";
 
             user.getPrivateChannel().sendMessage(message + blockMessage);
             BotLogger.messageLog("spelling", user.getUsername() + " has said " + baseWord);
@@ -84,24 +87,25 @@ public class SpellCheckerListener {
         loadBlackListData();
     }
 
-    public static void blockUser(User user) {
+    public static void blockUser(Guild guild, User user) {
         String userId = user.getId();
 
         blackListUsers.clear();
         loadBlackListData();
 
         if (blackListUsers.contains(userId)) {
-            user.getPrivateChannel().sendMessage("You are already blacklisted to receive spell check messages.  Use '" + Constants.COMMAND_PREFIX + " correction true' tp unblock yourself");
+            user.getPrivateChannel().sendMessage("You are already blacklisted to receive spell check messages.  Use '" + Constants.COMMAND_PREFIX + "correction true' tp unblock yourself");
 
         } else {
             blackListUsers.add(userId);
-            user.getPrivateChannel().sendMessage("You are now on the bot blacklist. Use '" + Constants.COMMAND_PREFIX + " correction false' to unblock yourself.");
+            user.getPrivateChannel().sendMessage("You are now on the bot blacklist. Use '" + Constants.COMMAND_PREFIX + "correction false' to unblock yourself.");
+            guild.getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("User setting updated"));
         }
 
         writeBlacklist();
     }
 
-    public static void unblockUser(User user) {
+    public static void unblockUser(Guild guild, User user) {
         String userId = user.getId();
 
         blackListUsers.clear();
@@ -109,10 +113,11 @@ public class SpellCheckerListener {
 
         if (blackListUsers.contains(userId)) {
             blackListUsers.remove(userId);
-            user.getPrivateChannel().sendMessage("You are now removed from the bot blacklist. Use '" + Constants.COMMAND_PREFIX + " correction false' to block yourself.");
+            user.getPrivateChannel().sendMessage("You are now removed from the bot blacklist. Use '" + Constants.COMMAND_PREFIX + "correction false' to block yourself.");
+            guild.getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("User setting updated"));
 
         } else {
-            user.getPrivateChannel().sendMessage("You are currently not on the blacklist. Use '" + Constants.COMMAND_PREFIX + " correction false' to block yourself.");
+            user.getPrivateChannel().sendMessage("You are currently not on the blacklist. Use '" + Constants.COMMAND_PREFIX + "correction false' to block yourself.");
         }
         writeBlacklist();
     }
