@@ -14,6 +14,8 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+.idea/
+userblacklist.json
 
 # Eclipse Core
 .project
@@ -203,3 +205,4 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+*.iml
