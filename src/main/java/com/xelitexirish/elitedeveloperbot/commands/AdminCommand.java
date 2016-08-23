@@ -26,6 +26,7 @@ public class AdminCommand implements ICommand {
     private static String[] adminCommandsHelp = {"Reloads the data from the online git sources",
             "Sets the bot 'playing' message",
             "View the joindate of a specific user",
+            "View the specific username associated with a user id",
             "Clears recent bot messages",
             "Send a twitter to the Scammer Sub Lounge twitter account"};
 
@@ -74,8 +75,7 @@ public class AdminCommand implements ICommand {
 
                 } else if (args[0].equalsIgnoreCase("joindate")) {
                     if (args.length == 2) {
-                        String userId = args[1];
-                        User user = event.getJDA().getUserById(userId);
+                        User user = event.getMessage().getMentionedUsers().get(0);
                         LocalDate date = event.getGuild().getJoinDateForUser(user).toLocalDate();
                         event.getTextChannel().sendMessage(user.getAsMention() + " has joined the server on " + date);
                     } else {
@@ -131,6 +131,8 @@ public class AdminCommand implements ICommand {
                         }
                         TwitterHandler.sendTweet(event.getAuthor(), event.getTextChannel(), builder.toString());
                     }
+                }else {
+                    sendAdminHelpMessage(event);
                 }
             }
         } else {
@@ -155,11 +157,11 @@ public class AdminCommand implements ICommand {
 
     private static void sendAdminHelpMessage(MessageReceivedEvent event) {
         StringBuilder builder = new StringBuilder();
-        builder.append("The following admin commands can be used by the bot: \n");
+        builder.append("The following admin commands can be used by the bot: \n\n");
         for (int x = 0; x < adminCommands.length; x++) {
             builder.append(adminCommands[x] + ": " + adminCommandsHelp[x] + "\n");
         }
-        builder.append("\nTo use an admin command do '" + Constants.COMMAND_PREFIX + " admin <sub_command>'");
+        builder.append("\nTo use an admin command do '" + Constants.COMMAND_PREFIX + "admin <sub_command>'");
         event.getTextChannel().sendMessage(event.getAuthor().getAsMention() + "\n" + MessageUtils.wrapStringInCodeBlock(builder.toString()));
     }
 }
