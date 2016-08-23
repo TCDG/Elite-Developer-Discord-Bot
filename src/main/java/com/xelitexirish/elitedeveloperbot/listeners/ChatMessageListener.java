@@ -31,7 +31,7 @@ public class ChatMessageListener {
 
     public static void onGuildMemberJoin(GuildMemberJoinEvent event) {
 
-        String welcomeMessage = "Welcome " + event.getUser().getAsMention() + " make sure you read the rules!  If have a new account you wont be able to speak for 5 minutes!";
+        String welcomeMessage = "Welcome " + event.getUser().getAsMention() + " make sure you read the #guidlines!  If you have a new account you wont be able to speak for 5 minutes!";
         event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
 
         String logMessage = "Player " + event.getUser().getUsername() + " has joined server " + event.getGuild().getName();
@@ -71,16 +71,30 @@ public class ChatMessageListener {
     }
 
     public static void onVoiceServerMute(VoiceServerMuteEvent event) {
-        String logMessage = "User " + event.getUser().getAsMention() + " has been server muted.";
+        if(event.getVoiceStatus().isServerMuted()) {
+            String logMessage = "User " + event.getUser().getAsMention() + " has been server muted.";
 
-        BotLogger.log("Player Muted", logMessage);
-        MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
+            BotLogger.log("Player Muted", logMessage);
+            MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
+        }else {
+            String logMessage = "User " + event.getUser().getUsername() + " has been un-muted";
+
+            BotLogger.log("Player Un-Muted", logMessage);
+            MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
+        }
     }
 
     public static void onVoiceServerDeaf(VoiceServerDeafEvent event) {
-        String logMessage = "User " + event.getUser().getAsMention() + " has been server deafened";
+        if(event.getVoiceStatus().isServerDeaf()) {
+            String logMessage = "User " + event.getUser().getAsMention() + " has been server deafened";
 
-        BotLogger.log("Player Deafen", logMessage);
-        MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
+            BotLogger.log("Player Deafen", logMessage);
+            MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
+        }else {
+            String logMessage = "User " + event.getUser().getAsMention() + " has been server un-deafened";
+
+            BotLogger.log("Player Un-Deafen", logMessage);
+            MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
+        }
     }
 }

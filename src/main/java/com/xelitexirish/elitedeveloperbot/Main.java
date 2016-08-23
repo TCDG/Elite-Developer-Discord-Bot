@@ -1,6 +1,7 @@
 package com.xelitexirish.elitedeveloperbot;
 
 import com.xelitexirish.elitedeveloperbot.commands.*;
+import com.xelitexirish.elitedeveloperbot.handlers.TwitterHandler;
 import com.xelitexirish.elitedeveloperbot.listeners.BotListener;
 import com.xelitexirish.elitedeveloperbot.listeners.SpellCheckerListener;
 import com.xelitexirish.elitedeveloperbot.utils.*;
@@ -23,6 +24,10 @@ public class Main {
     public static boolean enableAutoMessages = true;
     public static boolean enableSpellChecker = true;
     public static boolean enableTimerMessages = true;
+    private static String CONSUMER_KEY;
+    private static String CONSUMER_SECRET;
+    private static String ACCESS_TOKEN;
+    private static String ACCESS_TOKEN_SECRET;
 
     // https://discordapp.com/oauth2/authorize?client_id=207593082328186880&scope=bot&permissions=0
 
@@ -33,10 +38,20 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        if(args.length >= 3){
+        if(args.length >= 7) {
             DISCORD_TOKEN = args[0];
             enableAutoMessages = Boolean.parseBoolean(args[1]);
-            enableAutoMessages = Boolean.parseBoolean(args[2]);
+            enableSpellChecker = Boolean.parseBoolean(args[2]);
+            CONSUMER_KEY = args[3];
+            CONSUMER_SECRET = args[4];
+            ACCESS_TOKEN = args[5];
+            ACCESS_TOKEN_SECRET = args[6];
+
+        }else if (args.length == 3){
+            DISCORD_TOKEN = args[0];
+            enableAutoMessages = Boolean.parseBoolean(args[1]);
+            enableSpellChecker = Boolean.parseBoolean(args[2]);
+
         }else{
             System.out.println("Please enter a valid Discord Token!");
             return;
@@ -55,6 +70,7 @@ public class Main {
         SpellCheckerListener.init();
         registerCommands();
         UserPrivs.setupUsers();
+        TwitterHandler.init(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
         //MessageTimer.init();
         //WarningHandler.setup();
     }

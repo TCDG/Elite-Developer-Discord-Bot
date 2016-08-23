@@ -1,8 +1,6 @@
 package com.xelitexirish.elitedeveloperbot.listeners;
 
-import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
-import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.events.guild.member.*;
@@ -47,7 +45,7 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberUnban(GuildMemberUnbanEvent event) {
-       ChatMessageListener.onMemberUnban(event);
+        ChatMessageListener.onMemberUnban(event);
     }
 
     @Override

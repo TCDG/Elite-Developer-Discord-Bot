@@ -33,9 +33,9 @@ public class MessageUtils {
         return messageBuilder.build();
     }
 
-    public static void sendNoPermissionMessage(User author, Guild guild) {
+    public static void sendNoPermissionMessage(User author, TextChannel channel) {
         String message = "Sorry but you don't have the required permission to use this command.";
-        guild.getPublicChannel().sendMessage(appendSenderUsername(author, wrapStringInCodeBlock(message)));
+        channel.sendMessage(appendSenderUsername(author, wrapStringInCodeBlock(message)));
     }
 
     public static void sendMessageToStaffDebugChat(JDA jda, String message) {

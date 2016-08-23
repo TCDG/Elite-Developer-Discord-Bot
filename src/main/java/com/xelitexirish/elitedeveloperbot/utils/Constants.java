@@ -18,7 +18,7 @@ public class Constants {
     public static final String ROLE_STAFF_ID = "212696479893028865";
     public static final String ROLE_MUTED_ID = "205409757714972672";
 
-    public static final String PROJECTS_LIST_URL = "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/java/src/main/resources/data/project_list.json";
-    public static final String ADMIN_USERS_URL = "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/java/src/main/resources/data/admin_users.json";
-    public static final String DIXCORD_WORDS_URL = "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/java/src/main/resources/data/dixord_words.json";
+    public static final String PROJECTS_LIST_URL = "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/src/main/resources/data/project_list.json";
+    public static final String ADMIN_USERS_URL = "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/src/main/resources/data/admin_users.json";
+    public static final String DIXCORD_WORDS_URL = "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/src/main/resources/data/dixord_words.json";
 }

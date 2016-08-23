@@ -26,8 +26,6 @@ public class SpammerHelper {
                     if(UserPrivs.hasPermission(event.getUser(), Permission.MANAGE_ROLES)) {
                         event.getGuild().getManager().addRoleToUser(event.getUser(), role);
                         event.getGuild().getManager().update();
-                    }else{
-                        MessageUtils.sendNoPermissionMessage(event.getUser(), event.getGuild());
                     }
                     event.getGuild().getPublicChannel().sendMessage("Oi " + event.getUser().getAsMention() + " your still in spammers! Don't try to evade punishments");
 
