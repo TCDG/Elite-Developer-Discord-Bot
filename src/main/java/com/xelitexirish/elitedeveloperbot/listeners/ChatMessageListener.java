@@ -32,7 +32,7 @@ public class ChatMessageListener {
 
     public static void onGuildMemberJoin(GuildMemberJoinEvent event) {
 
-        String welcomeMessage = "Welcome " + event.getUser().getAsMention() + " make sure you read the #guidlines!  If you have a new account you wont be able to speak for 5 minutes!";
+        String welcomeMessage = "Welcome " + event.getUser().getAsMention() + " make sure you read the #guidelines!  If you have a new account you wont be able to speak for 5 minutes!";
         event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
 
         String logMessage = "Player " + event.getUser().getUsername() + " has joined server " + event.getGuild().getName();
