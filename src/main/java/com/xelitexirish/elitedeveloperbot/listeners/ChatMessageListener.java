@@ -33,7 +33,10 @@ public class ChatMessageListener {
     public static void onGuildMemberJoin(GuildMemberJoinEvent event) {
 
         String welcomeMessage = "Welcome " + event.getUser().getAsMention() + " make sure you read the #guidelines!  If you have a new account you wont be able to speak for 5 minutes!";
-        event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
+        if(Main.enableAutoMessages) {
+            event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
+        }
+
 
         String logMessage = "Player " + event.getUser().getUsername() + " has joined server " + event.getGuild().getName();
         BotLogger.log("Player Join", logMessage);
@@ -52,7 +55,9 @@ public class ChatMessageListener {
     public static void onMemberBan(GuildMemberBanEvent event) {
 
         String banMessage = "The ban hammer has spoken! Goodbye " + event.getUser().getUsername();
-        event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(banMessage));
+        if(Main.enableAutoMessages) {
+            event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(banMessage));
+        }
 
         String logMessage = "User has been banned: " + event.getUser().getUsername() + " on server " + event.getGuild().getName();
         BotLogger.log("Player Ban", logMessage);
@@ -67,7 +72,9 @@ public class ChatMessageListener {
     public static void onMemberUnban(GuildMemberUnbanEvent event) {
 
         String unbanMessage = "The ban hammer has been lifted on " + event.getUser().getUsername();
-        event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(unbanMessage));
+        if(Main.enableAutoMessages) {
+            event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(unbanMessage));
+        }
 
         String logMessage = "User has been unbanned: " + event.getUser().getUsername() + " on server " + event.getGuild().getName();
         BotLogger.log("Player Unban", logMessage);

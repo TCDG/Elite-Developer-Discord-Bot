@@ -24,6 +24,7 @@ public class Main {
     public static boolean enableAutoMessages = true;
     public static boolean enableSpellChecker = true;
     public static boolean enableTimerMessages = true;
+    public static boolean enableUsernameChecker = true;
     private static String CONSUMER_KEY;
     private static String CONSUMER_SECRET;
     private static String ACCESS_TOKEN;
@@ -38,14 +39,15 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        if(args.length >= 7) {
+        if(args.length >= 8) {
             DISCORD_TOKEN = args[0];
             enableAutoMessages = Boolean.parseBoolean(args[1]);
             enableSpellChecker = Boolean.parseBoolean(args[2]);
-            CONSUMER_KEY = args[3];
-            CONSUMER_SECRET = args[4];
-            ACCESS_TOKEN = args[5];
-            ACCESS_TOKEN_SECRET = args[6];
+            enableUsernameChecker = Boolean.parseBoolean(args[3]);
+            CONSUMER_KEY = args[4];
+            CONSUMER_SECRET = args[5];
+            ACCESS_TOKEN = args[6];
+            ACCESS_TOKEN_SECRET = args[7];
 
         }else if (args.length == 3){
             DISCORD_TOKEN = args[0];
@@ -62,7 +64,7 @@ public class Main {
         try {
             jda = new JDABuilder().setBotToken(DISCORD_TOKEN).setAudioEnabled(false).addListener(new BotListener()).buildBlocking();
             jda.setAutoReconnect(true);
-            jda.getAccountManager().setGame("Use '" + Constants.COMMAND_PREFIX + " help' to view the bot information!");
+            jda.getAccountManager().setGame("Use '" + Constants.COMMAND_PREFIX + "help' to view the bot information!");
         }catch (Exception e){
             e.printStackTrace();
         }

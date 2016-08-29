@@ -22,13 +22,14 @@ import java.util.List;
 
 public class AdminCommand implements ICommand {
 
-    private static String[] adminCommands = {"reload", "playing", "joindate", "username", "clear", "tweet"};
+    private static String[] adminCommands = {"reload", "playing", "joindate", "username", "clear", "tweet", "messages"};
     private static String[] adminCommandsHelp = {"Reloads the data from the online git sources",
             "Sets the bot 'playing' message",
             "View the joindate of a specific user",
             "View the specific username associated with a user id",
             "Clears recent bot messages",
-            "Send a twitter to the Scammer Sub Lounge twitter account"};
+            "Send a twitter to the Scammer Sub Lounge twitter account",
+            "Toggle bot messages in mainchat, will still appear in logs."};
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
@@ -107,6 +108,10 @@ public class AdminCommand implements ICommand {
                                 messageCollection.add(message);
                                 clearedMessages++;
                             }
+                            if(message.getContent().startsWith(Constants.COMMAND_PREFIX)){
+                                message.deleteMessage();
+                                clearedMessages++;
+                            }
                         }
                         event.getTextChannel().deleteMessages(messageCollection);
                     } else {
@@ -117,20 +122,35 @@ public class AdminCommand implements ICommand {
                                 message.deleteMessage();
                                 clearedMessages++;
                             }
+                            if(message.getContent().startsWith(Constants.COMMAND_PREFIX)){
+                                message.deleteMessage();
+                                clearedMessages++;
+                            }
                         }
                     }
                     event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Cleared " + clearedMessages + " messages from chat."));
-                }else if (args[0].equalsIgnoreCase("tweet")){
-                    if(args.length == 2){
+
+                }else if (args[0].equalsIgnoreCase("tweet")) {
+                    if (args.length == 2) {
                         event.getTextChannel().sendMessage(help());
-                    }else {
+                    } else {
                         StringBuilder builder = new StringBuilder();
 
-                        for(int x = 0; x < args.length; x++){
+                        for (int x = 0; x < args.length; x++) {
                             builder.append(args[x] + " ");
                         }
                         TwitterHandler.sendTweet(event.getAuthor(), event.getTextChannel(), builder.toString());
                     }
+
+                }else if (args[0].equalsIgnoreCase("messages")){
+                    if(Main.enableAutoMessages){
+                        Main.enableAutoMessages = false;
+                    }else {
+                        Main.enableAutoMessages = true;
+                    }
+                    event.getAuthor().getPrivateChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Setting updated, currently: " + Main.enableAutoMessages));
+                    BotLogger.log("Display Message", event.getAuthor().getUsername() + " has updated the setting to: " + Main.enableAutoMessages);
+
                 }else {
                     sendAdminHelpMessage(event);
                 }
