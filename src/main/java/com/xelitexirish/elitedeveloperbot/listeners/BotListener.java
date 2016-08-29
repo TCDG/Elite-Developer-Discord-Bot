@@ -1,5 +1,6 @@
 package com.xelitexirish.elitedeveloperbot.listeners;
 
+import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.events.guild.GuildJoinEvent;
@@ -32,11 +33,19 @@ public class BotListener extends ListenerAdapter {
         ChatMessageListener.onGuildMemberJoin(event);
 
         SpammerHelper.onUserJoin(event);
+
+        if(Main.enableUsernameChecker){
+            BadUsernameListener.onUserJoin(event);
+        }
     }
 
     @Override
     public void onUserNameUpdate(UserNameUpdateEvent event) {
         ChatMessageListener.onUsernameUpdate(event);
+
+        if(Main.enableUsernameChecker){
+            BadUsernameListener.onUsernameChange(event);
+        }
     }
 
     @Override

@@ -14,6 +14,7 @@ public class Constants {
     public static final String BOT_TT142_ID = "207528679931248640";
 
     public static final String STAFF_LOG_CHANNEL_ID = "213094602700226562";
+    public static final String STAFF_CHAT_CHANNEL_ID = "196759924284456971";
 
     public static final String ROLE_STAFF_ID = "212696479893028865";
     public static final String ROLE_MUTED_ID = "205409757714972672";

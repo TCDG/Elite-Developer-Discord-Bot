@@ -148,7 +148,8 @@ public class AdminCommand implements ICommand {
                     }else {
                         Main.enableAutoMessages = true;
                     }
-                    event.getAuthor().getPrivateChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Setting updated, currently: " + Main.enableAutoMessages));
+
+                    MessageUtils.sendMessageToStaffChat(event.getJDA(), MessageUtils.wrapStringInCodeBlock("Setting updated, currently: " + Main.enableAutoMessages));
                     BotLogger.log("Display Message", event.getAuthor().getUsername() + " has updated the setting to: " + Main.enableAutoMessages);
 
                 }else {

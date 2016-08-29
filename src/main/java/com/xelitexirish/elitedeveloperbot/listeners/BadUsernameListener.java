@@ -1,17 +1,37 @@
 package com.xelitexirish.elitedeveloperbot.listeners;
 
+import com.xelitexirish.elitedeveloperbot.Main;
+import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
+import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.events.user.UserNameUpdateEvent;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Scanner;
 
 public class BadUsernameListener {
 
     private static ArrayList<String> blockedWords = new ArrayList<>();
+    private static File blockedNames = new File("blockedNames.txt");
+
+    public static void init(){
+        fillList();
+
+        if(!blockedNames.exists()){
+            try {
+                blockedNames.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static void onUserJoin(GuildMemberJoinEvent event){
         String username = event.getUser().getUsername();
@@ -21,7 +41,7 @@ public class BadUsernameListener {
             String word = iterator.next();
 
             if(StringUtils.containsIgnoreCase(username, word)){
-                // GO
+                preformAction(event.getUser(), event.getGuild());
             }
         }
     }
@@ -35,12 +55,33 @@ public class BadUsernameListener {
             String word = iterator.next();
 
             if(StringUtils.containsIgnoreCase(username, word)){
-                preformAction(event.getUser(), event.);
+
             }
         }
     }
 
     private static void preformAction(User user, Guild guild){
+        user.getPrivateChannel().sendMessage("Your username was deemed inappropriate by staff, please change it and re-join");
+        guild.getManager().kick(user);
+        guild.getManager().update();
 
+        MessageUtils.sendMessageToStaffChat(Main.jda, user.getUsername() + " had a bad username and has been kicked.");
+        BotLogger.log("Bad Username", user.getUsername() + " had a bad username and has been kicked.");
+    }
+
+    private static void fillList(){
+        if(blockedWords.isEmpty()){
+
+            try {
+                Scanner scanner = new Scanner(blockedNames);
+                while (scanner.hasNextLine()){
+                    blockedWords.add(scanner.nextLine());
+                }
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }

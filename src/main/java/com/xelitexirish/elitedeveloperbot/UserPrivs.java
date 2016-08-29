@@ -23,7 +23,7 @@ public class UserPrivs {
         if (adminUsers.contains(user)) {
             return true;
         } else {
-            hasPermission(user, Permission.MANAGE_SERVER);
+            hasPermission(user, Permission.MANAGE_CHANNEL);
         }
         return false;
     }

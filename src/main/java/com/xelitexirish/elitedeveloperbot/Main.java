@@ -2,6 +2,7 @@ package com.xelitexirish.elitedeveloperbot;
 
 import com.xelitexirish.elitedeveloperbot.commands.*;
 import com.xelitexirish.elitedeveloperbot.handlers.TwitterHandler;
+import com.xelitexirish.elitedeveloperbot.listeners.BadUsernameListener;
 import com.xelitexirish.elitedeveloperbot.listeners.BotListener;
 import com.xelitexirish.elitedeveloperbot.listeners.SpellCheckerListener;
 import com.xelitexirish.elitedeveloperbot.utils.*;
@@ -73,6 +74,7 @@ public class Main {
         registerCommands();
         UserPrivs.setupUsers();
         TwitterHandler.init(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
+        BadUsernameListener.init();
         //MessageTimer.init();
         //WarningHandler.setup();
     }

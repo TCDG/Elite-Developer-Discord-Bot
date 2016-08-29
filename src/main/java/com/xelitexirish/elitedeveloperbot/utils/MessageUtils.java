@@ -49,4 +49,13 @@ public class MessageUtils {
             }
         }
     }
+
+    public static void sendMessageToStaffChat(JDA jda, String message){
+        Guild guild = jda.getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID);
+        for (TextChannel channel : guild.getTextChannels()){
+            if(channel.getId().equals(Constants.STAFF_CHAT_CHANNEL_ID)){
+                channel.sendMessage(message);
+            }
+        }
+    }
 }
