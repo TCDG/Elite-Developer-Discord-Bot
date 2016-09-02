@@ -23,7 +23,20 @@ public class UserPrivs {
         if (adminUsers.contains(user)) {
             return true;
         } else {
-            hasPermission(user, Permission.MANAGE_CHANNEL);
+            for (Role role : user.getJDA().getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getRolesForUser(user)){
+                if (role.getId().equalsIgnoreCase(Constants.ROLE_ADMIN_ID)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isUserMod(User user){
+        for (Role role : user.getJDA().getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getRolesForUser(user)){
+            if (role.getId().equalsIgnoreCase(Constants.ROLE_MOD_ID)){
+                return true;
+            }
         }
         return false;
     }

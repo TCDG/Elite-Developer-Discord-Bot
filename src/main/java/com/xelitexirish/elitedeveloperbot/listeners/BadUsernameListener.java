@@ -21,46 +21,47 @@ public class BadUsernameListener {
     private static ArrayList<String> blockedWords = new ArrayList<>();
     private static File blockedNames = new File("blockedNames.txt");
 
-    public static void init(){
-        fillList();
-
-        if(!blockedNames.exists()){
+    public static void init() {
+        if (!blockedNames.exists()) {
             try {
                 blockedNames.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+
+        fillList();
     }
 
-    public static void onUserJoin(GuildMemberJoinEvent event){
+    public static void onUserJoin(GuildMemberJoinEvent event) {
         String username = event.getUser().getUsername();
 
         Iterator<String> iterator = blockedWords.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             String word = iterator.next();
 
-            if(StringUtils.containsIgnoreCase(username, word)){
+            if (StringUtils.containsIgnoreCase(username, word)) {
                 preformAction(event.getUser(), event.getGuild());
             }
         }
     }
 
-    public static void onUsernameChange(UserNameUpdateEvent event){
+    public static void onUsernameChange(UserNameUpdateEvent event) {
 
         String username = event.getUser().getUsername();
 
         Iterator<String> iterator = blockedWords.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             String word = iterator.next();
 
-            if(StringUtils.containsIgnoreCase(username, word)){
+            if (StringUtils.containsIgnoreCase(username, word)) {
 
             }
         }
     }
 
-    private static void preformAction(User user, Guild guild){
+    private static void preformAction(User user, Guild guild) {
         user.getPrivateChannel().sendMessage("Your username was deemed inappropriate by staff, please change it and re-join");
         guild.getManager().kick(user);
         guild.getManager().update();
@@ -69,12 +70,12 @@ public class BadUsernameListener {
         BotLogger.log("Bad Username", user.getUsername() + " had a bad username and has been kicked.");
     }
 
-    private static void fillList(){
-        if(blockedWords.isEmpty()){
+    private static void fillList() {
+        if (blockedWords.isEmpty()) {
 
             try {
                 Scanner scanner = new Scanner(blockedNames);
-                while (scanner.hasNextLine()){
+                while (scanner.hasNextLine()) {
                     blockedWords.add(scanner.nextLine());
                 }
 

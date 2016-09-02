@@ -1,6 +1,7 @@
 package com.xelitexirish.elitedeveloperbot.listeners;
 
 import com.xelitexirish.elitedeveloperbot.Main;
+import com.xelitexirish.elitedeveloperbot.handlers.DiscordStaffUtils;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
@@ -28,6 +29,7 @@ public class ChatMessageListener {
         } else if (Main.enableSpellChecker) {
             SpellCheckerListener.handleMessage(event);
         }
+        DiscordStaffUtils.handleMessage(event);
     }
 
     public static void onGuildMemberJoin(GuildMemberJoinEvent event) {

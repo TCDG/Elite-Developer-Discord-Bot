@@ -3,6 +3,7 @@ package com.xelitexirish.elitedeveloperbot.utils;
 public class Constants {
 
     public static final String COMMAND_PREFIX = "!dev ";
+    public static final String DISCORD_COMMAND_PREFIX = "/";
 
     public static final double OLD_VERSION = 1;
     public static final double CURRENT_VERSION = 1;
@@ -17,6 +18,8 @@ public class Constants {
     public static final String STAFF_CHAT_CHANNEL_ID = "196759924284456971";
 
     public static final String ROLE_STAFF_ID = "212696479893028865";
+    public static final String ROLE_ADMIN_ID = "220891967477907456";
+    public static final String ROLE_MOD_ID = "194536366061780992";
     public static final String ROLE_MUTED_ID = "205409757714972672";
 
     public static final String PROJECTS_LIST_URL = "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/src/main/resources/data/project_list.json";
