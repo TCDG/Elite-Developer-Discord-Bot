@@ -1,8 +1,6 @@
 <img src="icon.jpg" align="right" />
 # Elite Developer Discord Bot [![Awesome](https://travis-ci.org/TCDG/Elite-Developer-Discord-Bot.svg?branch=master)](https://travis-ci.org/TCDG/Elite-Developer-Discord-Bot)
 
-Scammer Bingo is an Android app created to help exposing phone scammers!
-
 ## Installation
 
 Currently Elite Developer Bot only works on scammer sub lounge, because I was lazy and hardcoded channel IDs.  I will be adding support for other servers in the next couple of weeks.
