@@ -35,12 +35,14 @@ public class ChatMessageListener {
     public static void onGuildMemberJoin(GuildMemberJoinEvent event) {
 
         String welcomeMessage = "Welcome " + event.getUser().getAsMention() + " make sure you read the #guidelines!  If you have a new account you wont be able to speak for 5 minutes!";
+
         if(Main.enableAutoMessages) {
             event.getGuild().getPublicChannel().sendMessage(welcomeMessage);
+        }else {
+            MessageUtils.sendMessageToStaffChat(event.getJDA(), "Welcome messages are off, player ``" + event.getUser().getUsername() + "`` has joined the server");
         }
 
-
-        String logMessage = "Player " + event.getUser().getUsername() + " has joined server " + event.getGuild().getName();
+        String logMessage = "Player ``" + event.getUser().getUsername() + "`` has joined server " + event.getGuild().getName();
         BotLogger.log("Player Join", logMessage);
         if (event.getGuild().getId().equals(Constants.SCAMMER_SUB_LOUNGE_ID)) {
             MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
@@ -48,7 +50,7 @@ public class ChatMessageListener {
     }
 
     public static void onUsernameUpdate(UserNameUpdateEvent event) {
-        String changeNameMessage = "Player " + event.getPreviousUsername() + " is now known as " + event.getUser().getUsername();
+        String changeNameMessage = "Player ``" + event.getPreviousUsername() + "`` is now known as " + event.getUser().getUsername();
         BotLogger.log("Username change", changeNameMessage);
 
         MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), changeNameMessage);
@@ -61,7 +63,7 @@ public class ChatMessageListener {
             event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(banMessage));
         }
 
-        String logMessage = "User has been banned: " + event.getUser().getUsername() + " on server " + event.getGuild().getName();
+        String logMessage = "User has been banned: ``" + event.getUser().getUsername() + "`` on server " + event.getGuild().getName();
         BotLogger.log("Player Ban", logMessage);
 
         if (event.getGuild().getId().equals(Constants.SCAMMER_SUB_LOUNGE_ID)) {
@@ -73,7 +75,7 @@ public class ChatMessageListener {
 
     public static void onMemberUnban(GuildMemberUnbanEvent event) {
 
-        String unbanMessage = "The ban hammer has been lifted on " + event.getUser().getUsername();
+        String unbanMessage = "The ban hammer has been lifted on ``" + event.getUser().getUsername() + "``";
         if(Main.enableAutoMessages) {
             event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(unbanMessage));
         }
@@ -90,12 +92,12 @@ public class ChatMessageListener {
 
     public static void onVoiceServerMute(VoiceServerMuteEvent event) {
         if (event.getVoiceStatus().isServerMuted()) {
-            String logMessage = "User " + event.getUser().getAsMention() + " has been server muted.";
+            String logMessage = "User ``" + event.getUser().getAsMention() + "`` has been server muted.";
 
             BotLogger.log("Player Muted", logMessage);
             MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
         } else {
-            String logMessage = "User " + event.getUser().getUsername() + " has been un-muted";
+            String logMessage = "User ``" + event.getUser().getUsername() + "`` has been un-muted";
 
             BotLogger.log("Player Un-Muted", logMessage);
             MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
@@ -104,12 +106,12 @@ public class ChatMessageListener {
 
     public static void onVoiceServerDeaf(VoiceServerDeafEvent event) {
         if (event.getVoiceStatus().isServerDeaf()) {
-            String logMessage = "User " + event.getUser().getAsMention() + " has been server deafened";
+            String logMessage = "User ``" + event.getUser().getAsMention() + "`` has been server deafened";
 
             BotLogger.log("Player Deafen", logMessage);
             MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
         } else {
-            String logMessage = "User " + event.getUser().getAsMention() + " has been server un-deafened";
+            String logMessage = "User ``" + event.getUser().getAsMention() + "`` has been server un-deafened";
 
             BotLogger.log("Player Un-Deafen", logMessage);
             MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);

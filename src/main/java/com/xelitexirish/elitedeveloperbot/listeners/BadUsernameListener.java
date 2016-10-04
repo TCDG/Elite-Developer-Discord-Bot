@@ -63,11 +63,11 @@ public class BadUsernameListener {
 
     private static void preformAction(User user, Guild guild) {
         user.getPrivateChannel().sendMessage("Your username was deemed inappropriate by staff, please change it and re-join");
-        guild.getManager().kick(user);
+        guild.getManager().ban(user, 1);
         guild.getManager().update();
 
-        MessageUtils.sendMessageToStaffChat(Main.jda, user.getUsername() + " had a bad username and has been kicked.");
-        BotLogger.log("Bad Username", user.getUsername() + " had a bad username and has been kicked.");
+        MessageUtils.sendMessageToStaffChat(Main.jda, "``" + user.getUsername() + "``" + " had a bad username and has been banned.");
+        BotLogger.log("Bad Username", user.getUsername() + " had a bad username and has been banned.");
     }
 
     private static void fillList() {

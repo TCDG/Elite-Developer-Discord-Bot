@@ -5,6 +5,7 @@ import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.events.guild.member.*;
+import net.dv8tion.jda.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
@@ -86,5 +87,10 @@ public class BotListener extends ListenerAdapter {
     @Override
     public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
         //ChatMessageListener.onGuildMessageDelete(event);
+    }
+
+    @Override
+    public void onMessageDelete(MessageDeleteEvent event) {
+        super.onMessageDelete(event);
     }
 }
