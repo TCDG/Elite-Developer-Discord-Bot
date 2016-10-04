@@ -3,8 +3,8 @@
 
 ## Installation
 
--To generate the config file for Elite-Dev-Bot, first run the jar, it will error out but it would have created a config file in the working directory.
--Edit the config options for your own discord server, all of the values except the twitter keys are required!
+1. To generate the config file for Elite-Dev-Bot, first run the jar, it will error out but it would have created a config file in the working directory.
+2. Edit the config options for your own discord server, all of the values except the twitter keys are required!
 
 ## Contributing
 
