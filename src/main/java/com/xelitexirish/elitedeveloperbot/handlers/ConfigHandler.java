@@ -30,6 +30,19 @@ public class ConfigHandler {
                 properties.setProperty("ACCESS_TOKEN", "");
                 properties.setProperty("ACCESS_TOKEN_SECRET", "");
 
+                properties.setProperty("SERVER_ID", "");
+                properties.setProperty("BOT_OWNER_ID", "");
+                properties.setProperty("STAFF_CHAT_LOG_CHANNEL_ID", "");
+                properties.setProperty("STAFF_CHAT_CHANNEL_ID", "");
+
+                properties.setProperty("ROLE_STAFF_ID", "");
+                properties.setProperty("ROLE_ADMIN_ID", "");
+                properties.setProperty("ROLE_MOD_ID", "");
+                properties.setProperty("ROLE_MUTED_ID", "");
+
+                properties.setProperty("DEFAULT_USERS_URL", "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/src/main/resources/data/admin_users.json");
+                properties.setProperty("DIXORD_WORDS_URL", "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/src/main/resources/data/dixord_words.json");
+
                 properties.store(fileWriter, "Discord Bot Settings");
                 fileWriter.close();
                 System.exit(1);
