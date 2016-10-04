@@ -77,7 +77,6 @@ public class SpellCheckerListener {
 
             user.getPrivateChannel().sendMessage(message + blockMessage);
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

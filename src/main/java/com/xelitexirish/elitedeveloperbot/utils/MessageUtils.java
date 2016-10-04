@@ -40,7 +40,7 @@ public class MessageUtils {
 
     public static void sendMessageToStaffDebugChat(JDA jda, String message) {
         for (Guild guild : jda.getGuilds()) {
-            if (guild.getId().equals(Constants.SCAMMER_SUB_LOUNGE_ID)) {
+            if (guild.getId().equals(Constants.DISCORD_SERVER_ID)) {
                 for (TextChannel channel : guild.getTextChannels()) {
                     if (channel.getId().equals(Constants.STAFF_LOG_CHANNEL_ID)) {
                         channel.sendMessage(message);
@@ -51,7 +51,7 @@ public class MessageUtils {
     }
 
     public static void sendMessageToStaffChat(JDA jda, String message){
-        Guild guild = jda.getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID);
+        Guild guild = jda.getGuildById(Constants.DISCORD_SERVER_ID);
         for (TextChannel channel : guild.getTextChannels()){
             if(channel.getId().equals(Constants.STAFF_CHAT_CHANNEL_ID)){
                 channel.sendMessage(message);

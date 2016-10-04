@@ -37,15 +37,23 @@ public class Main {
 
     // https://discordapp.com/oauth2/authorize?client_id=207593082328186880&scope=bot&permissions=0
 
+    /**
+     * Pass true to disable the config file and use options from script.
+     * @param args
+     */
     public static void main(String[] args) {
 
-        ConfigHandler.init();
+        if(args.length > 0 && Boolean.parseBoolean(args[0])){
+            DISCORD_TOKEN = args[1];
+        }else {
+            ConfigHandler.init();
+        }
 
-        if(DISCORD_TOKEN.equals("")){
+        if(DISCORD_TOKEN == null || DISCORD_TOKEN.equals("")){
             System.out.println("Please enter a valid discord token and try again.");
             return;
         }
-        if(CONSUMER_KEY.equals("")){
+        if(CONSUMER_KEY == null || CONSUMER_KEY.equals("")){
             System.out.println("Please enter valid twitter credentials to use this feature.");
         }
 

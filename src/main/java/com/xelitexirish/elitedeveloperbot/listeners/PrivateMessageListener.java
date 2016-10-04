@@ -11,7 +11,7 @@ import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
 public class PrivateMessageListener {
 
     public static void privateMessageReciever(PrivateMessageReceivedEvent event) {
-        if (event.getAuthor().getId().equals(Constants.USER_ID_XELITEXIRISH)) {
+        if (event.getAuthor().getId().equals(Constants.USER_ID_BOT_OWNER)) {
             String message = event.getMessage().getContent();
 
             if (message.startsWith("playing")) {
@@ -24,7 +24,7 @@ public class PrivateMessageListener {
             } else {
 
                 for (Guild guild : event.getJDA().getGuilds()) {
-                    if (guild.getId().equals(Constants.SCAMMER_SUB_LOUNGE_ID)) {
+                    if (guild.getId().equals(Constants.DISCORD_SERVER_ID)) {
                         guild.getPublicChannel().sendMessage(message);
                     }
                 }

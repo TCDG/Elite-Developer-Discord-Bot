@@ -23,7 +23,7 @@ public class UserPrivs {
         if (adminUsers.contains(user)) {
             return true;
         } else {
-            for (Role role : user.getJDA().getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getRolesForUser(user)){
+            for (Role role : user.getJDA().getGuildById(Constants.DISCORD_SERVER_ID).getRolesForUser(user)){
                 if (role.getId().equalsIgnoreCase(Constants.ROLE_ADMIN_ID)){
                     return true;
                 }
@@ -33,7 +33,7 @@ public class UserPrivs {
     }
 
     public static boolean isUserMod(User user){
-        for (Role role : user.getJDA().getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getRolesForUser(user)){
+        for (Role role : user.getJDA().getGuildById(Constants.DISCORD_SERVER_ID).getRolesForUser(user)){
             if (role.getId().equalsIgnoreCase(Constants.ROLE_MOD_ID)){
                 return true;
             }
@@ -42,7 +42,7 @@ public class UserPrivs {
     }
 
     public static boolean isUserStaff(User user) {
-        for (Role role : user.getJDA().getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getRolesForUser(user)) {
+        for (Role role : user.getJDA().getGuildById(Constants.DISCORD_SERVER_ID).getRolesForUser(user)) {
             if(role.getId().equalsIgnoreCase(Constants.ROLE_STAFF_ID)) {
                 return true;
             }
@@ -71,7 +71,7 @@ public class UserPrivs {
     }
 
     public static boolean hasPermission(User user, Permission permission) {
-        for (Role role : user.getJDA().getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getRolesForUser(user)) {
+        for (Role role : user.getJDA().getGuildById(Constants.DISCORD_SERVER_ID).getRolesForUser(user)) {
             return role.hasPermission(permission);
         }
         return false;
@@ -79,7 +79,7 @@ public class UserPrivs {
 
     public static ArrayList<User> getAllStaff() {
         ArrayList<User> allStaff = new ArrayList<>();
-        for (User user : Main.jda.getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getUsers()) {
+        for (User user : Main.jda.getGuildById(Constants.DISCORD_SERVER_ID).getUsers()) {
             if (isUserStaff(user)) {
                 allStaff.add(user);
             }

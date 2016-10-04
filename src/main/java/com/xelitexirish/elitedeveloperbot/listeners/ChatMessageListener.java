@@ -44,7 +44,7 @@ public class ChatMessageListener {
 
         String logMessage = "Player ``" + event.getUser().getUsername() + "`` has joined server " + event.getGuild().getName();
         BotLogger.log("Player Join", logMessage);
-        if (event.getGuild().getId().equals(Constants.SCAMMER_SUB_LOUNGE_ID)) {
+        if (event.getGuild().getId().equals(Constants.DISCORD_SERVER_ID)) {
             MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
         }
     }
@@ -66,7 +66,7 @@ public class ChatMessageListener {
         String logMessage = "User has been banned: ``" + event.getUser().getUsername() + "`` on server " + event.getGuild().getName();
         BotLogger.log("Player Ban", logMessage);
 
-        if (event.getGuild().getId().equals(Constants.SCAMMER_SUB_LOUNGE_ID)) {
+        if (event.getGuild().getId().equals(Constants.DISCORD_SERVER_ID)) {
                 MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
         }
     }
@@ -81,7 +81,7 @@ public class ChatMessageListener {
         String logMessage = "User has been unbanned: " + event.getUser().getUsername() + " on server " + event.getGuild().getName();
         BotLogger.log("Player Unban", logMessage);
 
-        if (event.getGuild().getId().equals(Constants.SCAMMER_SUB_LOUNGE_ID)) {
+        if (event.getGuild().getId().equals(Constants.DISCORD_SERVER_ID)) {
                 MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
         }
     }

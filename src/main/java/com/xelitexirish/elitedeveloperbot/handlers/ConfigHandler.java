@@ -1,6 +1,7 @@
 package com.xelitexirish.elitedeveloperbot.handlers;
 
 import com.xelitexirish.elitedeveloperbot.Main;
+import com.xelitexirish.elitedeveloperbot.utils.Constants;
 
 import java.io.*;
 import java.util.Properties;
@@ -43,7 +44,7 @@ public class ConfigHandler {
                 properties.setProperty("DEFAULT_USERS_URL", "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/src/main/resources/data/admin_users.json");
                 properties.setProperty("DIXORD_WORDS_URL", "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/src/main/resources/data/dixord_words.json");
 
-                properties.store(fileWriter, "Discord Bot Settings");
+                properties.store(fileWriter, "Discord Bot Settings (Ill make a better config soon)");
                 fileWriter.close();
                 System.exit(1);
 
@@ -62,10 +63,21 @@ public class ConfigHandler {
             Main.enableAutoMessages = Boolean.parseBoolean(properties.getProperty("AUTO_CHAT_MESSAGES"));
             Main.enableSpellChecker = Boolean.parseBoolean(properties.getProperty("ENABLE_SPELL_CHECKER"));
             Main.enableUsernameChecker = Boolean.parseBoolean(properties.getProperty("ENABLE_USERNAME_CHECKER"));
+
             Main.CONSUMER_KEY = properties.getProperty("CONSUMER_KEY");
             Main.CONSUMER_SECRET = properties.getProperty("CONSUMER_SECRET");
             Main.ACCESS_TOKEN = properties.getProperty("ACCESS_TOKEN");
             Main.ACCESS_TOKEN_SECRET = properties.getProperty("ACCESS_TOKEN_SECRET");
+
+            Constants.DISCORD_SERVER_ID = properties.getProperty("SERVER_ID");
+            Constants.USER_ID_BOT_OWNER = properties.getProperty("BOT_OWNER_ID");
+            Constants.STAFF_LOG_CHANNEL_ID = properties.getProperty("STAFF_CHAT_LOG_CHANNEL_ID");
+            Constants.STAFF_CHAT_CHANNEL_ID = properties.getProperty("STAFF_CHAT_CHANNEL_ID");
+
+            Constants.ROLE_STAFF_ID = properties.getProperty("ROLE_STAFF_ID");
+            Constants.ROLE_ADMIN_ID = properties.getProperty("ROLE_ADMIN_ID");
+            Constants.ROLE_MOD_ID = properties.getProperty("ROLE_MOD_ID");
+            Constants.ROLE_MUTED_ID = properties.getProperty("ROLE_MUTED_ID");
 
             reader.close();
         } catch (IOException e) {

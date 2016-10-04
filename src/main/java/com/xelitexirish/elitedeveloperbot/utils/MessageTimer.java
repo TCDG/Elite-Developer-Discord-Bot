@@ -22,7 +22,7 @@ public class MessageTimer {
 
         @Override
         public void run() {
-            TextChannel textChannel = Main.jda.getGuildById(Constants.SCAMMER_SUB_LOUNGE_ID).getPublicChannel();
+            TextChannel textChannel = Main.jda.getGuildById(Constants.DISCORD_SERVER_ID).getPublicChannel();
             User eliteBot = Main.jda.getUserById(Main.jda.getSelfInfo().getId());
 
             String message = "Has any member been abusing you and you would like to let the staff know about it?  " +
