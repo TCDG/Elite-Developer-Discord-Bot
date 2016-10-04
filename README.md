@@ -3,7 +3,8 @@
 
 ## Installation
 
-Currently Elite Developer Bot only works on scammer sub lounge, because I was lazy and hardcoded channel IDs.  I will be adding support for other servers in the next couple of weeks.
+-To generate the config file for Elite-Dev-Bot, first run the jar, it will error out but it would have created a config file in the working directory.
+-Edit the config options for your own discord server, all of the values except the twitter keys are required!
 
 ## Contributing
 
