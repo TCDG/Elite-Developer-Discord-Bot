@@ -88,9 +88,4 @@ public class BotListener extends ListenerAdapter {
     public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
         //ChatMessageListener.onGuildMessageDelete(event);
     }
-
-    @Override
-    public void onMessageDelete(MessageDeleteEvent event) {
-        super.onMessageDelete(event);
-    }
 }

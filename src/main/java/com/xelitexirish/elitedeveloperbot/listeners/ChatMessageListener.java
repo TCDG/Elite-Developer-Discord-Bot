@@ -5,6 +5,7 @@ import com.xelitexirish.elitedeveloperbot.handlers.DiscordStaffUtils;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
+import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.events.guild.member.GuildMemberBanEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberUnbanEvent;
@@ -115,7 +116,8 @@ public class ChatMessageListener {
     }
 
     public static void onGuildMessageDelete(GuildMessageDeleteEvent event) {
-        String message = "This message has been deleted: " + event.getMessage().getContent() + "\nBy the user: " + event.getAuthor().getAsMention();
+        Message deletedMessage = event.getChannel().getMessageById(event.getMessageId());
+        String message = "This message has been deleted: " + deletedMessage + "\nBy the user: " + event.getAuthor().getAsMention();
         BotLogger.log("Message Delete", message);
 
         MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), message);
