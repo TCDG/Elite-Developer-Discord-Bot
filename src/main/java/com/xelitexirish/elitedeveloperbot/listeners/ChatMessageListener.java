@@ -67,9 +67,7 @@ public class ChatMessageListener {
         BotLogger.log("Player Ban", logMessage);
 
         if (event.getGuild().getId().equals(Constants.SCAMMER_SUB_LOUNGE_ID)) {
-            if (Main.isTT142Offline()) {
                 MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
-            }
         }
     }
 
@@ -84,9 +82,7 @@ public class ChatMessageListener {
         BotLogger.log("Player Unban", logMessage);
 
         if (event.getGuild().getId().equals(Constants.SCAMMER_SUB_LOUNGE_ID)) {
-            if (Main.isTT142Offline()) {
                 MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
-            }
         }
     }
 
@@ -122,8 +118,6 @@ public class ChatMessageListener {
         String message = "This message has been deleted: " + event.getMessage().getContent() + "\nBy the user: " + event.getAuthor().getAsMention();
         BotLogger.log("Message Delete", message);
 
-        if (Main.isTT142Offline()) {
-            MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), message);
-        }
+        MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), message);
     }
 }

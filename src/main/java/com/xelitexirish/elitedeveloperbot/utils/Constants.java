@@ -2,7 +2,7 @@ package com.xelitexirish.elitedeveloperbot.utils;
 
 public class Constants {
 
-    public static final String COMMAND_PREFIX = "!dev ";
+    public static final String COMMAND_PREFIX = "/dev ";
     public static final String DISCORD_COMMAND_PREFIX = "/";
 
     public static final double OLD_VERSION = 1;

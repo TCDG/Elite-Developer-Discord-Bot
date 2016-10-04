@@ -55,6 +55,7 @@ public class Main {
             enableAutoMessages = Boolean.parseBoolean(args[1]);
             enableSpellChecker = Boolean.parseBoolean(args[2]);
 
+            System.out.println("No credentials for twitter found, disabling..");
         }else{
             System.out.println("Please enter a valid Discord Token!");
             return;
@@ -82,7 +83,6 @@ public class Main {
     private static void registerCommands(){
         commands.put("help", new HelpCommand());
         commands.put("admin", new AdminCommand());
-        commands.put("projects", new ProjectsCommands());
         commands.put("userid", new PlayerIdCommand());
         commands.put("correction", new SpellCheckerCommand());
         //commands.put("warn", new WarningCommand());
@@ -99,12 +99,5 @@ public class Main {
                 commands.get(cmd.invoke).executed(safe, cmd.event);
             }
         }
-    }
-
-    public static boolean isTT142Offline(){
-        if(jda.getUserById(Constants.BOT_TT142_ID).getOnlineStatus() != OnlineStatus.ONLINE){
-            return true;
-        }
-        return false;
     }
 }
