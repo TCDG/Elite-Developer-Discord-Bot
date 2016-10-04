@@ -1,6 +1,8 @@
 package com.xelitexirish.elitedeveloperbot.handlers;
 
 import com.xelitexirish.elitedeveloperbot.Main;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.util.Properties;
@@ -17,20 +19,17 @@ public class ConfigHandler {
             try {
                 configFile.createNewFile();
                 Properties properties = new Properties();
-                FileWriter fileWriter = new FileWriter(configFile);
 
-                // Properties
-                properties.setProperty("DISCORD_TOKEN", "");
-                properties.setProperty("AUTO_CHAT_MESSAGES", "");
-                properties.setProperty("ENABLE_SPELL_CHECKER", "");
-                properties.setProperty("ENABLE_USERNAME_CHECKER", "");
+                String[] configOptions = {"DISCORD_TOKEN", "AUTO_CHAT_MESSAGES", "ENABLE_SPELL_CHECKER", "ENABLE_USERNAME_CHECKER", "CONSUMER_KEY", "CONSUMER_SECRET", "ACCESS_TOKEN",
+                        "ACCESS_TOKEN_SECRET", "SERVER_ID", ""};
 
-                properties.setProperty("CONSUMER_KEY", "");
-                properties.setProperty("CONSUMER_SECRET", "");
-                properties.setProperty("ACCESS_TOKEN", "");
-                properties.setProperty("ACCESS_TOKEN_SECRET", "");
 
-                properties.setProperty("SERVER_ID", "");
+                properties.setProperty("", "");
+                properties.setProperty("", "");
+                properties.setProperty("", "");
+                properties.setProperty("", "");
+
+                properties.setProperty("", "");
                 properties.setProperty("BOT_OWNER_ID", "");
                 properties.setProperty("STAFF_CHAT_LOG_CHANNEL_ID", "");
                 properties.setProperty("STAFF_CHAT_CHANNEL_ID", "");
@@ -43,8 +42,20 @@ public class ConfigHandler {
                 properties.setProperty("DEFAULT_USERS_URL", "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/src/main/resources/data/admin_users.json");
                 properties.setProperty("DIXORD_WORDS_URL", "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/src/main/resources/data/dixord_words.json");
 
-                properties.store(fileWriter, "Discord Bot Settings");
+                JSONObject jsonObject = new JSONObject();
+                JSONArray arrayConfigOptions = new JSONArray();
+                jsonObject.put("arrayConfigOptions", arrayConfigOptions);
+                for (int x = 0; x < blackListUsers.size(); x++) {
+                    String line = blackListUsers.get(x);
+
+                    arrayConfigOptions.put(line);
+                }
+
+                FileWriter fileWriter = new FileWriter(configFile);
+                fileWriter.write(jsonObject.toString());
+                fileWriter.flush();
                 fileWriter.close();
+
                 System.exit(1);
 
             } catch (IOException e) {
