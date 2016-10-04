@@ -1,6 +1,7 @@
 package com.xelitexirish.elitedeveloperbot;
 
 import com.xelitexirish.elitedeveloperbot.commands.*;
+import com.xelitexirish.elitedeveloperbot.handlers.ConfigHandler;
 import com.xelitexirish.elitedeveloperbot.handlers.TwitterHandler;
 import com.xelitexirish.elitedeveloperbot.listeners.BadUsernameListener;
 import com.xelitexirish.elitedeveloperbot.listeners.BotListener;
@@ -24,41 +25,28 @@ public class Main {
     public static String DISCORD_TOKEN;
     public static boolean enableAutoMessages = true;
     public static boolean enableSpellChecker = true;
-    public static boolean enableTimerMessages = true;
     public static boolean enableUsernameChecker = true;
-    private static String CONSUMER_KEY;
-    private static String CONSUMER_SECRET;
-    private static String ACCESS_TOKEN;
-    private static String ACCESS_TOKEN_SECRET;
+    public static String CONSUMER_KEY;
+    public static String CONSUMER_SECRET;
+    public static String ACCESS_TOKEN;
+    public static String ACCESS_TOKEN_SECRET;
+
+
+    // Unused
+    public static boolean enableTimerMessages = true;
 
     // https://discordapp.com/oauth2/authorize?client_id=207593082328186880&scope=bot&permissions=0
 
-    /**
-     * 1: Discord Token
-     * 2: Display messages when a user joins/bans/unbans
-     * @param args
-     */
     public static void main(String[] args) {
 
-        if(args.length >= 8) {
-            DISCORD_TOKEN = args[0];
-            enableAutoMessages = Boolean.parseBoolean(args[1]);
-            enableSpellChecker = Boolean.parseBoolean(args[2]);
-            enableUsernameChecker = Boolean.parseBoolean(args[3]);
-            CONSUMER_KEY = args[4];
-            CONSUMER_SECRET = args[5];
-            ACCESS_TOKEN = args[6];
-            ACCESS_TOKEN_SECRET = args[7];
+        ConfigHandler.init();
 
-        }else if (args.length == 3){
-            DISCORD_TOKEN = args[0];
-            enableAutoMessages = Boolean.parseBoolean(args[1]);
-            enableSpellChecker = Boolean.parseBoolean(args[2]);
-
-            System.out.println("No credentials for twitter found, disabling..");
-        }else{
-            System.out.println("Please enter a valid Discord Token!");
+        if(DISCORD_TOKEN.equals("")){
+            System.out.println("Please enter a valid discord token and try again.");
             return;
+        }
+        if(CONSUMER_KEY.equals("")){
+            System.out.println("Please enter valid twitter credentials to use this feature.");
         }
 
         BotLogger.initLogger();
