@@ -1,6 +1,7 @@
 package com.xelitexirish.elitedeveloperbot.listeners;
 
 import com.xelitexirish.elitedeveloperbot.Main;
+import com.xelitexirish.elitedeveloperbot.handlers.UsercountListener;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.events.guild.GuildJoinEvent;
@@ -34,6 +35,8 @@ public class BotListener extends ListenerAdapter {
         ChatMessageListener.onGuildMemberJoin(event);
 
         SpammerHelper.onUserJoin(event);
+
+        UsercountListener.onUserJoin(event);
 
         if(Main.enableUsernameChecker){
             BadUsernameListener.onUserJoin(event);
