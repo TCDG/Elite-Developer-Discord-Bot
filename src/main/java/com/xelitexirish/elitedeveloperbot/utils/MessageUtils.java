@@ -58,4 +58,13 @@ public class MessageUtils {
             }
         }
     }
+
+    public static void sendMessageToNickChat(JDA jda, String message){
+        Guild guild = jda.getGuildById(Constants.DISCORD_SERVER_ID);
+        for (TextChannel channel : guild.getTextChannels()){
+            if(channel.getId().equals(Constants.STAFF_NICK_CHAT_CHANNEL_ID)){
+                channel.sendMessage(message);
+            }
+        }
+    }
 }

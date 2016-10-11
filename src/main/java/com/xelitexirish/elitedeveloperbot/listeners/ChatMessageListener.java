@@ -8,6 +8,7 @@ import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.events.guild.member.GuildMemberBanEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.events.guild.member.GuildMemberNickChangeEvent;
 import net.dv8tion.jda.events.guild.member.GuildMemberUnbanEvent;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.events.message.guild.GuildMessageDeleteEvent;
@@ -50,18 +51,22 @@ public class ChatMessageListener {
         }
     }
 
-    public static void onUsernameUpdate(UserNameUpdateEvent event) {
-        String changeNameMessage = "Player ``" + event.getPreviousUsername() + "`` is now known as " + event.getUser().getUsername();
+    public static void onUsernameUpdate(GuildMemberNickChangeEvent event) {
+        String changeNameMessage = "Player ``" + event.getUser().getUsername() + "`` is now known as " + event.getUser().getUsername();
         BotLogger.log("Username change", changeNameMessage);
 
         MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), changeNameMessage);
+        MessageUtils.sendMessageToNickChat(event.getJDA(), changeNameMessage);
     }
 
     public static void onMemberBan(GuildMemberBanEvent event) {
 
         String banMessage = "The ban hammer has spoken! Goodbye " + event.getUser().getUsername();
         if(Main.enableAutoMessages) {
-            event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(banMessage));
+            // If theyve a bad username, dont post it in mainchat
+            if(!BadUsernameListener.isBadUsername(event.getUser())) {
+                event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(banMessage));
+            }
         }
 
         String logMessage = "User has been banned: ``" + event.getUser().getUsername() + "`` on server " + event.getGuild().getName();

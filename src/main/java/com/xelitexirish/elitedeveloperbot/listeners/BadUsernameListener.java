@@ -6,6 +6,7 @@ import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.events.guild.member.GuildMemberNickChangeEvent;
 import net.dv8tion.jda.events.user.UserNameUpdateEvent;
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,7 +19,7 @@ import java.util.Scanner;
 
 public class BadUsernameListener {
 
-    private static ArrayList<String> blockedWords = new ArrayList<>();
+    public static ArrayList<String> blockedWords = new ArrayList<>();
     private static File blockedNames = new File("blockedNames.txt");
 
     public static void init() {
@@ -47,7 +48,7 @@ public class BadUsernameListener {
         }
     }
 
-    public static void onUsernameChange(UserNameUpdateEvent event) {
+    public static void onUsernameChange(GuildMemberNickChangeEvent event) {
 
         String username = event.getUser().getUsername();
 
@@ -56,13 +57,13 @@ public class BadUsernameListener {
             String word = iterator.next();
 
             if (StringUtils.containsIgnoreCase(username, word)) {
-
+                preformAction(event.getUser(), event.getGuild());
             }
         }
     }
 
     private static void preformAction(User user, Guild guild) {
-        user.getPrivateChannel().sendMessage("Your username was deemed inappropriate by staff, please change it and re-join");
+        user.getPrivateChannel().sendMessage("Your username was deemed inappropriate by staff, please contact staff via twitter @ScammerSubSSL");
         guild.getManager().ban(user, 1);
         guild.getManager().update();
 
@@ -84,5 +85,19 @@ public class BadUsernameListener {
             }
 
         }
+    }
+
+    public static boolean isBadUsername(User user){
+        String username = user.getUsername();
+
+        Iterator<String> iterator = blockedWords.iterator();
+        while (iterator.hasNext()) {
+            String word = iterator.next();
+
+            if (StringUtils.containsIgnoreCase(username, word)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

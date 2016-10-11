@@ -44,7 +44,7 @@ public class BotListener extends ListenerAdapter {
     }
 
     @Override
-    public void onUserNameUpdate(UserNameUpdateEvent event) {
+    public void onGuildMemberNickChange(GuildMemberNickChangeEvent event) {
         ChatMessageListener.onUsernameUpdate(event);
 
         if(Main.enableUsernameChecker){

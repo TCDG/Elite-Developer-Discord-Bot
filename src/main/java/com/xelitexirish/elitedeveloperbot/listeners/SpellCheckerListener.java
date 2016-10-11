@@ -94,7 +94,7 @@ public class SpellCheckerListener {
         loadBlackListData();
 
         if (blackListUsers.contains(userId)) {
-            user.getPrivateChannel().sendMessage("You are already blacklisted to receive spell check messages.  Use '" + Constants.COMMAND_PREFIX + "correction true' tp unblock yourself");
+            user.getPrivateChannel().sendMessage("You are already blacklisted to receive spell check messages.  Use '" + Constants.COMMAND_PREFIX + "correction true' to unblock yourself");
 
         } else {
             blackListUsers.add(userId);
