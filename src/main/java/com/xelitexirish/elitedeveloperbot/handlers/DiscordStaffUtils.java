@@ -16,9 +16,10 @@ import java.util.List;
 
 public class DiscordStaffUtils {
 
-    private static String[] commands = {"/rm", "/kick", "/purge", "/help"};
+    private static String[] commands = {"/rm", "/kick", "/ban", "/purge", "/help"};
     private static String[] commandsHelp = {"Right click on a message and press copy id and it will delete it from chat Usage: /rm <message id>",
             "Kick a player who is in the server Usage: /kick <user mention>",
+            "Bans a player Usage /ban <user mention>",
             "This will delete recent messages from a user (60 messages) Usage: /purge <user mention>",
             "Displays help information for the command Usage: /help"};
 
@@ -61,10 +62,32 @@ public class DiscordStaffUtils {
                             }
                         } catch (Exception e) {
                             event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Invalid Parameters"));
+                            e.printStackTrace();
                         }
                     }
 
-                } else if (lineSplit[0].equalsIgnoreCase(commands[2])) {
+                }else if (lineSplit[0].equalsIgnoreCase(commands[2])) {
+                    // ban
+                    if (lineSplit.length >= 1){
+                        try {
+                            List<User> mentionedUsers = event.getMessage().getMentionedUsers();
+
+                            for (User user : mentionedUsers){
+                                event.getGuild().getManager().ban(user, 1);
+
+                                String logMessage = event.getAuthor().getUsername() + " has banned the player: " + user.getAsMention();
+
+                                event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Player Banned"));
+                                MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
+                                BotLogger.log("Player Banned", logMessage);
+                            }
+                        } catch (Exception e) {
+                            event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Invalid Parameters"));
+                            e.printStackTrace();
+                        }
+                    }
+
+                } else if (lineSplit[0].equalsIgnoreCase(commands[3])) {
                     // purge
                     int clearedMessages = 0;
                     Collection<Message> messageCollection = new ArrayList<>();
@@ -90,7 +113,7 @@ public class DiscordStaffUtils {
                         event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock("Invalid Parameters"));
                     }
 
-                } else if (lineSplit[0].equalsIgnoreCase(commands[3])) {
+                } else if (lineSplit[0].equalsIgnoreCase(commands[4])) {
                     //help
                     sendGeneralHelp(event);
                 }

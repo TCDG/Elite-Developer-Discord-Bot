@@ -79,12 +79,12 @@ public class ChatMessageListener {
 
     public static void onMemberUnban(GuildMemberUnbanEvent event) {
 
-        String unbanMessage = "The ban hammer has been lifted on ``" + event.getUser().getUsername() + "``";
+        String unbanMessage = "The ban hammer has been lifted on: " + event.getUser().getUsername();
         if(Main.enableAutoMessages) {
             event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(unbanMessage));
         }
 
-        String logMessage = "User has been unbanned: " + event.getUser().getUsername() + " on server " + event.getGuild().getName();
+        String logMessage = "User has been unbanned: ``" + event.getUser().getUsername() + "`` on server " + event.getGuild().getName();
         BotLogger.log("Player Unban", logMessage);
 
         if (event.getGuild().getId().equals(Constants.DISCORD_SERVER_ID)) {
