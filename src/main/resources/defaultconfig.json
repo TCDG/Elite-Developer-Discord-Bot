@@ -1,0 +1,10 @@
+{
+  "database": {
+    "uri": "localhost:3306/edb",
+    "username": "root",
+    "password": "admin"
+  },
+
+  "token": "",
+  "commandChar": "!"
+}
