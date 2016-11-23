@@ -1,4 +1,4 @@
-package com.collectivedev.bot.persist;
+package com.collectivedev.edb.api.persist;
 
 /*
  * Modified version of original class
@@ -30,8 +30,6 @@ import java.sql.*;
  */
 public class ScriptRunner {
 
-    private static final String DEFAULT_DELIMITER = ";";
-
     private Connection connection;
 
     private boolean stopOnError;
@@ -39,9 +37,6 @@ public class ScriptRunner {
 
     private PrintWriter logWriter = new PrintWriter(System.out);
     private PrintWriter errorLogWriter = new PrintWriter(System.err);
-
-    private String delimiter = DEFAULT_DELIMITER;
-    private boolean fullLineDelimiter = false;
 
     /**
      * Default constructor
@@ -57,7 +52,7 @@ public class ScriptRunner {
      * Convenience constructor for application
      */
     public ScriptRunner(Connection connection) {
-        this(connection, false, true);
+        this(connection, false, false);
     }
 
     /**
@@ -113,16 +108,13 @@ public class ScriptRunner {
                     // Do nothing
                 } else if (trimmedLine.length() < 1 || trimmedLine.startsWith("--")) {
                     // Do nothing
-                } else if (!fullLineDelimiter
-                        && trimmedLine.endsWith(getDelimiter())
-                        || fullLineDelimiter
-                        && trimmedLine.equals(getDelimiter())) {
+                } else if (trimmedLine.endsWith(getDelimiter())) {
                     command.append(line.substring(0, line
                             .lastIndexOf(getDelimiter())));
                     command.append(" ");
                     Statement statement = conn.createStatement();
 
-                    println("Executing command >> " + command);
+                    //println("Executing command >> " + command);
 
                     boolean hasResults = false;
                     if (stopOnError) {
@@ -186,7 +178,7 @@ public class ScriptRunner {
     }
 
     private String getDelimiter() {
-        return delimiter;
+        return ";";
     }
 
     private void print(Object o) {
