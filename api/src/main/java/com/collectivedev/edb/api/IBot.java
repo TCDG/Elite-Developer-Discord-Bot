@@ -7,9 +7,7 @@ import net.dv8tion.jda.JDA;
 
 public abstract class IBot {
     
-    public void load() throws Exception { }
-    
-    public void unload() { }
+    public abstract void load() throws Exception;
     
     public abstract AbstractDataStore getDataStore();
     
