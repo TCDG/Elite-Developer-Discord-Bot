@@ -75,7 +75,7 @@ public class Main {
     private static void registerCommands(){
         commands.put("help", new HelpCommand());
         commands.put("admin", new AdminCommand());
-        commands.put("userid", new PlayerIDCommand());
+        commands.put("userid", new PlayerIdCommand());
         commands.put("correction", new SpellCheckerCommand());
         //commands.put("warn", new WarningCommand());
     }
