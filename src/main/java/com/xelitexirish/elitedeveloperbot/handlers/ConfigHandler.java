@@ -35,6 +35,7 @@ public class ConfigHandler {
                 properties.setProperty("BOT_OWNER_ID", "");
                 properties.setProperty("STAFF_CHAT_LOG_CHANNEL_ID", "");
                 properties.setProperty("STAFF_CHAT_CHANNEL_ID", "");
+                properties.setProperty("STAFF_CHAT_NICK_CHANNEL_ID", "");
 
                 properties.setProperty("ROLE_STAFF_ID", "");
                 properties.setProperty("ROLE_ADMIN_ID", "");
@@ -44,7 +45,7 @@ public class ConfigHandler {
                 properties.setProperty("DEFAULT_USERS_URL", "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/src/main/resources/data/admin_users.json");
                 properties.setProperty("DIXORD_WORDS_URL", "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/src/main/resources/data/dixord_words.json");
 
-                properties.store(fileWriter, "Discord Bot Settings (Ill make a better config soon)");
+                properties.store(fileWriter, "Discord Bot Settings (I'll make a better config soon)");
                 fileWriter.close();
                 System.exit(1);
 
@@ -73,6 +74,7 @@ public class ConfigHandler {
             Constants.USER_ID_BOT_OWNER = properties.getProperty("BOT_OWNER_ID");
             Constants.STAFF_LOG_CHANNEL_ID = properties.getProperty("STAFF_CHAT_LOG_CHANNEL_ID");
             Constants.STAFF_CHAT_CHANNEL_ID = properties.getProperty("STAFF_CHAT_CHANNEL_ID");
+            Constants.STAFF_NICK_CHAT_CHANNEL_ID = properties.getProperty("STAFF_CHAT_NICK_CHANNEL_ID");
 
             Constants.ROLE_STAFF_ID = properties.getProperty("ROLE_STAFF_ID");
             Constants.ROLE_ADMIN_ID = properties.getProperty("ROLE_ADMIN_ID");

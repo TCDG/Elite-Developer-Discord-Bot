@@ -83,11 +83,7 @@ public class WarningHandler {
                     }
                 }
 
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (ParseException | IOException e) {
                 e.printStackTrace();
             }
         } else {
@@ -106,7 +102,6 @@ public class WarningHandler {
             jsonObject.put("arrayWarnings", arrayWarnedUsers);
             for (int x = 0; x < warnedUsers.size(); x++) {
                 String line = warnedUsers.get(x);
-
                 arrayWarnedUsers.add(line);
             }
 

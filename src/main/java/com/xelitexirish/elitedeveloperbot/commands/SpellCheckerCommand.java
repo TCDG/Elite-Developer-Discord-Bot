@@ -1,9 +1,10 @@
 package com.xelitexirish.elitedeveloperbot.commands;
 
 import com.xelitexirish.elitedeveloperbot.listeners.SpellCheckerListener;
-import net.dv8tion.jda.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class SpellCheckerCommand implements ICommand{
+public class SpellCheckerCommand implements ICommand {
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
@@ -14,11 +15,11 @@ public class SpellCheckerCommand implements ICommand{
     public void action(String[] args, MessageReceivedEvent event) {
 
         if(args.length == 1){
-            if(args[0].equalsIgnoreCase("false")){
-                SpellCheckerListener.blockUser(event.getGuild(), event.getAuthor(), event.isPrivate());
+            if (args[0].equalsIgnoreCase("false")) {
+                SpellCheckerListener.blockUser(event.getGuild(), event.getAuthor(), event.isFromType(ChannelType.PRIVATE));
 
-            }else if (args[0].equalsIgnoreCase("true")){
-                SpellCheckerListener.unblockUser(event.getGuild(), event.getAuthor(), event.isPrivate());
+            } else if (args[0].equalsIgnoreCase("true")) {
+                SpellCheckerListener.unblockUser(event.getGuild(), event.getAuthor(), event.isFromType(ChannelType.PRIVATE));
             }
         }
     }

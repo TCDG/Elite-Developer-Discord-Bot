@@ -4,16 +4,19 @@ import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.handlers.UsercountListener;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
-import net.dv8tion.jda.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.events.guild.member.*;
-import net.dv8tion.jda.events.message.MessageDeleteEvent;
-import net.dv8tion.jda.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.events.message.guild.GuildMessageDeleteEvent;
-import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
-import net.dv8tion.jda.events.user.UserNameUpdateEvent;
-import net.dv8tion.jda.events.voice.VoiceServerDeafEvent;
-import net.dv8tion.jda.events.voice.VoiceServerMuteEvent;
-import net.dv8tion.jda.hooks.ListenerAdapter;
+import net.dv8tion.jda.core.events.guild.GuildBanEvent;
+import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.core.events.guild.GuildUnbanEvent;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberNickChangeEvent;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberRoleAddEvent;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberRoleRemoveEvent;
+import net.dv8tion.jda.core.events.guild.voice.GuildVoiceGuildDeafenEvent;
+import net.dv8tion.jda.core.events.guild.voice.GuildVoiceGuildMuteEvent;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
+import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 public class BotListener extends ListenerAdapter {
 
@@ -26,19 +29,16 @@ public class BotListener extends ListenerAdapter {
     public void onGuildJoin(GuildJoinEvent event) {
         if (Constants.CURRENT_VERSION > Constants.OLD_VERSION) {
             String message = "Hey my name is Elite Developer Bot, you can view my commands by entering the command " + Constants.COMMAND_PREFIX;
-            event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(message));
+            event.getGuild().getPublicChannel().sendMessage(MessageUtils.wrapMessageInEmbed(message)).queue();
         }
     }
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         ChatMessageListener.onGuildMemberJoin(event);
-
         SpammerHelper.onUserJoin(event);
-
         UsercountListener.onUserJoin(event);
-
-        if(Main.enableUsernameChecker){
+        if (Main.enableUsernameChecker) {
             BadUsernameListener.onUserJoin(event);
         }
     }
@@ -46,20 +46,19 @@ public class BotListener extends ListenerAdapter {
     @Override
     public void onGuildMemberNickChange(GuildMemberNickChangeEvent event) {
         ChatMessageListener.onUsernameUpdate(event);
-
-        if(Main.enableUsernameChecker){
+        if (Main.enableUsernameChecker) {
             BadUsernameListener.onUsernameChange(event);
         }
     }
 
     @Override
-    public void onGuildMemberBan(GuildMemberBanEvent event) {
-        ChatMessageListener.onMemberBan(event);
+    public void onGuildBan(GuildBanEvent event) {
+        ChatMessageListener.onGuildBan(event);
     }
 
     @Override
-    public void onGuildMemberUnban(GuildMemberUnbanEvent event) {
-        ChatMessageListener.onMemberUnban(event);
+    public void onGuildUnban(GuildUnbanEvent event) {
+        ChatMessageListener.onGuildUnban(event);
     }
 
     @Override
@@ -68,13 +67,13 @@ public class BotListener extends ListenerAdapter {
     }
 
     @Override
-    public void onVoiceServerMute(VoiceServerMuteEvent event) {
-        ChatMessageListener.onVoiceServerMute(event);
+    public void onGuildVoiceGuildMute(GuildVoiceGuildMuteEvent event) {
+        ChatMessageListener.onGuildVoiceGuildMute(event);
     }
 
     @Override
-    public void onVoiceServerDeaf(VoiceServerDeafEvent event) {
-        ChatMessageListener.onVoiceServerDeaf(event);
+    public void onGuildVoiceGuildDeafen(GuildVoiceGuildDeafenEvent event) {
+        ChatMessageListener.onGuildVoiceGuildDeafen(event);
     }
 
     @Override

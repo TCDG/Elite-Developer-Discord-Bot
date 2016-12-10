@@ -3,8 +3,11 @@ package com.xelitexirish.elitedeveloperbot.commands;
 import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
-import net.dv8tion.jda.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.awt.*;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -17,17 +20,11 @@ public class HelpCommand implements ICommand {
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        if (event.getMessage().getContent().equalsIgnoreCase(Constants.COMMAND_PREFIX)) {
-            sendGeneralHelpMessage(event);
-        }
-
         if (args.length == 0) {
             sendGeneralHelpMessage(event);
-
         } else if (args.length == 1) {
             // eb help (command)
             String helpCommand = args[0];
-
             ICommand command = getCommandFromString(helpCommand);
             sendHelpMessage(event, command);
         }
@@ -40,9 +37,7 @@ public class HelpCommand implements ICommand {
     }
 
     @Override
-    public void executed(boolean success, MessageReceivedEvent event) {
-
-    }
+    public void executed(boolean success, MessageReceivedEvent event) {}
 
     @Override
     public String getTag() {
@@ -51,7 +46,7 @@ public class HelpCommand implements ICommand {
 
     public static void sendGeneralHelpMessage(MessageReceivedEvent event) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Hey im Elite Developer Bot, my master is XeliteXirish! Check his website out (www.xelitexirish.com)\n");
+        stringBuilder.append("Hey I'm Elite Developer Bot, my master is XeliteXirish! Check his website out (www.xelitexirish.com)\n");
         stringBuilder.append("You can use the following commands with this bot: ");
         Iterator entries = Main.commands.entrySet().iterator();
         while (entries.hasNext()) {
@@ -60,9 +55,9 @@ public class HelpCommand implements ICommand {
             stringBuilder.append(command.getTag() + ", ");
         }
         stringBuilder.append("\nThe bot prefix is: " + Constants.COMMAND_PREFIX + "\n");
-        stringBuilder.append("\nThe staff commands can be visible by entering ``" + Constants.DISCORD_COMMAND_PREFIX + " help``\n");
+        stringBuilder.append("\nThe staff commands can be visible by entering " + Constants.DISCORD_COMMAND_PREFIX + " help\n");
         stringBuilder.append("The current bot version is: " + Constants.CURRENT_VERSION + "\n");
-        event.getTextChannel().sendMessage(MessageUtils.wrapStringInCodeBlock(stringBuilder.toString()));
+        event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(stringBuilder.toString())).queue();
     }
 
     private static ICommand getCommandFromString(String commandName) {
@@ -74,9 +69,23 @@ public class HelpCommand implements ICommand {
 
     private static void sendHelpMessage(MessageReceivedEvent event, ICommand command) {
         if (command.help() != null) {
-            event.getTextChannel().sendMessage(command.help());
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.setAuthor(Constants.EMBED_AUTHOR, Constants.EMBED_AUTHOR_URL, Constants.EMBED_AUTHOR_IMAGE);
+            eb.setFooter(Constants.EMBED_FOOTER_NAME, Constants.EMBED_FOOTER_IMAGE);
+            eb.setColor(Color.green);
+            eb.setTitle("Heres the command help for: " + command.getTag());
+            eb.setDescription(command.help());
+            MessageEmbed embed = eb.build();
+            event.getTextChannel().sendMessage(embed).queue();
         } else {
-            event.getTextChannel().sendMessage("Sorry there is no info available for this command, please contact a bot admin.");
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.setAuthor(Constants.EMBED_AUTHOR, Constants.EMBED_AUTHOR_URL, Constants.EMBED_AUTHOR_IMAGE);
+            eb.setFooter(Constants.EMBED_FOOTER_NAME, Constants.EMBED_FOOTER_IMAGE);
+            eb.setColor(Color.red);
+            eb.setTitle("Error while searching info for that command!");
+            eb.setDescription("Sorry there is no info available for this command, please contact a bot admin.");
+            MessageEmbed embed = eb.build();
+            event.getTextChannel().sendMessage(embed).queue();
         }
     }
 }

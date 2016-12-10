@@ -1,10 +1,11 @@
 package com.xelitexirish.elitedeveloperbot;
 
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
-import com.xelitexirish.elitedeveloperbot.utils.JsonReader;
-import net.dv8tion.jda.Permission;
-import net.dv8tion.jda.entities.Role;
-import net.dv8tion.jda.entities.User;
+import com.xelitexirish.elitedeveloperbot.utils.JSONReader;
+import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,20 +21,22 @@ public class UserPrivs {
     }
 
     public static boolean isUserAdmin(User user) {
+
         if (adminUsers.contains(user)) {
             return true;
         } else {
-            for (Role role : user.getJDA().getGuildById(Constants.DISCORD_SERVER_ID).getRolesForUser(user)){
+            for (Role role : user.getJDA().getGuildById(Constants.DISCORD_SERVER_ID).getMember(user).getRoles()){
                 if (role.getId().equalsIgnoreCase(Constants.ROLE_ADMIN_ID)){
                     return true;
                 }
             }
         }
+        if (user.getId().equals(Constants.KING_ID)) return true;
         return false;
     }
 
     public static boolean isUserMod(User user){
-        for (Role role : user.getJDA().getGuildById(Constants.DISCORD_SERVER_ID).getRolesForUser(user)){
+        for (Role role : user.getJDA().getGuildById(Constants.DISCORD_SERVER_ID).getMember(user).getRoles()){
             if (role.getId().equalsIgnoreCase(Constants.ROLE_MOD_ID)){
                 return true;
             }
@@ -42,7 +45,7 @@ public class UserPrivs {
     }
 
     public static boolean isUserStaff(User user) {
-        for (Role role : user.getJDA().getGuildById(Constants.DISCORD_SERVER_ID).getRolesForUser(user)) {
+        for (Role role : user.getJDA().getGuildById(Constants.DISCORD_SERVER_ID).getMember(user).getRoles()) {
             if(role.getId().equalsIgnoreCase(Constants.ROLE_STAFF_ID)) {
                 return true;
             }
@@ -53,7 +56,7 @@ public class UserPrivs {
     public static void addDefaultUsers() {
 
         try {
-            JSONObject jsonObject = JsonReader.readJsonFromUrl(Constants.ADMIN_USERS_URL);
+            JSONObject jsonObject = JSONReader.readJsonFromUrl(Constants.ADMIN_USERS_URL);
             JSONArray jsonArray = jsonObject.getJSONArray("adminUsers");
             if (jsonArray != null) {
                 for (int x = 0; x < jsonArray.length(); x++) {
@@ -71,7 +74,7 @@ public class UserPrivs {
     }
 
     public static boolean hasPermission(User user, Permission permission) {
-        for (Role role : user.getJDA().getGuildById(Constants.DISCORD_SERVER_ID).getRolesForUser(user)) {
+        for (Role role : user.getJDA().getGuildById(Constants.DISCORD_SERVER_ID).getMember(user).getRoles()) {
             return role.hasPermission(permission);
         }
         return false;
@@ -79,9 +82,9 @@ public class UserPrivs {
 
     public static ArrayList<User> getAllStaff() {
         ArrayList<User> allStaff = new ArrayList<>();
-        for (User user : Main.jda.getGuildById(Constants.DISCORD_SERVER_ID).getUsers()) {
-            if (isUserStaff(user)) {
-                allStaff.add(user);
+        for (Member user : Main.jda.getGuildById(Constants.DISCORD_SERVER_ID).getMembers()) {
+            if (isUserStaff(user.getUser())) {
+                allStaff.add(user.getUser());
             }
         }
         return allStaff;

@@ -2,8 +2,8 @@ package com.xelitexirish.elitedeveloperbot.handlers;
 
 import com.xelitexirish.elitedeveloperbot.UserPrivs;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
-import net.dv8tion.jda.entities.TextChannel;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -27,16 +27,16 @@ public class TwitterHandler {
     }
 
     public static void sendTweet(User sender, TextChannel textChannel, String tweet){
-        if(UserPrivs.isUserAdmin(sender) && enabled){
+        if (UserPrivs.isUserAdmin(sender) && enabled) {
             try {
-                Status status = twitter.updateStatus(sender.getUsername() + " tweeted: " + tweet);
+                Status status = twitter.updateStatus(sender.getName() + " tweeted: " + tweet);
                 textChannel.sendMessage(status.getText());
 
             } catch (TwitterException e) {
                 e.printStackTrace();
             }
-        }else {
-            MessageUtils.sendNoPermissionMessage(sender, textChannel);
+        } else {
+            MessageUtils.sendNoPermissionMessage(textChannel);
         }
     }
 }
