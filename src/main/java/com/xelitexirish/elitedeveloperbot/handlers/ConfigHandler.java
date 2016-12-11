@@ -1,6 +1,7 @@
 package com.xelitexirish.elitedeveloperbot.handlers;
 
 import com.xelitexirish.elitedeveloperbot.Main;
+import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 
 import java.io.*;
@@ -13,7 +14,7 @@ public class ConfigHandler {
     public static void init(){
         if(!configFile.exists()) {
             // First time setup
-            System.out.println("First time setup..creating config file. Then shutting down.");
+            BotLogger.error("First time setup..creating config file. Then shutting down.");
 
             try {
                 configFile.createNewFile();

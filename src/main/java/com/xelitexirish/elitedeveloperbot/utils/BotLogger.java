@@ -34,15 +34,33 @@ public class BotLogger {
         logger.info("[" + heading.toUpperCase() + "]: " + message);
     }
 
-    public static void info(String message){
-        log("info", message);
-    }
-
     public static void command(String title, String username){
         messageLog("command: " + title, "Issued by player: " + username);
     }
 
     public static void messageLog(String heading, String message){
         messageLogger.info("[" + heading.toUpperCase() + "]: " + message);
+    }
+
+    private static void log(String LogMessage) {
+        System.out.println(LogMessage);
+    }
+
+    public static void info(String log) {
+        log("[Elite Developer Bot] " + log);
+        log("info", log);
+    }
+
+    public static void error(String log) {
+        log("[Elite Developer Bot: ERROR] " + log);
+    }
+
+    public static void debug(String log) {
+        log("[Elite Developer Bot: DEBUG] " + log);
+    }
+
+    public static void debug(String log, Exception exception) {
+        debug(log);
+        exception.printStackTrace();
     }
 }

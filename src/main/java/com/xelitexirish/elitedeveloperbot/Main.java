@@ -46,15 +46,13 @@ public class Main {
         }
 
         if (DISCORD_TOKEN == null || DISCORD_TOKEN.equals("")) {
-            System.out.println("Please enter a valid discord token and try again.");
+            BotLogger.error("Please enter a valid discord token and try again.");
             return;
         }
         if (CONSUMER_KEY == null || CONSUMER_KEY.equals("")) {
-            System.out.println("Please enter valid twitter credentials to use this feature.");
+            BotLogger.error("Please enter valid twitter credentials to use this feature.");
         }
-
         BotLogger.initLogger();
-
         try {
             jda = new JDABuilder(AccountType.BOT).setToken(DISCORD_TOKEN).setAudioEnabled(false).addListener(new BotListener()).buildBlocking();
             jda.setAutoReconnect(true);
@@ -62,7 +60,6 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         SpellCheckerListener.init();
         registerCommands();
         UserPrivs.setupUsers();

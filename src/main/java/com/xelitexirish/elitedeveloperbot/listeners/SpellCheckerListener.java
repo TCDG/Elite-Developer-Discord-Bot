@@ -111,7 +111,7 @@ public class SpellCheckerListener {
                     user.getPrivateChannel().sendMessage(MessageUtils.wrapMessageInEmbed("User setting updated")).queue();
                 }
             } else {
-                guild.getPublicChannel().sendMessage(MessageUtils.wrapMessageInEmbed("User setting updated")).queue();
+                MessageUtils.sendMessageToStaffDebugChat(guild.getJDA(), "User setting updated for " + user.getName());
             }
         }
         writeBlacklist();
@@ -139,7 +139,7 @@ public class SpellCheckerListener {
                     user.getPrivateChannel().sendMessage(MessageUtils.wrapMessageInEmbed("User setting updated")).queue();
                 }
             } else {
-                guild.getPublicChannel().sendMessage(MessageUtils.wrapMessageInEmbed("User setting updated")).queue();
+                MessageUtils.sendMessageToStaffDebugChat(guild.getJDA(), "User setting updated for " + user.getName());
             }
         } else {
             if (!user.hasPrivateChannel()) {

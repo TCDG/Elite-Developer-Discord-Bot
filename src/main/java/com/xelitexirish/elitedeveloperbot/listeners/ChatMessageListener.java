@@ -49,7 +49,7 @@ public class ChatMessageListener {
     }
 
     public static void onUsernameUpdate(GuildMemberNickChangeEvent event) {
-        String changeNameMessage = "Player ``" + event.getMember().getUser().getName() + "`` is now known as ``" + event.getNewNick() + "``";
+        String changeNameMessage = "User ``" + event.getMember().getUser().getName() + "`` is now known as ``" + event.getNewNick() + "``";
         BotLogger.log("Username change", changeNameMessage);
         MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), changeNameMessage);
         MessageUtils.sendMessageToNickChat(event.getJDA(), changeNameMessage);
