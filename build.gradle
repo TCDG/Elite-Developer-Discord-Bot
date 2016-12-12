@@ -4,7 +4,7 @@ repositories {
     jcenter()
 }
 
-version = "1.0"
+version = "2.0"
 //create a single Jar with all dependencies (just change the MainClass)
 task fatJar(type: Jar) {
 	manifest {
@@ -19,7 +19,7 @@ task fatJar(type: Jar) {
 
 dependencies {
     
-    compile 'net.dv8tion:JDA:2.2.1_353'
+    compile 'net.dv8tion:JDA:3.0.BETA_103'
 
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.13'

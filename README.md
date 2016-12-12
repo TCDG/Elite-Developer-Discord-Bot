@@ -20,7 +20,7 @@ Elite Developer Bot was created because a server I was active in needed some spe
 
 ## Credits
 
-Author: XeliteXirish (www.xelitexirish.com)
+Author: XeliteXirish (www.xelitexirish.com) Porter: KingDGrizzle
 
 ## License
 Everything in this repo is BSD style license unless otherwise specified.

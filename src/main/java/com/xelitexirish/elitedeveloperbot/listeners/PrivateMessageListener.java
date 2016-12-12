@@ -4,9 +4,10 @@ import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.UserPrivs;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
-import net.dv8tion.jda.entities.Guild;
-import net.dv8tion.jda.entities.User;
-import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
+import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 
 public class PrivateMessageListener {
 
@@ -20,7 +21,7 @@ public class PrivateMessageListener {
                 for (int x = 1; x < messageSplit.length; x++) {
                     playingBuilder.append(messageSplit[x] + " ");
                 }
-                event.getJDA().getAccountManager().setGame(playingBuilder.toString());
+                event.getJDA().getPresence().setGame(Game.of(playingBuilder.toString()));
             } else {
 
                 for (Guild guild : event.getJDA().getGuilds()) {
@@ -40,11 +41,11 @@ public class PrivateMessageListener {
                     reportBuilder.append(messageSplit[x] + " ");
                 }
                 for (User staffUser : UserPrivs.getAllStaff()) {
-                    staffUser.getPrivateChannel().sendMessage(event.getAuthor().getUsername() + " has sent the following report: " + reportBuilder.toString());
+                    staffUser.getPrivateChannel().sendMessage(event.getAuthor().getName() + " has sent the following report: " + reportBuilder.toString());
                 }
                 event.getAuthor().getPrivateChannel().sendMessage("Thank you for submitting your report.  Staff will get back to you shortly");
             } else {
-                if (!event.getAuthor().getId().equals(Main.jda.getSelfInfo().getId())) {
+                if (!event.getAuthor().getId().equals(Main.jda.getSelfUser().getId())) {
                     BotLogger.messageLog("PM", message);
                 }
             }

@@ -7,7 +7,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
 
-public class PlayerIdCommand implements ICommand {
+public class PlayerIDCommand implements ICommand {
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {

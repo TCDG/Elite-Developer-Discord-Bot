@@ -3,11 +3,10 @@ package com.xelitexirish.elitedeveloperbot.listeners;
 import com.xelitexirish.elitedeveloperbot.Main;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
-import net.dv8tion.jda.entities.Guild;
-import net.dv8tion.jda.entities.User;
-import net.dv8tion.jda.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.events.guild.member.GuildMemberNickChangeEvent;
-import net.dv8tion.jda.events.user.UserNameUpdateEvent;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberNickChangeEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -30,70 +29,62 @@ public class BadUsernameListener {
                 e.printStackTrace();
             }
         }
-
-
         fillList();
     }
 
     public static void onUserJoin(GuildMemberJoinEvent event) {
-        String username = event.getUser().getUsername();
-
+        String username = event.getMember().getEffectiveName();
         Iterator<String> iterator = blockedWords.iterator();
         while (iterator.hasNext()) {
             String word = iterator.next();
-
             if (StringUtils.containsIgnoreCase(username, word)) {
-                preformAction(event.getUser(), event.getGuild());
+                preformAction(event.getMember().getUser(), event.getGuild());
             }
         }
     }
 
     public static void onUsernameChange(GuildMemberNickChangeEvent event) {
-
-        String username = event.getUser().getUsername();
-
+        String username = event.getMember().getEffectiveName();
         Iterator<String> iterator = blockedWords.iterator();
         while (iterator.hasNext()) {
             String word = iterator.next();
-
             if (StringUtils.containsIgnoreCase(username, word)) {
-                preformAction(event.getUser(), event.getGuild());
+                preformAction(event.getMember().getUser(), event.getGuild());
             }
         }
     }
 
     private static void preformAction(User user, Guild guild) {
-        user.getPrivateChannel().sendMessage("Your username was deemed inappropriate by staff, please contact staff via twitter @ScammerSubSSL");
-        guild.getManager().ban(user, 1);
-        guild.getManager().update();
-
-        MessageUtils.sendMessageToStaffChat(Main.jda, "``" + user.getUsername() + "``" + " had a bad username and has been banned.");
-        BotLogger.log("Bad Username", user.getUsername() + " had a bad username and has been banned.");
+        if (!user.hasPrivateChannel()) {
+            user.openPrivateChannel().queue(channel -> {
+                channel.sendMessage("Your username was deemed inappropriate by staff, please contact staff via Twitter @ScammerSubSSL").queue();
+            });
+        } else {
+            user.getPrivateChannel().sendMessage("Your username was deemed inappropriate by staff, please contact staff via Twitter @ScammerSubSSL").queue();
+        }
+        guild.getController().ban(user, 1).queue();
+        MessageUtils.sendMessageToStaffChat(Main.jda, "``" + user.getName() + "``" + " had a bad username and has been banned.");
+        BotLogger.log("Bad Username", user.getName() + " had a bad username and has been banned.");
     }
 
     private static void fillList() {
         if (blockedWords.isEmpty()) {
-
             try {
                 Scanner scanner = new Scanner(blockedNames);
                 while (scanner.hasNextLine()) {
                     blockedWords.add(scanner.nextLine());
                 }
-
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
     public static boolean isBadUsername(User user){
-        String username = user.getUsername();
-
+        String username = user.getName();
         Iterator<String> iterator = blockedWords.iterator();
         while (iterator.hasNext()) {
             String word = iterator.next();
-
             if (StringUtils.containsIgnoreCase(username, word)) {
                 return true;
             }
