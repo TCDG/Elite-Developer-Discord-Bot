@@ -5,7 +5,7 @@ public class Constants {
      * These are the defaults for Scammer Sub Lounge - please change your own values in the config.
      */
 
-    public static final String COMMAND_PREFIX = "/devex ";
+    public static final String COMMAND_PREFIX = "/dev ";
     public static final String DISCORD_COMMAND_PREFIX = "/";
 
     public static final double OLD_VERSION = 2;
