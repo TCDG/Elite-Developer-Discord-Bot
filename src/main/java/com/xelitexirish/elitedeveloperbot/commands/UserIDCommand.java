@@ -1,3 +1,15 @@
+/**
+ * This class was created by <KingDGrizzle>. It's distributed as
+ * part of the Elite Developer Bot Project. Get the Source Code on GitHub:
+ * https://github.com/TCDG and search for the Elite Dev Bot project
+ * <p>
+ * Copyright (c) 2016 The Collective Developer Group. All rights reserved.
+ * <p>
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that this copyright block is included!
+ * <p>
+ * File Created @ [ 14.12.2016, 20:35 (GMT +02) ]
+ */
 package com.xelitexirish.elitedeveloperbot.commands;
 
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
@@ -7,7 +19,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
 
-public class PlayerIdCommand implements ICommand {
+public class UserIDCommand implements ICommand {
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
@@ -27,9 +39,7 @@ public class PlayerIdCommand implements ICommand {
             MessageEmbed embed = eb.build();
             event.getTextChannel().sendMessage(embed);
             if (!event.getAuthor().hasPrivateChannel()) {
-                event.getAuthor().openPrivateChannel().queue(channel -> {
-                    channel.sendMessage(embed).queue();
-                });
+                event.getAuthor().openPrivateChannel().queue(channel -> channel.sendMessage(embed).queue());
             } else {
                 event.getAuthor().getPrivateChannel().sendMessage(embed).queue();
             }
@@ -46,6 +56,6 @@ public class PlayerIdCommand implements ICommand {
 
     @Override
     public String getTag() {
-        return "playerid";
+        return "userid";
     }
 }

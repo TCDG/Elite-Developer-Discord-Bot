@@ -9,6 +9,7 @@ import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import twitter4j.PagableResponseList;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
@@ -16,6 +17,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public class AdminCommand implements ICommand {
 
@@ -83,50 +86,36 @@ public class AdminCommand implements ICommand {
                         event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Use '" + Constants.COMMAND_PREFIX + "admin username <user id>'")).queue();
                     }
                 } else if (args[0].equalsIgnoreCase("clear")) {
-                    MessageChannel messageChannel = event.getChannel();
-                    int clearedMessages = 0;
-                    Collection<Message> messageCollection = new ArrayList<>();
                     if (args.length == 2) {
-                        int clearMessages = Integer.parseInt(args[1]);
-                        List<Message> recentMessages = new ArrayList<>();
+                        int cleanMessages = Integer.parseInt(args[1]);
+                        int deletedMessagesCount = 0;
+                        TextChannel channel = event.getTextChannel();
+                        List<Message> deletedMessages = new ArrayList<>();
                         try {
-                            recentMessages = messageChannel.getHistory().retrievePast(clearMessages).block();
+                            CompletableFuture<List<Message>> task = new CompletableFuture<>();
+                            channel.getHistory().retrievePast(cleanMessages).queue(task::complete, task::completeExceptionally);
+                            List<Message> list = task.get();
+                            for (Message msg : list) {
+                                if (msg.getAuthor().getId().equals(Main.jda.getSelfUser().getId())) {
+                                    deletedMessages.add(msg);
+                                    deletedMessagesCount++;
+                                } else if (msg.getRawContent().startsWith(Constants.COMMAND_PREFIX) || msg.getRawContent().startsWith(Constants.DISCORD_COMMAND_PREFIX)) {
+                                    deletedMessages.add(msg);
+                                    deletedMessagesCount++;
+                                }
+                            }
+                            channel.deleteMessages(deletedMessages).queue();
+                            deletedMessages.clear();
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            BotLogger.debug("Exception Occured", e);
                         }
-                        for (Message message : recentMessages) {
-                            if (message.getAuthor().getId().equals(Main.jda.getSelfUser().getId())) {
-                                messageCollection.add(message);
-                                clearedMessages++;
-                            }
-                            if (message.getContent().startsWith(Constants.COMMAND_PREFIX)) {
-                                message.deleteMessage();
-                                clearedMessages++;
-                            }
-                        }
-                        event.getTextChannel().deleteMessages(messageCollection).queue();
+                        event.getChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Cleared " + deletedMessagesCount + " messages that start with the bot prefix / bots messages!")).queue();
                     } else {
-                        List<Message> recentMessages = new ArrayList<>();
-                        try {
-                             recentMessages = messageChannel.getHistory().retrievePast(10).block();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        for (Message message : recentMessages) {
-                            if (message.getAuthor().getId().equals(Main.jda.getSelfUser().getId())) {
-                                message.deleteMessage();
-                                clearedMessages++;
-                            }
-                            if (message.getContent().startsWith(Constants.COMMAND_PREFIX)) {
-                                message.deleteMessage();
-                                clearedMessages++;
-                            }
-                        }
+                        event.getChannel().sendMessage(MessageUtils.wrapMessageInEmbed("You must include a number of messages to search and delete!\nMinimum 2, maximum 100!")).queue();
                     }
-                    event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Cleared " + clearedMessages + " messages from chat.")).queue();
                 } else if (args[0].equalsIgnoreCase("tweet")) {
                     if (args.length == 2) {
-                        event.getTextChannel().sendMessage(help());
+                        event.getTextChannel().sendMessage(help()).queue();
                     } else {
                         StringBuilder builder = new StringBuilder();
                         for (int x = 0; x < args.length; x++) {
@@ -134,7 +123,7 @@ public class AdminCommand implements ICommand {
                         }
                         TwitterHandler.sendTweet(event.getAuthor(), event.getTextChannel(), builder.toString());
                     }
-                } else if (args[0].equalsIgnoreCase("messages")){
+                } else if (args[0].equalsIgnoreCase("messages")) {
                     if (Main.enableAutoMessages = true) {
                         Main.enableAutoMessages = false;
                     } else {
@@ -142,12 +131,11 @@ public class AdminCommand implements ICommand {
                     }
                     MessageUtils.sendMessageToStaffChat(event.getJDA(), "Setting updated, currently: " + Main.enableAutoMessages);
                     BotLogger.log("Display Message", event.getAuthor().getName() + " has updated the setting to: " + Main.enableAutoMessages);
-
                 } else {
                     sendAdminHelpMessage(event);
                 }
             }
-        } else {
+        } else{
             MessageUtils.sendNoPermissionMessage(event.getTextChannel());
         }
     }
@@ -158,12 +146,15 @@ public class AdminCommand implements ICommand {
     }
 
     @Override
-    public void executed(boolean success, MessageReceivedEvent event) {}
+    public void executed(boolean success, MessageReceivedEvent event) {
+
+    }
 
     @Override
     public String getTag() {
         return "admin";
     }
+
 
     private static void sendAdminHelpMessage(MessageReceivedEvent event) {
         StringBuilder builder = new StringBuilder();

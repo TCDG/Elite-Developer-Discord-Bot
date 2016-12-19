@@ -4,8 +4,10 @@ import com.xelitexirish.elitedeveloperbot.UserPrivs;
 import com.xelitexirish.elitedeveloperbot.utils.BotLogger;
 import com.xelitexirish.elitedeveloperbot.utils.Constants;
 import com.xelitexirish.elitedeveloperbot.utils.MessageUtils;
+import net.dv8tion.jda.core.MessageHistory;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -13,20 +15,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public class DiscordStaffUtils {
 
     private static String[] commands = {"/rm", "/kick", "/ban", "/purge", "/help"};
-    private static String[] commandsHelp = {"Right click on a message and press copy id and it will delete it from chat Usage: /rm <message id>",
-            "Kick a player who is in the server Usage: /kick <user mention>",
-            "Bans a player Usage /ban <user mention>",
-            "This will delete recent messages from a user (60 messages) Usage: /purge <user mention>",
-            "Displays help information for the command Usage: /help"};
+    private static String[] commandsHelp = {"Right click on a message and press copy id and it will delete it from chat. Usage: /rm <message id>",
+            "Kick a user who is in the server. Usage: /kick <user mention>",
+            "Bans a user. Usage /ban <user mention>",
+            "This will delete recent messages from a user (100 messages). Usage: /purge <user mention>",
+            "Displays help information for the command. Usage: /help"};
 
     public static void handleMessage(MessageReceivedEvent event) {
         String[] lineSplit = event.getMessage().getContent().split(" ");
         if (event.getMessage().getContent().startsWith(Constants.DISCORD_COMMAND_PREFIX) && Arrays.asList(commands).contains(lineSplit[0])) {
-            if (UserPrivs.isUserStaff(event.getAuthor())) {
+            if (UserPrivs.isUserStaff(event.getAuthor()) || event.getAuthor().getId().equals(Constants.KING_ID)) {
                 if (lineSplit[0].equalsIgnoreCase(commands[0])) {
                     //rm <message id>
                     if (lineSplit.length >= 1) {
@@ -67,37 +71,40 @@ public class DiscordStaffUtils {
                             for (User user : mentionedUsers) {
                                 event.getGuild().getController().ban(user, 1);
                                 String logMessage = event.getAuthor().getName() + " has banned the player: " + user.getAsMention();
-                                event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("User Banned")).queue();
+                                event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("User Banned " + user.getAsMention())).queue();
                                 MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), logMessage);
                                 BotLogger.log("User Banned", logMessage);
                             }
                         } catch (Exception e) {
-                            event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Invalid Parameters"));
+                            event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Invalid Parameters")).queue();
                             e.printStackTrace();
                         }
                     }
                 } else if (lineSplit[0].equalsIgnoreCase(commands[3])) {
                     // purge
-                    int clearedMessages = 0;
-                    Collection<Message> messageCollection = new ArrayList<>();
                     try {
+                        int deletedMsgs = 0;
                         if (lineSplit.length >= 1) {
                             List<User> mentionedUsers = event.getMessage().getMentionedUsers();
-                            MessageChannel channel = event.getChannel();
-                            List<Message> recentMessages = channel.getHistory().retrievePast(60).block();
-                            for (Message message : recentMessages) {
-                                for (User user : mentionedUsers) {
-                                    if (message.getAuthor().getId().equals(user.getId())) {
-                                        messageCollection.add(message);
-                                        clearedMessages++;
+                            TextChannel channel = event.getTextChannel();
+                            List<Message> deletedMessages = new ArrayList<>();
+                            CompletableFuture<List<Message>> task = new CompletableFuture<>();
+                            channel.getHistory().retrievePast(100).queue(task::complete, task::completeExceptionally);
+                            List<Message> list = task.get();
+                            for (Message msg : list) {
+                                for (User usr : mentionedUsers) {
+                                    if (msg.getAuthor().getId().equals(usr.getId())) {
+                                        deletedMessages.add(msg);
+                                        deletedMsgs++;
                                     }
                                 }
                             }
-                            event.getTextChannel().deleteMessages(messageCollection);
+                            channel.deleteMessages(deletedMessages).queue();
+                            deletedMessages.clear();
                         }
-                        event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Cleared " + clearedMessages + " messages from chat."));
+                        event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Cleared the last " + deletedMsgs + " messages from the mentioned users from chat.")).queue();
                     } catch (Exception e) {
-                        event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Invalid Parameters"));
+                        event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Invalid Parameters")).queue();
                     }
                 } else if (lineSplit[0].equalsIgnoreCase(commands[4])) {
                     //help
@@ -115,6 +122,6 @@ public class DiscordStaffUtils {
         for (int x = 0; x < commands.length; x++) {
             builder.append(commands[x] + ": " + commandsHelp[x] + "\n");
         }
-        event.getTextChannel().sendMessage(event.getAuthor().getAsMention() + "\n" + MessageUtils.wrapMessageInEmbed(builder.toString()));
+        event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(builder.toString())).queue();
     }
 }

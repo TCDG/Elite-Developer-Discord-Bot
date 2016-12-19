@@ -31,7 +31,6 @@ public class UserPrivs {
                 }
             }
         }
-        //if (user.getId().equals(Constants.KING_ID)) return true;
         return false;
     }
 
