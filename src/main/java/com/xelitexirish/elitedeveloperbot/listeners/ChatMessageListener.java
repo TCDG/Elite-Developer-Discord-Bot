@@ -35,7 +35,7 @@ public class ChatMessageListener {
     }
 
     public static void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        String welcomeMessage = "Welcome " + event.getMember().getAsMention() + " to ** " + event.getGuild().getName() + "**";
+        String welcomeMessage = "Welcome " + event.getMember().getAsMention() + " to **" + event.getGuild().getName() + "**";
         if (Main.enableAutoMessages) {
             event.getGuild().getPublicChannel().sendMessage(welcomeMessage).queue();
         } else {
