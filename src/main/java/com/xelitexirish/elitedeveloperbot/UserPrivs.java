@@ -21,7 +21,6 @@ public class UserPrivs {
     }
 
     public static boolean isUserAdmin(User user) {
-
         if (adminUsers.contains(user)) {
             return true;
         } else {

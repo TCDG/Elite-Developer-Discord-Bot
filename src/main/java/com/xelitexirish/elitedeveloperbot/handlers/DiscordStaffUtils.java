@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 public class DiscordStaffUtils {
 
-    private static String[] commands = {"/rm", "/kick", "/ban", "/purge", "/help"};
+    private static String[] commands = {"/rm", "/kick", "/ban", "//purge", "/help"};
     private static String[] commandsHelp = {"Right click on a message and press copy id and it will delete it from chat. Usage: /rm <message id>",
             "Kick a user who is in the server. Usage: /kick <user mention>",
             "Bans a user. Usage /ban <user mention>",
@@ -83,28 +83,33 @@ public class DiscordStaffUtils {
                 } else if (lineSplit[0].equalsIgnoreCase(commands[3])) {
                     // purge
                     try {
+                        int historyLookup = Integer.parseInt(lineSplit[1]);
                         int deletedMsgs = 0;
-                        if (lineSplit.length >= 1) {
+                        if (lineSplit.length >= 2) {
                             List<User> mentionedUsers = event.getMessage().getMentionedUsers();
-                            TextChannel channel = event.getTextChannel();
-                            List<Message> deletedMessages = new ArrayList<>();
-                            CompletableFuture<List<Message>> task = new CompletableFuture<>();
-                            channel.getHistory().retrievePast(100).queue(task::complete, task::completeExceptionally);
-                            List<Message> list = task.get();
-                            for (Message msg : list) {
-                                for (User usr : mentionedUsers) {
-                                    if (msg.getAuthor().getId().equals(usr.getId())) {
-                                        deletedMessages.add(msg);
-                                        deletedMsgs++;
+                            if (!mentionedUsers.isEmpty()) {
+                                TextChannel channel = event.getTextChannel();
+                                List<Message> deletedMessages = new ArrayList<>();
+                                CompletableFuture<List<Message>> task = new CompletableFuture<>();
+                                channel.getHistory().retrievePast(historyLookup).queue(task::complete, task::completeExceptionally);
+                                List<Message> list = task.get();
+                                for (Message msg : list) {
+                                    for (User usr : mentionedUsers) {
+                                        if (msg.getAuthor().getId().equals(usr.getId())) {
+                                            deletedMessages.add(msg);
+                                            deletedMsgs++;
+                                        }
                                     }
                                 }
+                                channel.deleteMessages(deletedMessages).queue();
+                                deletedMessages.clear();
+                                event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Cleared the last " + deletedMsgs + " messages from the mentioned users from chat.")).queue();
+                            } else {
+                                event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("You didn't mention anyone! Please use the syntax `" + commands[3] + " number @user`. You can mention multiple users!")).queue();
                             }
-                            channel.deleteMessages(deletedMessages).queue();
-                            deletedMessages.clear();
                         }
-                        event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Cleared the last " + deletedMsgs + " messages from the mentioned users from chat.")).queue();
                     } catch (Exception e) {
-                        event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Invalid Parameters")).queue();
+                        event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Invalid Parameters!\n You can use a number between 2 and 100! (Inclusive)")).queue();
                     }
                 } else if (lineSplit[0].equalsIgnoreCase(commands[4])) {
                     //help

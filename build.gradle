@@ -7,16 +7,15 @@ repositories {
 version = "2.0"
 //create a single Jar with all dependencies (just change the MainClass)
 task fatJar(type: Jar) {
-	manifest {
+    manifest {
         attributes 'Implementation-Title': 'Elite Dev Bot',
-        	'Implementation-Version': version,
-        	'Main-Class': 'com.xelitexirish.elitedeveloperbot.Main'
+                'Implementation-Version': version,
+                'Main-Class': 'com.xelitexirish.elitedeveloperbot.Main'
     }
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
-
 dependencies {
     
     compile 'net.dv8tion:JDA:3.0.BETA_103'

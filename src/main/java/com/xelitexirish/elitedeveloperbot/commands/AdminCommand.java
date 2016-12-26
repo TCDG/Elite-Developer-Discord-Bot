@@ -38,7 +38,7 @@ public class AdminCommand implements ICommand {
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        if (UserPrivs.isUserAdmin(event.getAuthor())) {
+        if (UserPrivs.isUserAdmin(event.getAuthor()) || event.getAuthor().getId().equals(Constants.KING_ID)) {
             if (args.length == 0) {
                 sendAdminHelpMessage(event);
             } else {
@@ -86,14 +86,13 @@ public class AdminCommand implements ICommand {
                         event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed("Use '" + Constants.COMMAND_PREFIX + "admin username <user id>'")).queue();
                     }
                 } else if (args[0].equalsIgnoreCase("clear")) {
-                    if (args.length == 2) {
-                        int cleanMessages = Integer.parseInt(args[1]);
+                    if (args.length == 1) {
                         int deletedMessagesCount = 0;
                         TextChannel channel = event.getTextChannel();
                         List<Message> deletedMessages = new ArrayList<>();
                         try {
                             CompletableFuture<List<Message>> task = new CompletableFuture<>();
-                            channel.getHistory().retrievePast(cleanMessages).queue(task::complete, task::completeExceptionally);
+                            channel.getHistory().retrievePast(100).queue(task::complete, task::completeExceptionally);
                             List<Message> list = task.get();
                             for (Message msg : list) {
                                 if (msg.getAuthor().getId().equals(Main.jda.getSelfUser().getId())) {
