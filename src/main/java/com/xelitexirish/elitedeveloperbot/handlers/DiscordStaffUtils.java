@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 public class DiscordStaffUtils {
 
-    private static String[] commands = {"/rm", "/kick", "/ban", "//purge", "/help"};
+    private static String[] commands = {"/rm", "/kick", "/ban", "/purge", "/help"};
     private static String[] commandsHelp = {"Right click on a message and press copy id and it will delete it from chat. Usage: /rm <message id>",
             "Kick a user who is in the server. Usage: /kick <user mention>",
             "Bans a user. Usage /ban <user mention>",
