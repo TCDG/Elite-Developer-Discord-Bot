@@ -1,9 +1,9 @@
 <img src="icon.jpg" align="right" />
-# Elite Developer Discord Bot [![Awesome](https://travis-ci.org/TCDG/Elite-Developer-Discord-Bot.svg?branch=master)](https://travis-ci.org/TCDG/Elite-Developer-Discord-Bot)
+# Elite Developer Neo Bot [![Awesome](https://travis-ci.org/TCDG/Elite-Developer-Discord-Bot.svg?branch=neo)](https://travis-ci.org/TCDG/Elite-Developer-Discord-Bot)
 
 ## Installation
 
-1. To generate the config file for Elite-Dev-Bot, first run the jar, it will error out but it would have created a config file in the working directory.
+1. To generate the config file for Elite Developer Neo Bot, first run the jar, it will error out but it would have created a config file in the working directory.
 2. Edit the config options for your own discord server, all of the values except the twitter keys are required!
 
 ## Contributing
@@ -20,7 +20,8 @@ Elite Developer Bot was created because a server I was active in needed some spe
 
 ## Credits
 
-Author: XeliteXirish (www.xelitexirish.com) Porter: KingDGrizzle
+Author of the original code: XeliteXirish (www.xelitexirish.com)
+Author of the Neo Code: KingDGrizzle
 
 ## License
 Everything in this repo is BSD style license unless otherwise specified.
