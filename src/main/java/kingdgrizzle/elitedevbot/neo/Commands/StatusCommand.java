@@ -26,6 +26,7 @@ import java.util.Date;
  * File Created @ [ 30.12.2016, 12:16 (GMT +02) ]
  */
 public class StatusCommand implements ICommand {
+    
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
         return true;
