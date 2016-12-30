@@ -12,6 +12,7 @@
  */
 package kingdgrizzle.elitedevbot.neo.Listeners;
 
+import kingdgrizzle.elitedevbot.neo.Handlers.SpammerHelper;
 import kingdgrizzle.elitedevbot.neo.Main;
 import kingdgrizzle.elitedevbot.neo.Utils.Reference;
 import kingdgrizzle.elitedevbot.neo.Utils.UserPrivs;
@@ -61,6 +62,7 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
+        SpammerHelper.onUserJoin(event);
         UserCountListener.onGuildMemberJoin(event);
     }
 

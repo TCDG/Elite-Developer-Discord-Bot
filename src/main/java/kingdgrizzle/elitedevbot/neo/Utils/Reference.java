@@ -12,6 +12,8 @@
  */
 package kingdgrizzle.elitedevbot.neo.Utils;
 
+import kingdgrizzle.elitedevbot.neo.Main;
+
 public class Reference {
 
     public static final String COMMAND_PREFIX = "/devneo ";
@@ -19,9 +21,11 @@ public class Reference {
 
     public static final String VERSION = "v1.0.0";
 
-    public static final String EMBED_AUTHOR = "Elite Developer Neo";
+    public static String EMBED_AUTHOR = "";
+    final String EMBED_AUTHOR_OLD = "Elite Developer Neo";
     public static final String EMBED_AUTHOR_URL = "https://github.com/TCDG/Elite-Developer-Discord-Bot/tree/neo";
-    public static final String EMBED_AUTHOR_IMAGE = "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/icon.jpg";
+    public static String EMBED_AUTHOR_IMAGE = "";
+    final String EMBED_AUTHOR_IMAGE_OLD = "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/icon.jpg";
 
     public static final String EMBED_FOOTER_NAME = "KingDGrizzle (Vlad)";
     public static final String EMBED_FOOTER_IMAGE = "https://cdn.discordapp.com/avatars/139836912335716352/c70d47243ae671a5120daed2c085ab00.jpg";

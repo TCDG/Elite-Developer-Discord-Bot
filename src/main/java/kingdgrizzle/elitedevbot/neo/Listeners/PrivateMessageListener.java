@@ -12,10 +12,12 @@
  */
 package kingdgrizzle.elitedevbot.neo.Listeners;
 
+import kingdgrizzle.elitedevbot.neo.API.ShardingManager;
 import kingdgrizzle.elitedevbot.neo.Main;
 import kingdgrizzle.elitedevbot.neo.Utils.BotLogger;
 import kingdgrizzle.elitedevbot.neo.Utils.MessageUtils;
 import kingdgrizzle.elitedevbot.neo.Utils.Reference;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Icon;
@@ -59,9 +61,21 @@ public class PrivateMessageListener {
                 }
             } else if(msg.equals("servers")) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("I'm currently on the following " + par1Event.getJDA().getGuilds().size() + " guilds:\n");
-                for (Guild guild : par1Event.getJDA().getGuilds()) {
-                    sb.append("\t-" + guild.getName() + "\n");
+                String guildCount = "";
+                if (Main.sharding) {
+                    guildCount += ShardingManager.getAllGuilds().size();
+                } else {
+                    guildCount += par1Event.getJDA().getGuilds().size();
+                }
+                sb.append("I'm currently on the following " + guildCount + " guilds:\n");
+                if (Main.sharding) {
+                    for (Guild guild : ShardingManager.getAllGuilds()) {
+                        sb.append("\t-" + guild.getName() + "\n");
+                    }
+                } else {
+                    for (Guild guild : Main.jda.getGuilds()) {
+                        sb.append("\t-" + guild.getName() + "\n");
+                    }
                 }
                 par1Event.getAuthor().openPrivateChannel().queue(channel -> channel.sendMessage(MessageUtils.wrapMessageInEmbed(Color.cyan, sb.toString())).queue());
             } else if (msg.equals("reload")) {
@@ -88,8 +102,16 @@ public class PrivateMessageListener {
 //                }
                 par1Event.getAuthor().openPrivateChannel().queue(channel -> channel.sendMessage("Thank you for submitting your report. Staff will get back to you shortly!").queue());
             } else {
-                if (!par1Event.getAuthor().getId().equals(Main.jda.getSelfUser().getId())) {
-                    BotLogger.pm(par1Event.getAuthor().getName() + "sent me this PM: " + msg);
+                if (Main.sharding) {
+                    for (JDA jda : ShardingManager.shards) {
+                        if (!par1Event.getAuthor().getId().equals(jda.getSelfUser().getId())) {
+                            BotLogger.pm(par1Event.getAuthor().getName() + " sent me this PM: " + msg);
+                        }
+                    }
+                } else {
+                    if (!par1Event.getAuthor().getId().equals(Main.jda.getSelfUser().getId())) {
+                        BotLogger.pm(par1Event.getAuthor().getName() + " sent me this PM: " + msg);
+                    }
                 }
             }
         }

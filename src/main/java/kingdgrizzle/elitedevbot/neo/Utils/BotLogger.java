@@ -70,4 +70,13 @@ public class BotLogger {
     public static void listHashMap(HashMap map) {
         System.out.println("[Elite Developer Neo: HashMap] " + map.toString());
     }
+
+    /**
+     * Debug Information for Sharding
+     * @param shardID = the exact shard it that just connected + 1
+     * @param shardTotal = the total amount of shards the bot should make
+     */
+    public static void logShardLogging(int shardID, int shardTotal) {
+        log("[Elite Dev Bot Neo: SHARDING] Connected using Shard ID " + (shardID + 1) + " out of the total " + shardTotal + " shards!");
+    }
 }

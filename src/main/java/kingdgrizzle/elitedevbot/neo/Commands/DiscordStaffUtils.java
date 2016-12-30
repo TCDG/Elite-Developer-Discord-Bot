@@ -144,6 +144,7 @@ public class DiscordStaffUtils {
                         event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.red, "Invalid Parameters!\nYou can use a number between 2 and 100! (Inclusive)\nThe bot might not have **Manage Messages** Permission. Without that permission, the bot can't delete any messages!")).queue();
                     }
                 } else if (lineSplit[0].substring(Reference.DISCORD_COMMAND_PREFIX.length()).equals(commands[4])) {
+                    //RM Handler
                     if (lineSplit.length >= 1) {
                         String messageId = lineSplit[1];
                         try {

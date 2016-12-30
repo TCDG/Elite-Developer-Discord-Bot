@@ -12,6 +12,7 @@
  */
 package kingdgrizzle.elitedevbot.neo.Utils;
 
+import kingdgrizzle.elitedevbot.neo.API.ShardingManager;
 import kingdgrizzle.elitedevbot.neo.Main;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
@@ -39,7 +40,11 @@ public class UserPrivs {
                 for (int x = 0; x < jsonArray.length(); x++) {
                     JSONObject jsonItem = jsonArray.getJSONObject(x);
                     String id = String.valueOf(jsonItem.get("id"));
-                    staffUsers.add(Main.jda.getUserById(id));
+                    if (Main.sharding) {
+                        staffUsers.add(ShardingManager.shards.get(0).getUserById(id));
+                    } else {
+                        staffUsers.add(Main.jda.getUserById(id));
+                    }
                 }
             }
         } catch (IOException e) {

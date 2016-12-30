@@ -12,6 +12,7 @@
  */
 package kingdgrizzle.elitedevbot.neo.Commands.User;
 
+import kingdgrizzle.elitedevbot.neo.API.ShardingManager;
 import kingdgrizzle.elitedevbot.neo.Commands.ICommand;
 import kingdgrizzle.elitedevbot.neo.Main;
 import kingdgrizzle.elitedevbot.neo.Utils.Reference;
@@ -41,12 +42,28 @@ public class ProfileCommand implements ICommand {
                 roleNames += role.getName() + ", ";
             }
             EmbedBuilder eb = new EmbedBuilder();
+            String status = "";
+            switch (event.getAuthor().getJDA().getPresence().getStatus()) {
+                case DO_NOT_DISTURB:
+                    status = "Do Not Disturb";
+                    break;
+                case IDLE:
+                    status = "Idle";
+                    break;
+                case ONLINE:
+                    status = "Online";
+                    break;
+                case OFFLINE:
+                case INVISIBLE:
+                    status = "Offline or Invisible";
+                    break;
+            }
             eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
             eb.setColor(Color.green);
             eb.setTitle("Profile Information for: **" + user.getName() + "**");
-            eb.addField("__**Username**__", user.getName(), true);
+            eb.addField("__**Username**__", user.getAsMention(), true);
             eb.addField("__**User ID**__", user.getId(), true);
-            eb.addField("__**Status**__", event.getMember().getOnlineStatus().toString().toLowerCase(), true);
+            eb.addField("__**Status**__", status, true);
             eb.addField("__**Discriminator**__", user.getDiscriminator(), true);
             try {
                 eb.addField("__**Ranks**__", roleNames.substring(0, roleNames.length() - 2), true);
@@ -66,12 +83,28 @@ public class ProfileCommand implements ICommand {
                 roleNames += role.getName() + ", ";
             }
             EmbedBuilder eb = new EmbedBuilder();
+            String status = "";
+            switch (event.getGuild().getMember(mentionedUser).getOnlineStatus()) {
+                case DO_NOT_DISTURB:
+                    status = "Do Not Disturb";
+                    break;
+                case IDLE:
+                    status = "Idle";
+                    break;
+                case ONLINE:
+                    status = "Online";
+                    break;
+                case OFFLINE:
+                case INVISIBLE:
+                    status = "Offline or Invisible";
+                    break;
+            }
             eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
             eb.setColor(Color.green);
             eb.setTitle("Profile Information for: **" + mentionedUser.getName() + "**");
-            eb.addField("__**Username**__", mentionedUser.getName(), true);
+            eb.addField("__**Username**__", mentionedUser.getAsMention(), true);
             eb.addField("__**User ID**__", mentionedUser.getId(), true);
-            eb.addField("__**Status**__", event.getGuild().getMember(mentionedUser).getOnlineStatus().toString().toLowerCase(), true);
+            eb.addField("__**Status**__", status, true);
             eb.addField("__**Discriminator**__", mentionedUser.getDiscriminator(), true);
             try {
                 eb.addField("__**Ranks**__", roleNames.substring(0, roleNames.length() - 2), true);
@@ -84,8 +117,14 @@ public class ProfileCommand implements ICommand {
             if (mentionedUser.isBot() || mentionedUser.isFake()) {
                 eb.addField("__**Fake / Bot**__", "Yes", true);
             }
-            if (mentionedUser.getId().equals(Main.jda.getSelfUser().getId())) {
-                eb.addField("__**Uptime**__", new SimpleDateFormat("HH:mm:ss").format(new Date(new Date().getTime() - Main.uptime - 7200000)), true);
+            if (Main.sharding) {
+                if (mentionedUser.getId().equals(ShardingManager.getBotID())) {
+                    eb.addField("__**Uptime**__", new SimpleDateFormat("HH:mm:ss").format(new Date(new Date().getTime() - Main.uptime - 7200000)), true);
+                }
+            } else {
+                if (mentionedUser.getId().equals(Main.jda.getSelfUser().getId())) {
+                    eb.addField("__**Uptime**__", new SimpleDateFormat("HH:mm:ss").format(new Date(new Date().getTime() - Main.uptime - 7200000)), true);
+                }
             }
             eb.setThumbnail(mentionedUser.getEffectiveAvatarUrl());
             MessageEmbed embed = eb.build();

@@ -12,9 +12,11 @@
  */
 package kingdgrizzle.elitedevbot.neo;
 
+import kingdgrizzle.elitedevbot.neo.API.ShardingManager;
 import kingdgrizzle.elitedevbot.neo.Commands.Guild.GuildCommand;
 import kingdgrizzle.elitedevbot.neo.Commands.HelpCommand;
 import kingdgrizzle.elitedevbot.neo.Commands.ICommand;
+import kingdgrizzle.elitedevbot.neo.Commands.StatusCommand;
 import kingdgrizzle.elitedevbot.neo.Commands.User.ProfileCommand;
 import kingdgrizzle.elitedevbot.neo.Handlers.ConfigHandler;
 import kingdgrizzle.elitedevbot.neo.Listeners.BotListener;
@@ -44,6 +46,7 @@ public class Main {
     public static boolean enableUsernameChecker = true;
 
     public static boolean debugMode = true;
+    public static boolean sharding = false;
 
     public static long uptime = new Date().getTime();
 
@@ -58,17 +61,28 @@ public class Main {
             BotLogger.error("Please enter a valid discord token and try again.");
             System.exit(1);
         }
-        try {
-            jda = new JDABuilder(AccountType.BOT).setToken(DISCORD_TOKEN).setAudioEnabled(false).addListener(new BotListener()).buildBlocking();
-            jda.setAutoReconnect(true);
-            jda.getPresence().setGame(Game.of("Use '" + Reference.COMMAND_PREFIX + "help' to view the bot info!"));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (sharding) {
+            ShardingManager.init();
+        } else {
+            try {
+                jda = new JDABuilder(AccountType.BOT).setToken(DISCORD_TOKEN).addListener(new BotListener()).buildBlocking();
+                jda.setAutoReconnect(true);
+                jda.getPresence().setGame(Game.of("Use '" + Reference.COMMAND_PREFIX + "help' to view the bot info!"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 //        SpellCheckerListener.init();
         registerCommands();
         UserPrivs.setupUsers();
         BadUsernameListener.init();
+        if (sharding) {
+            Reference.EMBED_AUTHOR = ShardingManager.shards.get(0).getSelfUser().getName();
+            Reference.EMBED_AUTHOR_IMAGE = ShardingManager.shards.get(0).getSelfUser().getEffectiveAvatarUrl();
+        } else {
+            Reference.EMBED_AUTHOR = jda.getSelfUser().getName();
+            Reference.EMBED_AUTHOR_IMAGE = jda.getSelfUser().getEffectiveAvatarUrl();
+        }
     }
 
     public static void registerCommands(){
@@ -76,6 +90,7 @@ public class Main {
         commands.put("id", new IDCommand());
         commands.put("profile", new ProfileCommand());
         commands.put("guild", new GuildCommand());
+        commands.put("status", new StatusCommand());
     }
 
     public static void handleCommand(CommandParser.CommandContainer cmd) {
