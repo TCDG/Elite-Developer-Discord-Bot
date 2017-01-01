@@ -68,8 +68,9 @@ public class HelpCommand implements ICommand {
         //eb.setFooter(Reference.EMBED_FOOTER_NAME, Reference.EMBED_FOOTER_IMAGE);
         String otherInfo = "";
         otherInfo += "The Bot Prefix is: `" + Reference.COMMAND_PREFIX + "`\n";
-        otherInfo += "The Staff Commands can be seen by entering: `" + Reference.DISCORD_COMMAND_PREFIX + "`\n";
-        otherInfo += "The current Bot Version is: `" + Reference.VERSION + "`";
+        otherInfo += "The Staff Commands can be seen by entering: `" + Reference.DISCORD_COMMAND_PREFIX + "help`\n";
+        otherInfo += "The Music Part of the bot can be accessed by typing `.help`";
+        otherInfo += "The current Bot Version is: `" + Reference.VERSION + "`\n";
         eb.addField("__**Other Info:**__", otherInfo, false);
         MessageEmbed embed = eb.build();
         event.getTextChannel().sendMessage(embed).queue();

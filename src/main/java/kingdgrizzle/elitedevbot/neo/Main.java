@@ -21,6 +21,7 @@ import kingdgrizzle.elitedevbot.neo.Commands.User.ProfileCommand;
 import kingdgrizzle.elitedevbot.neo.Handlers.ConfigHandler;
 import kingdgrizzle.elitedevbot.neo.Listeners.BotListener;
 import kingdgrizzle.elitedevbot.neo.Listeners.Moderation.BadUsernameListener;
+import kingdgrizzle.elitedevbot.neo.Music.MusicControl;
 import kingdgrizzle.elitedevbot.neo.Utils.BotLogger;
 import kingdgrizzle.elitedevbot.neo.Utils.CommandParser;
 import kingdgrizzle.elitedevbot.neo.Utils.Reference;
@@ -68,6 +69,7 @@ public class Main {
                 jda = new JDABuilder(AccountType.BOT).setToken(DISCORD_TOKEN).addListener(new BotListener()).buildBlocking();
                 jda.setAutoReconnect(true);
                 jda.getPresence().setGame(Game.of("Use '" + Reference.COMMAND_PREFIX + "help' to view the bot info!"));
+                jda.addEventListener(new MusicControl());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -77,8 +79,8 @@ public class Main {
         UserPrivs.setupUsers();
         BadUsernameListener.init();
         if (sharding) {
-            Reference.EMBED_AUTHOR = ShardingManager.shards.get(0).getSelfUser().getName();
-            Reference.EMBED_AUTHOR_IMAGE = ShardingManager.shards.get(0).getSelfUser().getEffectiveAvatarUrl();
+            Reference.EMBED_AUTHOR = ShardingManager.getBotName();
+            Reference.EMBED_AUTHOR_IMAGE = ShardingManager.getBotAvatar();
         } else {
             Reference.EMBED_AUTHOR = jda.getSelfUser().getName();
             Reference.EMBED_AUTHOR_IMAGE = jda.getSelfUser().getEffectiveAvatarUrl();
