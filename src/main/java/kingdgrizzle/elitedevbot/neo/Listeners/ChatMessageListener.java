@@ -43,9 +43,8 @@ public class ChatMessageListener {
                     SpellCheckerListener.handleMessage(event);
                 }
             }
-        } else if (event.getMessage().getRawContent().toLowerCase().startsWith(Reference.DISCORD_COMMAND_PREFIX)) {
-            DiscordStaffUtils.handleMessage(event);
         }
+        DiscordStaffUtils.handleMessage(event);
     }
 
 }
