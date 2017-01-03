@@ -1,3 +1,22 @@
+package kingdgrizzle.elitedevbot.neo.Listeners;
+
+import kingdgrizzle.elitedevbot.neo.Utils.BotLogger;
+import kingdgrizzle.elitedevbot.neo.Utils.JSONReader;
+import kingdgrizzle.elitedevbot.neo.Utils.MessageUtils;
+import kingdgrizzle.elitedevbot.neo.Utils.Reference;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * This class was created by <KingDGrizzle>. It's distributed as
  * part of the Elite-Dev-Bot-Neo Project. Get the Source Code on GitHub:
@@ -10,25 +29,6 @@
  * <p>
  * File Created @ [ 29.12.2016, 10:15 (GMT +02) ]
  */
-package kingdgrizzle.elitedevbot.neo.Listeners;
-
-import kingdgrizzle.elitedevbot.neo.Utils.JSONReader;
-import kingdgrizzle.elitedevbot.neo.Utils.MessageUtils;
-import kingdgrizzle.elitedevbot.neo.Utils.Reference;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.awt.*;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 public class SpellCheckerListener {
 
     private static File userBlacklist = new File("user_blacklist.json");
@@ -78,13 +78,7 @@ public class SpellCheckerListener {
     private static void notifyUser(User user, String baseWord, String dixordWord) {
         String message = "Oi you spelt " + baseWord + " wrong, it's spelt " + dixordWord;
         String blockMessage = "\n You can blacklist yourself from these messages by entering '" + Reference.COMMAND_PREFIX + "correction false' in chat";
-        if (!user.hasPrivateChannel()) {
-            user.openPrivateChannel().queue(channel -> {
-                channel.sendMessage(message + blockMessage).queue();
-            });
-        } else {
-            user.getPrivateChannel().sendMessage(message + blockMessage).queue();
-        }
+        user.openPrivateChannel().queue(c -> c.sendMessage(message + blockMessage).queue());
     }
 
     public static void reloadLists() {
@@ -94,74 +88,30 @@ public class SpellCheckerListener {
         loadBlackListData();
     }
 
-    public static void blockUser(Guild guild, User user, Boolean privateMsg) {
+    public static void blockUser(Guild guild, User user) {
         String userId = user.getId();
         blackListUsers.clear();
         loadBlackListData();
         if (blackListUsers.contains(userId)) {
-            if (!user.hasPrivateChannel()) {
-                user.openPrivateChannel().queue(channel -> {
-                    channel.sendMessage("You are already blacklisted to receive spell check messages.  Use '" + Reference.COMMAND_PREFIX + "correction true' to unblock yourself").queue();
-                });
-            } else {
-                user.getPrivateChannel().sendMessage("You are already blacklisted to receive spell check messages.  Use '" + Reference.COMMAND_PREFIX + "correction true' to unblock yourself").queue();
-            }
+            user.openPrivateChannel().queue(c -> c.sendMessage("You are already blacklisted to receive spell check messages.  Use '" + Reference.COMMAND_PREFIX + "correction true' to unblock yourself").queue());
         } else {
             blackListUsers.add(userId);
-            if (!user.hasPrivateChannel()) {
-                user.openPrivateChannel().queue(channel -> {
-                    channel.sendMessage("You are now on the bot blacklist. Use '" + Reference.COMMAND_PREFIX + "correction false' to unblock yourself.").queue();
-                });
-            } else {
-                user.getPrivateChannel().sendMessage("You are now on the bot blacklist. Use '" + Reference.COMMAND_PREFIX + "correction false' to unblock yourself.").queue();
-            }
-            if (privateMsg) {
-                if (!user.hasPrivateChannel()) {
-                    user.openPrivateChannel().queue(channel -> {
-                        channel.sendMessage(MessageUtils.wrapMessageInEmbed(Color.green, "User setting updated")).queue();
-                    });
-                } else {
-                    user.getPrivateChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.green, "User setting updated")).queue();
-                }
-            } else {
-                MessageUtils.sendMessageToStaffDebugChat(guild.getJDA(), "User setting updated for " + user.getName());
-            }
+            user.openPrivateChannel().queue(c -> c.sendMessage("You are now on the bot blacklist. Use '" + Reference.COMMAND_PREFIX + "correction false' to unblock yourself.").queue());
+            MessageUtils.sendMessageToStaffDebugChat(guild.getJDA(), "User setting updated for " + user.getAsMention() + "\nBlocked " + user.getAsMention() + " from the correction");
         }
         writeBlacklist();
     }
 
-    public static void unblockUser(Guild guild, User user, Boolean privateMsg) {
+    public static void unblockUser(Guild guild, User user) {
         String userId = user.getId();
         blackListUsers.clear();
         loadBlackListData();
         if (blackListUsers.contains(userId)) {
             blackListUsers.remove(userId);
-            if (!user.hasPrivateChannel()) {
-                user.openPrivateChannel().queue(channel -> {
-                    channel.sendMessage("You are now removed from the bot blacklist. Use '" + Reference.COMMAND_PREFIX + "correction false' to block yourself.").queue();
-                });
-            } else {
-                user.getPrivateChannel().sendMessage("You are now removed from the bot blacklist. Use '" + Reference.COMMAND_PREFIX + "correction false' to block yourself.").queue();
-            }
-            if (privateMsg) {
-                if (!user.hasPrivateChannel()) {
-                    user.openPrivateChannel().queue(channel -> {
-                        channel.sendMessage(MessageUtils.wrapMessageInEmbed(Color.green, "User setting updated")).queue();
-                    });
-                } else {
-                    user.getPrivateChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.green, "User setting updated")).queue();
-                }
-            } else {
-                MessageUtils.sendMessageToStaffDebugChat(guild.getJDA(), "User setting updated for " + user.getName());
-            }
+            user.openPrivateChannel().queue(c -> c.sendMessage("You are now removed from the bot blacklist. Use '" + Reference.COMMAND_PREFIX + "correction false' to block yourself.").queue());
+            MessageUtils.sendMessageToStaffDebugChat(guild.getJDA(), "User setting updated for " + user.getName() + "\nUnblocked " + user.getAsMention() + " from the correction blacklist");
         } else {
-            if (!user.hasPrivateChannel()) {
-                user.openPrivateChannel().queue(channel -> {
-                    channel.sendMessage("You are currently not on the blacklist. Use '" + Reference.COMMAND_PREFIX + "correction false' to block yourself.").queue();
-                });
-            } else {
-                user.getPrivateChannel().sendMessage("You are currently not on the blacklist. Use '" + Reference.COMMAND_PREFIX + "correction false' to block yourself.").queue();
-            }
+            user.openPrivateChannel().queue(c -> c.sendMessage("You are currently not on the blacklist. Use '" + Reference.COMMAND_PREFIX + "correction false' to block yourself.").queue());
         }
         writeBlacklist();
     }

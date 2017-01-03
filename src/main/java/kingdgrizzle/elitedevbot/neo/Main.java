@@ -16,11 +16,13 @@ import kingdgrizzle.elitedevbot.neo.API.ShardingManager;
 import kingdgrizzle.elitedevbot.neo.Commands.Guild.GuildCommand;
 import kingdgrizzle.elitedevbot.neo.Commands.HelpCommand;
 import kingdgrizzle.elitedevbot.neo.Commands.ICommand;
+import kingdgrizzle.elitedevbot.neo.Commands.SpellCheckerCommand;
 import kingdgrizzle.elitedevbot.neo.Commands.StatusCommand;
 import kingdgrizzle.elitedevbot.neo.Commands.User.ProfileCommand;
 import kingdgrizzle.elitedevbot.neo.Handlers.ConfigHandler;
 import kingdgrizzle.elitedevbot.neo.Listeners.BotListener;
 import kingdgrizzle.elitedevbot.neo.Listeners.Moderation.BadUsernameListener;
+import kingdgrizzle.elitedevbot.neo.Listeners.SpellCheckerListener;
 import kingdgrizzle.elitedevbot.neo.Music.MusicControl;
 import kingdgrizzle.elitedevbot.neo.Utils.BotLogger;
 import kingdgrizzle.elitedevbot.neo.Utils.CommandParser;
@@ -42,8 +44,8 @@ public class Main {
     public static HashMap<String, ICommand> commands = new HashMap<>();
 
     public static String DISCORD_TOKEN;
-    //public static boolean enableAutoMessages = true;
-    public static boolean enableSpellChecker = false;
+    public static boolean enableAutoMessages = true;
+    public static boolean enableSpellChecker = true;
     public static boolean enableUsernameChecker = true;
 
     public static boolean debugMode = true;
@@ -74,7 +76,7 @@ public class Main {
                 e.printStackTrace();
             }
         }
-//        SpellCheckerListener.init();
+        SpellCheckerListener.init();
         registerCommands();
         UserPrivs.setupUsers();
         BadUsernameListener.init();
@@ -93,6 +95,7 @@ public class Main {
         commands.put("profile", new ProfileCommand());
         commands.put("guild", new GuildCommand());
         commands.put("status", new StatusCommand());
+        commands.put("correction", new SpellCheckerCommand());
     }
 
     public static void handleCommand(CommandParser.CommandContainer cmd) {

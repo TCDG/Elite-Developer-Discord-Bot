@@ -63,7 +63,7 @@ public class BotLogger {
         log("[Elite Dev Bot Neo: PM] " + msg);
     }
 
-    public static void listOutput(List list) {
+    public static void listListContent(List list) {
         System.out.println("[Elite Developer Neo: LIST] " + list.toString());
     }
 

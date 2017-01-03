@@ -12,6 +12,7 @@
  */
 package kingdgrizzle.elitedevbot.neo.Listeners;
 
+import kingdgrizzle.elitedevbot.neo.API.ShardingManager;
 import kingdgrizzle.elitedevbot.neo.Handlers.SpammerHelper;
 import kingdgrizzle.elitedevbot.neo.Main;
 import kingdgrizzle.elitedevbot.neo.Utils.Reference;
@@ -48,7 +49,11 @@ public class BotListener extends ListenerAdapter {
         eb.setThumbnail(event.getJDA().getSelfUser().getEffectiveAvatarUrl());
         eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
         eb.setColor(Color.green);
-        eb.setTitle("Thanks for adding " + Main.jda.getSelfUser().getName() + " to your server!");
+        if (Main.sharding) {
+            eb.setTitle("Thanks for adding" + ShardingManager.getBotName() + "to your server!");
+        } else {
+            eb.setTitle("Thanks for adding " + Main.jda.getSelfUser().getName() + " to your server!");
+        }
         eb.setDescription("Currently, the bot has to be configured through a config file, until I (Vlad) make it Multi-Server supportable!\nMeanwhile, you can do `" + Reference.COMMAND_PREFIX + "help` for commands!");
         MessageEmbed embed = eb.build();
         if (UserPrivs.hasPermission(event.getJDA().getSelfUser(), Permission.MESSAGE_EMBED_LINKS)) {
@@ -56,8 +61,6 @@ public class BotListener extends ListenerAdapter {
         } else {
             event.getGuild().getPublicChannel().sendMessage("Hello! Thanks for inviting me! In order to use the rest of my features, please give me `Embed Links`, so I can output my pretty messages!").queue();
         }
-
-        //ServerConfigHandler.init(event.getGuild());
     }
 
     @Override

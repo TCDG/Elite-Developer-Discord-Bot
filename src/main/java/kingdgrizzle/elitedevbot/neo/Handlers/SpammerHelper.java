@@ -41,9 +41,9 @@ public class SpammerHelper {
             for (Role role : event.getGuild().getRoles()) {
                 if (role.getId().equalsIgnoreCase(Reference.ROLE_MUTED_ID)) {
                     if (UserPrivs.hasPermission(event.getJDA().getSelfUser(), Permission.MANAGE_ROLES)) {
-                        event.getJDA().getGuildById(Reference.DISCORD_SERVER_ID).getController().addRolesToMember(event.getMember(), event.getGuild().getRoleById(Reference.ROLE_MUTED_ID));
+                        event.getGuild().getController().addRolesToMember(event.getMember(), event.getGuild().getRoleById(Reference.ROLE_MUTED_ID));
                     }
-                    event.getGuild().getPublicChannel().sendMessage("Oi " + event.getMember().getAsMention() + " your still in spammers! Don't try to evade punishments");
+                    event.getGuild().getPublicChannel().sendMessage("Oi " + event.getMember().getAsMention() + " your still in spammers! Don't try to evade punishments").queue();
                 }
             }
         }

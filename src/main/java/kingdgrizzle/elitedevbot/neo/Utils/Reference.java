@@ -17,9 +17,9 @@ import kingdgrizzle.elitedevbot.neo.Main;
 public class Reference {
 
     public static final String COMMAND_PREFIX = "/devneo ";
-    public static final String DISCORD_COMMAND_PREFIX = "/";
+    public static final String DISCORD_COMMAND_PREFIX = "\\";
 
-    public static final String VERSION = "v1.0.0";
+    public static final String VERSION = "v1.0.2";
 
     public static String EMBED_AUTHOR = "";
     final String EMBED_AUTHOR_OLD = "Elite Developer Neo";

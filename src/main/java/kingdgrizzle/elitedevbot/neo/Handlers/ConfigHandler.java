@@ -37,7 +37,7 @@ public class ConfigHandler {
 
                 // Properties
                 properties.setProperty("DISCORD_TOKEN", "");
-                //properties.setProperty("AUTO_CHAT_MESSAGES", "");
+                properties.setProperty("AUTO_CHAT_MESSAGES", "");
                 properties.setProperty("ENABLE_SPELL_CHECKER", "");
                 properties.setProperty("ENABLE_USERNAME_CHECKER", "");
 
@@ -72,7 +72,7 @@ public class ConfigHandler {
 
             // Read values
             Main.DISCORD_TOKEN = properties.getProperty("DISCORD_TOKEN");
-            //Main.enableAutoMessages = Boolean.parseBoolean(properties.getProperty("AUTO_CHAT_MESSAGES"));
+            Main.enableAutoMessages = Boolean.parseBoolean(properties.getProperty("AUTO_CHAT_MESSAGES"));
             Main.enableSpellChecker = Boolean.parseBoolean(properties.getProperty("ENABLE_SPELL_CHECKER"));
             Main.enableUsernameChecker = Boolean.parseBoolean(properties.getProperty("ENABLE_USERNAME_CHECKER"));
 

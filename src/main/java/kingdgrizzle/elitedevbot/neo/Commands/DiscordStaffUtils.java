@@ -115,10 +115,10 @@ public class DiscordStaffUtils {
                 } else if (lineSplit[0].substring(Reference.DISCORD_COMMAND_PREFIX.length()).equals(commands[3])) {
                     //Purge Handler
                     try {
-                        int historyLookup = Integer.parseInt(lineSplit[1]);
                         int deletedMsgs = 0;
                         if (lineSplit.length >= 2) {
                             List<User> mentionedUsers = event.getMessage().getMentionedUsers();
+                            int historyLookup = Integer.parseInt(lineSplit[(mentionedUsers.size() + 1)]);
                             if (!mentionedUsers.isEmpty()) {
                                 TextChannel channel = event.getTextChannel();
                                 List<Message> deletedMessages = new ArrayList<>();
@@ -137,10 +137,11 @@ public class DiscordStaffUtils {
                                 deletedMessages.clear();
                                 event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.green, "Cleared the last " + deletedMsgs + " messages from the mentioned users from chat.")).queue();
                             } else {
-                                event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.red, "You didn't mention anyone! Please use the syntax `" + commands[3] + " number @user`. You can mention multiple users!")).queue();
+                                event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.red, "You didn't mention anyone! Please use the syntax `" + Reference.DISCORD_COMMAND_PREFIX + commands[3] + " number @user`. You can mention multiple users!")).queue();
                             }
                         }
                     } catch (Exception e) {
+                        e.printStackTrace();
                         event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.red, "Invalid Parameters!\nYou can use a number between 2 and 100! (Inclusive)\nThe bot might not have **Manage Messages** Permission. Without that permission, the bot can't delete any messages!")).queue();
                     }
                 } else if (lineSplit[0].substring(Reference.DISCORD_COMMAND_PREFIX.length()).equals(commands[4])) {

@@ -69,7 +69,7 @@ public class HelpCommand implements ICommand {
         String otherInfo = "";
         otherInfo += "The Bot Prefix is: `" + Reference.COMMAND_PREFIX + "`\n";
         otherInfo += "The Staff Commands can be seen by entering: `" + Reference.DISCORD_COMMAND_PREFIX + "help`\n";
-        otherInfo += "The Music Part of the bot can be accessed by typing `.help`";
+        otherInfo += "The Music Part of the bot can be accessed by typing `.help`\n";
         otherInfo += "The current Bot Version is: `" + Reference.VERSION + "`\n";
         eb.addField("__**Other Info:**__", otherInfo, false);
         MessageEmbed embed = eb.build();

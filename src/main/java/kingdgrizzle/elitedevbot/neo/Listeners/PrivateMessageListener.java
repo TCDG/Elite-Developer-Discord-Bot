@@ -17,10 +17,12 @@ import kingdgrizzle.elitedevbot.neo.Main;
 import kingdgrizzle.elitedevbot.neo.Utils.BotLogger;
 import kingdgrizzle.elitedevbot.neo.Utils.MessageUtils;
 import kingdgrizzle.elitedevbot.neo.Utils.Reference;
+import kingdgrizzle.elitedevbot.neo.Utils.UserPrivs;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Icon;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 
 import java.awt.*;
@@ -78,10 +80,6 @@ public class PrivateMessageListener {
                     }
                 }
                 par1Event.getAuthor().openPrivateChannel().queue(channel -> channel.sendMessage(MessageUtils.wrapMessageInEmbed(Color.cyan, sb.toString())).queue());
-            } else if (msg.equals("reload")) {
-                Main.commands.clear();
-                Main.registerCommands();
-                par1Event.getAuthor().openPrivateChannel().queue(channel -> channel.sendMessage("Reloaded Commands!").queue());
             } else {
 //                if (par1Event.getAuthor().getId().equals(Reference.KING_ID) || par1Event.getAuthor().getId().equals(Reference.USER_ID_BOT_OWNER)) {
 //                    for (Guild guild : par1Event.getJDA().getGuilds()) {
@@ -97,9 +95,9 @@ public class PrivateMessageListener {
                 for (int x = 1; x < msgSplit.length; x++) {
                     sb.append(msgSplit[x] + " ");
                 }
-//                for (User staff : UserPrivs.getAllStaff()) {
-//                    staff.openPrivateChannel().queue(channel -> channel.sendMessage(par1Event.getAuthor().getName() + " has sent the following report: " + sb.toString()).queue());
-//                }
+                for (User staff : UserPrivs.getAllStaff()) {
+                    staff.openPrivateChannel().queue(channel -> channel.sendMessage(par1Event.getAuthor().getName() + " has sent the following report: " + sb.toString()).queue());
+                }
                 par1Event.getAuthor().openPrivateChannel().queue(channel -> channel.sendMessage("Thank you for submitting your report. Staff will get back to you shortly!").queue());
             } else {
                 if (Main.sharding) {
