@@ -36,13 +36,11 @@ public class ChatMessageListener {
         } else if (Main.enableSpellChecker) {
             if (Main.sharding) {
                 if (!event.getAuthor().getId().equals(ShardingManager.getBotID())) {
-                    BotLogger.info("SpellChecker handler");
                     SpellCheckerListener.handleMessage(event);
                 }
             } else {
                 if (!event.getAuthor().getId().equals(Main.jda.getSelfUser().getId())) {
                     SpellCheckerListener.handleMessage(event);
-                    BotLogger.info("SpellChecker handler");
                 }
             }
         } else if (event.getMessage().getRawContent().toLowerCase().startsWith(Reference.DISCORD_COMMAND_PREFIX)) {

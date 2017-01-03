@@ -29,7 +29,6 @@ public class ConfigHandler {
     public static void init() {
         if(!CONFIG_FILE.exists()) {
             BotLogger.info("First time setup.. Creating the config file, then shutting down!");
-
             try {
                 CONFIG_FILE.createNewFile();
                 Properties properties = new Properties();

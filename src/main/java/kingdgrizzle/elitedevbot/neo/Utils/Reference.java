@@ -12,12 +12,10 @@
  */
 package kingdgrizzle.elitedevbot.neo.Utils;
 
-import kingdgrizzle.elitedevbot.neo.Main;
-
 public class Reference {
 
     public static final String COMMAND_PREFIX = "/devneo ";
-    public static final String DISCORD_COMMAND_PREFIX = "\\";
+    public static final String DISCORD_COMMAND_PREFIX = "/";
 
     public static final String VERSION = "v1.0.2";
 
