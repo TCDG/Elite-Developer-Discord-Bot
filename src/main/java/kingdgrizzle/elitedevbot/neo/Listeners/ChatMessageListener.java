@@ -1,3 +1,16 @@
+package kingdgrizzle.elitedevbot.neo.Listeners;
+
+import kingdgrizzle.elitedevbot.neo.API.ShardingManager;
+import kingdgrizzle.elitedevbot.neo.Commands.DiscordStaffUtils;
+import kingdgrizzle.elitedevbot.neo.Main;
+import kingdgrizzle.elitedevbot.neo.Utils.MessageUtils;
+import kingdgrizzle.elitedevbot.neo.Utils.Reference;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * This class was created by <KingDGrizzle>. It's distributed as
  * part of the Elite-Dev-Bot-Neo Project. Get the Source Code on GitHub:
@@ -10,18 +23,6 @@
  * <p>
  * File Created @ [ 27.12.2016, 14:18 (GMT +02) ]
  */
-package kingdgrizzle.elitedevbot.neo.Listeners;
-
-import kingdgrizzle.elitedevbot.neo.API.ShardingManager;
-import kingdgrizzle.elitedevbot.neo.Commands.DiscordStaffUtils;
-import kingdgrizzle.elitedevbot.neo.Main;
-import kingdgrizzle.elitedevbot.neo.Utils.BotLogger;
-import kingdgrizzle.elitedevbot.neo.Utils.MessageUtils;
-import kingdgrizzle.elitedevbot.neo.Utils.Reference;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-
-import java.awt.*;
-
 public class ChatMessageListener {
 
     public static void onMessageRecieved(MessageReceivedEvent event) {
@@ -33,6 +34,8 @@ public class ChatMessageListener {
         } else if (event.getMessage().getRawContent().equalsIgnoreCase("Dont cut the red wire")) {
             String message = "Hey " + event.getAuthor().getAsMention() + " even I'm a bot and I know not to cut the red wire, check out the rules!";
             event.getTextChannel().sendMessage(message).queue();
+        } else if(event.getMessage().getRawContent().equalsIgnoreCase("/triggered")) {
+            event.getTextChannel().sendMessage("https://giphy.com/gifs/ZEVc9uplCUJFu").queue();
         } else if (Main.enableSpellChecker) {
             if (Main.sharding) {
                 if (!event.getAuthor().getId().equals(ShardingManager.getBotID())) {

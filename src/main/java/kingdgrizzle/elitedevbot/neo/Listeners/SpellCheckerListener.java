@@ -1,6 +1,5 @@
 package kingdgrizzle.elitedevbot.neo.Listeners;
 
-import kingdgrizzle.elitedevbot.neo.Utils.BotLogger;
 import kingdgrizzle.elitedevbot.neo.Utils.JSONReader;
 import kingdgrizzle.elitedevbot.neo.Utils.MessageUtils;
 import kingdgrizzle.elitedevbot.neo.Utils.Reference;
@@ -12,6 +11,7 @@ import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -77,8 +77,8 @@ public class SpellCheckerListener {
 
     private static void notifyUser(User user, String baseWord, String dixordWord) {
         String message = "Oi you spelt " + baseWord + " wrong, it's spelt " + dixordWord;
-        String blockMessage = "\n You can blacklist yourself from these messages by entering '" + Reference.COMMAND_PREFIX + "correction false' in chat";
-        user.openPrivateChannel().queue(c -> c.sendMessage(message + blockMessage).queue());
+        String blockMessage = "\n\tYou can blacklist yourself from these messages by entering `" + Reference.COMMAND_PREFIX + "correction false` in chat";
+        user.openPrivateChannel().queue(c -> c.sendMessage(MessageUtils.wrapMessageInEmbed(Color.gray, message + blockMessage)).queue());
     }
 
     public static void reloadLists() {
@@ -97,7 +97,7 @@ public class SpellCheckerListener {
         } else {
             blackListUsers.add(userId);
             user.openPrivateChannel().queue(c -> c.sendMessage("You are now on the bot blacklist. Use '" + Reference.COMMAND_PREFIX + "correction false' to unblock yourself.").queue());
-            MessageUtils.sendMessageToStaffDebugChat(guild.getJDA(), "User setting updated for " + user.getAsMention() + "\nBlocked " + user.getAsMention() + " from the correction");
+            MessageUtils.sendMessageToStaffInfoChat(guild.getJDA(), "User setting updated for " + user.getAsMention() + "\n\tBlocked " + user.getAsMention() + " from the correction");
         }
         writeBlacklist();
     }
@@ -109,7 +109,7 @@ public class SpellCheckerListener {
         if (blackListUsers.contains(userId)) {
             blackListUsers.remove(userId);
             user.openPrivateChannel().queue(c -> c.sendMessage("You are now removed from the bot blacklist. Use '" + Reference.COMMAND_PREFIX + "correction false' to block yourself.").queue());
-            MessageUtils.sendMessageToStaffDebugChat(guild.getJDA(), "User setting updated for " + user.getName() + "\nUnblocked " + user.getAsMention() + " from the correction blacklist");
+            MessageUtils.sendMessageToStaffInfoChat(guild.getJDA(), "User setting updated for " + user.getName() + "\nUnblocked " + user.getAsMention() + " from the correction blacklist");
         } else {
             user.openPrivateChannel().queue(c -> c.sendMessage("You are currently not on the blacklist. Use '" + Reference.COMMAND_PREFIX + "correction false' to block yourself.").queue());
         }
@@ -119,7 +119,6 @@ public class SpellCheckerListener {
     private static void loadBlackListData() {
         if (userBlacklist.exists()) {
             JSONParser parser = new JSONParser();
-
             try {
                 Object obj = parser.parse(new FileReader(userBlacklist));
                 org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) obj;
@@ -131,7 +130,6 @@ public class SpellCheckerListener {
                         blackListUsers.add(iterator.next());
                     }
                 }
-
             } catch (ParseException | IOException e) {
                 e.printStackTrace();
             }
@@ -156,7 +154,6 @@ public class SpellCheckerListener {
             fileWriter.write(jsonObject.toString());
             fileWriter.flush();
             fileWriter.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }

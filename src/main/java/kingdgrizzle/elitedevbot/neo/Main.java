@@ -54,7 +54,6 @@ public class Main {
     public static long uptime = new Date().getTime();
 
     public static void main(String[] args) {
-
         if (args.length > 0 && Boolean.parseBoolean(args[0])) {
             DISCORD_TOKEN = args[1];
         } else {

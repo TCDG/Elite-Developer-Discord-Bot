@@ -54,7 +54,7 @@ public class BotListener extends ListenerAdapter {
         } else {
             eb.setTitle("Thanks for adding " + Main.jda.getSelfUser().getName() + " to your server!");
         }
-        eb.setDescription("Currently, the bot has to be configured through a config file, until I (Vlad) make it Multi-Server supportable!\nMeanwhile, you can do `" + Reference.COMMAND_PREFIX + "help` for commands!");
+        eb.setDescription("Currently, the bot has to be configured through a config file, until I (KingDGrizzle) or XeliteXirish make it Multi-Server supportable!\nMeanwhile, you can do `" + Reference.COMMAND_PREFIX + "help` for commands!");
         MessageEmbed embed = eb.build();
         if (UserPrivs.hasPermission(event.getJDA().getSelfUser(), Permission.MESSAGE_EMBED_LINKS)) {
             event.getGuild().getPublicChannel().sendMessage(embed).queue();

@@ -47,7 +47,7 @@ public class PrivateMessageListener {
             } else if(msg.startsWith("setname")) {
                 String[] msgSplit = msg.split(" ");
                 StringBuilder sb = new StringBuilder();
-                for (int x = 1; x <msgSplit.length; x++) {
+                for (int x = 1; x < msgSplit.length; x++) {
                     sb.append(msgSplit[x] + " ");
                 }
                 if (Main.debugMode = true) {

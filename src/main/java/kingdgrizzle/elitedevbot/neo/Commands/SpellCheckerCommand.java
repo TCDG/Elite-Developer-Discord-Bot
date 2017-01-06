@@ -39,9 +39,7 @@ public class SpellCheckerCommand implements ICommand {
     }
 
     @Override
-    public void executed(boolean success, MessageReceivedEvent event) {
-
-    }
+    public void executed(boolean success, MessageReceivedEvent event) {}
 
     @Override
     public String getTag() {

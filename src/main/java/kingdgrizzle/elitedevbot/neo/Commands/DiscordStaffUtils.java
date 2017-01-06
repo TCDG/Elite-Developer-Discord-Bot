@@ -60,10 +60,11 @@ public class DiscordStaffUtils {
                                 }
                             }
                         } catch (Exception e) {
+                            MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), e.getCause().toString());
                             EmbedBuilder eb = new EmbedBuilder();
                             eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
                             eb.setColor(Color.red);
-                            eb.setDescription("I do not have permission to ban on this server!\nMake sure you give me __**Ban**__ and __**Kick**__ Permission to use these commands");
+                            eb.setDescription("I do not have permission to ban on this server!\nMake sure you give me __**Ban**__ and __**Kick**__ permission to use these commands");
                             eb.setTitle("Error!");
                             MessageEmbed embed = eb.build();
                             event.getTextChannel().sendMessage(embed).queue();
@@ -95,10 +96,11 @@ public class DiscordStaffUtils {
                                 }
                             }
                         } catch (Exception e) {
+                            MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), e.getCause().toString());
                             EmbedBuilder eb = new EmbedBuilder();
                             eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
                             eb.setColor(Color.red);
-                            eb.setDescription("I do not have permission to kick on this server!\nMake sure you give me __**Ban**__ and __**Kick**__ Permission to use these commands");
+                            eb.setDescription("I do not have permission to kick on this server!\nMake sure you give me __**Ban**__ and __**Kick**__ permission to use these commands");
                             eb.setTitle("Error!");
                             MessageEmbed embed = eb.build();
                             event.getTextChannel().sendMessage(embed).queue();
@@ -137,11 +139,11 @@ public class DiscordStaffUtils {
                                 deletedMessages.clear();
                                 event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.green, "Cleared the last " + deletedMsgs + " messages from the mentioned users from chat.")).queue();
                             } else {
-                                event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.red, "You didn't mention anyone! Please use the syntax `" + Reference.DISCORD_COMMAND_PREFIX + commands[3] + " number @user`. You can mention multiple users!")).queue();
+                                event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.red, "You didn't mention anyone! Please use the syntax `" + Reference.DISCORD_COMMAND_PREFIX + commands[3] + " @user number`. You can mention multiple users!")).queue();
                             }
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), e.getCause().toString());
                         event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.red, "Invalid Parameters!\nYou can use a number between 2 and 100! (Inclusive)\nThe bot might not have **Manage Messages** Permission. Without that permission, the bot can't delete any messages!")).queue();
                     }
                 } else if (lineSplit[0].substring(Reference.DISCORD_COMMAND_PREFIX.length()).equals(commands[4])) {
@@ -158,6 +160,7 @@ public class DiscordStaffUtils {
                             }
                             BotLogger.info("Message Removed:" + logMessage);
                         } catch (Exception e) {
+                            MessageUtils.sendMessageToStaffDebugChat(event.getJDA(), e.getCause().toString());
                             event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.red, "Invalid Parameters")).queue();
                         }
                     }
