@@ -27,8 +27,8 @@ public class ChatMessageListener {
         if (event.getMessage().getRawContent().toLowerCase().startsWith(Reference.COMMAND_PREFIX) && !event.getMessage().getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
             Main.handleCommand(Main.parser.parse(event.getMessage().getContent().toLowerCase(), event));
         } else if (event.getMessage().getRawContent().equalsIgnoreCase("Hey developer bot")) {
-            String message = "Hey, my name is Elite Developer Bot, you can view my commands by entering the command " + Reference.COMMAND_PREFIX + "help";
-            event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.green, message)).queue();
+            String message = "Hey, my name is Elite Developer Bot Neo, you can view my commands by entering the command `" + Reference.COMMAND_PREFIX + "help` in <#195179301451202560>";
+            event.getTextChannel().sendMessage(MessageUtils.wrapMessageInEmbed(Color.cyan, message)).queue();
         } else if (event.getMessage().getRawContent().equalsIgnoreCase("Dont cut the red wire")) {
             String message = "Hey " + event.getAuthor().getAsMention() + " even I'm a bot and I know not to cut the red wire, check out the rules!";
             event.getTextChannel().sendMessage(message).queue();

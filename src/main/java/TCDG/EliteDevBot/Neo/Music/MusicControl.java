@@ -46,8 +46,8 @@ public class MusicControl extends ListenerAdapter {
     private final AudioPlayerManager playerManager;
     private final Map<String, GuildMusicManager> musicManagers;
 
-    private static String[] commands = {"join", "leave", "play", "pplay", "resume", "pause", "stop", "skip", "np", "list", "queue", "volume", "restart", "repeat", "reset", "help"};
-    private static String[] cmdsOrdered = {"help", "join", "list", "leave", "np", "pause", "play", "pplay", "queue", "resume", "restart", "repeat", "reset", "skip", "stop", "volume"};
+    private static String[] commands = {"join", "leave", "play", "pplay", "resume", "pause", "stop", "skip", "np", "list", "queue", "volume", "restart", "repeat", "reset", "help", "shuffle"};
+    private static String[] cmdsOrdered = {"help", "join", "list", "leave", "np", "pause", "play", "pplay", "queue", "resume", "restart", "repeat", "reset", "shuffle", "skip", "stop", "volume"};
     private static String[] cmdsOrderedHelp = {
             "Shows you this help message!",
             "Join a voice channel by name or ID!",
@@ -62,6 +62,7 @@ public class MusicControl extends ListenerAdapter {
             "Restarts the current song or restarts the previous song if there is no current song playing!",
             "Makes the player repeat the same song over and over. **Skipping** won't mean the same song will repeat, but the next one!",
             "Resets the player completely, clearing all the queue, and fixing any potential errors!",
+            "Shuffles the entire playlist!",
             "Skips the current song!",
             "Completely stops audio playback, skipping the current song!",
             "Sets the volume of audio! Per-Guild!"
@@ -88,15 +89,15 @@ public class MusicControl extends ListenerAdapter {
         }
         String[] command = event.getMessage().getContent().split(" ", 2);
         String[] commandPlay = event.getMessage().getContent().split(" ");
-        if (!command[0].startsWith(".")) {
+        if (!command[0].startsWith(Reference.MUSIC_PREFIX)) {
             return;
         }
         Guild guild = event.getGuild();
         GuildMusicManager mng = getMusicManager(guild);
         AudioPlayer player = mng.player;
         TrackScheduler scheduler = mng.scheduler;
-        if (event.getMessage().getRawContent().startsWith(".") && Arrays.asList(commands).contains(command[0].substring(".".length()))) {
-            if (command[0].substring(".".length()).equalsIgnoreCase(commands[0])) {
+        if (event.getMessage().getRawContent().startsWith(Reference.MUSIC_PREFIX) && Arrays.asList(commands).contains(command[0].substring(Reference.MUSIC_PREFIX.length()))) {
+            if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[0])) {
                 //Join Channel Command
                 if (command.length == 1) {
                     EmbedBuilder eb = new EmbedBuilder();
@@ -137,12 +138,12 @@ public class MusicControl extends ListenerAdapter {
                         }
                     }
                 }
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[1])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[1])) {
                 //Leave Comamnd
                 guild.getAudioManager().setSendingHandler(null);
                 guild.getAudioManager().closeAudioConnection();
                 event.getMessage().addReaction("\u2705").complete();
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[2])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[2])) {
                 //Play Command
                 event.getMessage().addReaction("\u231B").complete();
                 String cmdInput = String.join(" ", commandPlay).substring(6);
@@ -155,12 +156,12 @@ public class MusicControl extends ListenerAdapter {
                     loadAndPlay(mng, event.getChannel(), "ytsearch: " + cmdInput, false);
                     event.getMessage().addReaction("\u2705").complete();
                 }
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[3])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[3])) {
                 // pplay Command
                 event.getMessage().addReaction("\u231B").complete();
                 loadAndPlay(mng, event.getChannel(), command[1], true);
                 event.getMessage().addReaction("\u2705").queue();
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[4])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[4])) {
                 //Resume Command
                 if (player.isPaused()) {
                     player.setPaused(false);
@@ -177,7 +178,7 @@ public class MusicControl extends ListenerAdapter {
                     MessageEmbed embed = eb.build();
                     event.getChannel().sendMessage(embed).queue();
                 }
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[5])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[5])) {
                 //Pause Command
                 if (player.getPlayingTrack() == null) {
                     event.getMessage().addReaction("\u26A0").queue();
@@ -210,7 +211,7 @@ public class MusicControl extends ListenerAdapter {
                     MessageEmbed embed = eb.build();
                     event.getChannel().sendMessage(embed).queue();
                 }
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[6])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[6])) {
                 //Stop Command
                 event.getMessage().addReaction("\u2705").queue();
                 scheduler.queue.clear();
@@ -223,7 +224,7 @@ public class MusicControl extends ListenerAdapter {
                 eb.setDescription("Playback has been completely stopped and the queue has been cleared.");
                 MessageEmbed embed = eb.build();
                 event.getChannel().sendMessage(embed).queue();
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[7])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[7])) {
                 //Skip Command
                 if (command.length == 1) {
                     scheduler.nextTrack();
@@ -235,7 +236,7 @@ public class MusicControl extends ListenerAdapter {
                  }
                     event.getMessage().addReaction("\u2705").queue();
                 }
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[8]) || command[0].substring(".".length()).equalsIgnoreCase("nowplaying")) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[8]) || command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase("nowplaying")) {
                 //Now Playing Command
                 AudioTrack currentTrack = player.getPlayingTrack();
                 if (currentTrack != null) {
@@ -259,7 +260,7 @@ public class MusicControl extends ListenerAdapter {
                     MessageEmbed embed = eb.build();
                     event.getChannel().sendMessage(embed).queue();
                 }
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[9]) || command[0].substring(".".length()).equalsIgnoreCase(commands[10])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[9]) || command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[10])) {
                 //List and Queue Command > They are the same soo
                 Queue<AudioTrack> queue = scheduler.queue;
                 synchronized (queue) {
@@ -291,7 +292,7 @@ public class MusicControl extends ListenerAdapter {
                         event.getChannel().sendMessage(embed).queue();
                     }
                 }
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[11])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[11])) {
                 //Volume Command
                 if (command.length == 1) {
                     EmbedBuilder eb = new EmbedBuilder();
@@ -323,7 +324,7 @@ public class MusicControl extends ListenerAdapter {
                         event.getChannel().sendMessage(embed).queue();
                     }
                 }
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[12])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[12])) {
                 //Restart Command
                 AudioTrack track = player.getPlayingTrack();
                 if (track == null) {
@@ -347,7 +348,7 @@ public class MusicControl extends ListenerAdapter {
                     MessageEmbed embed = eb.build();
                     event.getChannel().sendMessage(embed).queue();
                 }
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[13])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[13])) {
                 //Repeat Command
                 scheduler.setRepeating(!scheduler.isRepeating());
                 EmbedBuilder eb = new EmbedBuilder();
@@ -357,7 +358,7 @@ public class MusicControl extends ListenerAdapter {
                 eb.setDescription("Player was set to: `" + (scheduler.isRepeating() ? "repeat" : "not repeat") + "`");
                 MessageEmbed embed = eb.build();
                 event.getChannel().sendMessage(embed).queue();
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[14])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[14])) {
                 //Reset Command
                 synchronized (musicManagers) {
                     scheduler.queue.clear();
@@ -368,8 +369,11 @@ public class MusicControl extends ListenerAdapter {
                 mng = getMusicManager(guild);
                 guild.getAudioManager().setSendingHandler(mng.sendHandler);
                 event.getMessage().addReaction("\u2705").queue();
-            } else if (command[0].substring(".".length()).equalsIgnoreCase(commands[15])) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[15])) {
                 sendHelpMessage(event);
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[16])) {
+                event.getMessage().addReaction("\u2705").queue();
+                mng.scheduler.shuffle();
             }
         }
     }

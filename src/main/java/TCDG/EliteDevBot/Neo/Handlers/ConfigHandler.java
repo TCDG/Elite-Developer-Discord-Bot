@@ -57,6 +57,7 @@ public class ConfigHandler {
 
 
                 properties.setProperty("DEBUG_MODE", "false");
+                properties.setProperty("MUSIC_PREFIX", ".");
                 properties.store(fileWriter, "Discord Bot Settings | General Bot utilities");
                 fileWriter.close();
                 System.exit(1);
