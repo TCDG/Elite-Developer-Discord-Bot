@@ -1,15 +1,3 @@
-/**
- * This class was created by <KingDGrizzle>. It's distributed as
- * part of the Elite-Dev-Bot-Neo Project. Get the Source Code on GitHub:
- * https://github.com/TCDG and search for the Elite-Dev-Bot-Neo project
- * <p>
- * Copyright (c) 2016 The Collective Developer Group. All rights reserved.
- * <p>
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that this copyright block is included!
- * <p>
- * File Created @ [ 24.12.2016, 10:11 (GMT +02) ]
- */
 package TCDG.EliteDevBot.Neo;
 
 import TCDG.EliteDevBot.Neo.API.ShardingManager;
@@ -37,6 +25,18 @@ import net.dv8tion.jda.core.entities.Game;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * This class was created by <KingDGrizzle>. It's distributed as
+ * part of the Elite-Dev-Bot-Neo Project. Get the Source Code on GitHub:
+ * https://github.com/TCDG and search for the Elite-Dev-Bot-Neo project
+ * <p>
+ * Copyright (c) 2016 The Collective Developer Group. All rights reserved.
+ * <p>
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that this copyright block is included!
+ * <p>
+ * File Created @ [ 24.12.2016, 10:11 (GMT +02) ]
+ */
 public class Main {
     public static JDA jda;
     public static final CommandParser parser = new CommandParser();
@@ -87,7 +87,7 @@ public class Main {
         }
     }
 
-    public static void registerCommands(){
+    private static void registerCommands(){
         commands.put("help", new HelpCommand());
         commands.put("id", new IDCommand());
         commands.put("profile", new ProfileCommand());

@@ -18,13 +18,12 @@ public class Reference {
     public static final String DISCORD_COMMAND_PREFIX = "\\";
     public static final String MUSIC_PREFIX = ".";
 
-    public static final String VERSION = "v1.0.2";
+    public static final String VERSION = "v1.0.4";
 
     public static String EMBED_AUTHOR = "";
-    final String EMBED_AUTHOR_OLD = "Elite Developer Neo";
     public static final String EMBED_AUTHOR_URL = "https://github.com/TCDG/Elite-Developer-Discord-Bot/tree/neo";
     public static String EMBED_AUTHOR_IMAGE = "";
-    final String EMBED_AUTHOR_IMAGE_OLD = "https://raw.githubusercontent.com/TCDG/Elite-Developer-Discord-Bot/master/icon.jpg";
+    public static final String WARNING_SIGN = "https://cdn2.iconfinder.com/data/icons/freecns-cumulus/32/519791-101_Warning-128.png";
 
     public static final String EMBED_FOOTER_NAME = "KingDGrizzle (Vlad)";
     public static final String EMBED_FOOTER_IMAGE = "https://cdn.discordapp.com/avatars/139836912335716352/c70d47243ae671a5120daed2c085ab00.jpg";

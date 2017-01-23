@@ -1,7 +1,12 @@
 package TCDG.EliteDevBot.Neo.Commands;
 
 import TCDG.EliteDevBot.Neo.Listeners.SpellCheckerListener;
+import TCDG.EliteDevBot.Neo.Utils.Reference;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
+import java.awt.*;
 
 /**
  * This class was created by <KingDGrizzle>. It's distributed as
@@ -29,6 +34,19 @@ public class SpellCheckerCommand implements ICommand {
                 SpellCheckerListener.blockUser(event.getGuild(), event.getAuthor());
             } else if (args[0].equalsIgnoreCase("true")) {
                 SpellCheckerListener.unblockUser(event.getGuild(), event.getAuthor());
+            } else if (args[0].equalsIgnoreCase("list")) {
+                EmbedBuilder eb = new EmbedBuilder();
+                eb.setColor(Color.cyan);
+                eb.setTitle("Blacklisted members!");
+                eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
+                for (String string : SpellCheckerListener.blackListUsers) {
+                    eb.addField("Member", event.getGuild().getMemberById(string).getAsMention(), true);
+                }
+                if (SpellCheckerListener.blackListUsers.size() > 25) {
+                    eb.setFooter("There are too many people to show! Total amount:" + SpellCheckerListener.blackListUsers.size(), Reference.WARNING_SIGN);
+                }
+                MessageEmbed embed = eb.build();
+                event.getTextChannel().sendMessage(embed).queue();
             }
         }
     }

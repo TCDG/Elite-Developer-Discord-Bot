@@ -50,7 +50,6 @@ public class MessageUtils {
                     if (channel.getId().equals(Reference.STAFF_LOG_CHANNEL_ID)) {
                         EmbedBuilder eb = new EmbedBuilder();
                         eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
-                        //eb.setFooter(Reference.EMBED_FOOTER_NAME, Reference.EMBED_FOOTER_IMAGE);
                         eb.setColor(Color.gray);
                         eb.setTitle("Debug Message");
                         eb.setDescription(message);
@@ -71,7 +70,6 @@ public class MessageUtils {
                 eb.setColor(Color.green);
                 eb.setDescription(message);
                 eb.setTitle("Notification");
-                //eb.setFooter(Reference.EMBED_FOOTER_NAME, Reference.EMBED_FOOTER_IMAGE);
                 MessageEmbed embed = eb.build();
                 channel.sendMessage(embed).queue();
             }
@@ -85,7 +83,6 @@ public class MessageUtils {
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
                 eb.setColor(Color.green);
-                //eb.setFooter(Reference.EMBED_FOOTER_NAME, Reference.EMBED_FOOTER_IMAGE);
                 eb.setDescription(message);
                 eb.setTitle("Nickname changed!");
                 MessageEmbed embed = eb.build();

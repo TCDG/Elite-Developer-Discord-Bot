@@ -17,6 +17,7 @@ import TCDG.EliteDevBot.Neo.Utils.Reference;
 import TCDG.EliteDevBot.Neo.Main;
 import TCDG.EliteDevBot.Neo.Utils.MessageUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
@@ -54,7 +55,7 @@ public class BadUsernameListener {
         while (iterator.hasNext()) {
             String blockedWordIteration = iterator.next();
             if (StringUtils.containsIgnoreCase(effectiveName, blockedWordIteration)) {
-                performAction(par1Event.getMember().getUser(), par1Event.getGuild());
+                performAction(par1Event.getMember().getUser(), par1Event.getGuild(), par1Event.getJDA());
             }
         }
     }
@@ -65,12 +66,12 @@ public class BadUsernameListener {
         while (iterator.hasNext()) {
             String blockedWordIteration = iterator.next();
             if (StringUtils.containsIgnoreCase(effectiveName, blockedWordIteration)) {
-                performAction(par1Event.getMember().getUser(), par1Event.getGuild());
+                performAction(par1Event.getMember().getUser(), par1Event.getGuild(), par1Event.getJDA());
             }
         }
     }
 
-    private static void performAction(User par1User, Guild par2Guild) {
+    private static void performAction(User par1User, Guild par2Guild, JDA jda) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
         eb.setFooter(Reference.EMBED_FOOTER_NAME, Reference.EMBED_FOOTER_IMAGE);
@@ -80,7 +81,7 @@ public class BadUsernameListener {
         MessageEmbed embed = eb.build();
         par1User.openPrivateChannel().queue(channel -> channel.sendMessage(embed).queue());
         par2Guild.getController().kick(par1User.getId()).queue();
-        MessageUtils.sendMessageToStaffInfoChat(Main.jda, "`" + par1User.getName() + "`" + " had a bad username and has been banned.");
+        MessageUtils.sendMessageToStaffInfoChat(jda, "`" + par1User.getName() + "`" + " had a bad username and has been kicked.");
     }
 
     private static void fillList() {

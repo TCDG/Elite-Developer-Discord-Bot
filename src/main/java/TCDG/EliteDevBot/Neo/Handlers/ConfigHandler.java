@@ -87,6 +87,7 @@ public class ConfigHandler {
             Reference.ROLE_MOD_ID = properties.getProperty("ROLE_MOD_ID");
             Reference.ROLE_MUTED_ID = properties.getProperty("ROLE_MUTED_ID");
 
+
             Main.debugMode = Boolean.parseBoolean(properties.getProperty("DEBUG_MODE"));
             reader.close();
         } catch (IOException e) {

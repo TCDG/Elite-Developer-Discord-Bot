@@ -37,6 +37,9 @@ public class ShardingManager {
      * Can be used to get a specific shard and get the info from it using <tt>get(shardNumber)</tt>
      * Warning! Getting a shard of 2 when the shard total is 2 will error!
      * Shards in this list start at 0, so Shard no. 1 is 0 in the list
+     * All the getBot functions base off the fact that all shards have the same info
+     * If at any point in time one shard has different info than another one, it could
+     * be very bad
      */
     public static List<JDA> shards = new ArrayList<>();
 
@@ -103,7 +106,7 @@ public class ShardingManager {
 
     /**
      * Initialises all the Shards and connects them.
-     * This should only be called in case of {@link Main Main} sharding returning true!
+     * This should only be called in case of {@link TCDG.EliteDevBot.Neo.Main Main} sharding returning true!
      */
     public static void init() {
         for (int shardId = 0; shardId < shardTotal; shardId++) {

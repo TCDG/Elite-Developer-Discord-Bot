@@ -64,17 +64,17 @@ public class BotLogger {
     }
 
     public static void listListContent(List list) {
-        System.out.println("[Elite Developer Neo: LIST] " + list.toString());
+        log("[Elite Developer Neo: LIST] " + list.toString());
     }
 
     public static void listHashMap(HashMap map) {
-        System.out.println("[Elite Developer Neo: HashMap] " + map.toString());
+        log("[Elite Developer Neo: HashMap] " + map.toString());
     }
 
     /**
      * Debug Information for Sharding
-     * @param shardID = the exact shard it that just connected + 1
-     * @param shardTotal = the total amount of shards the bot should make
+     * @param shardID The Shard that just connected + 1, so shard 0 is shard 1 in a total of 2 shards
+     * @param shardTotal The total amount of Shards, represented by {@link TCDG.EliteDevBot.Neo.API.ShardingManager} shardTotal
      */
     public static void logShardLogging(int shardID, int shardTotal) {
         log("[Elite Dev Bot Neo: SHARDING] Connected using Shard ID " + (shardID + 1) + " out of the total " + shardTotal + " shards!");

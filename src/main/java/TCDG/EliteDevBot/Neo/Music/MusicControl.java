@@ -1,6 +1,7 @@
 package TCDG.EliteDevBot.Neo.Music;
 
 import TCDG.EliteDevBot.Neo.Utils.Reference;
+import TCDG.EliteDevBot.Neo.Utils.UserPrivs;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -46,7 +47,7 @@ public class MusicControl extends ListenerAdapter {
     private final AudioPlayerManager playerManager;
     private final Map<String, GuildMusicManager> musicManagers;
 
-    private static String[] commands = {"join", "leave", "play", "pplay", "resume", "pause", "stop", "skip", "np", "list", "queue", "volume", "restart", "repeat", "reset", "help", "shuffle"};
+    private static String[] commands = {"join", "leave", "play", "pplay", "resume", "pause", "stop", "skip", "np", "list", "queue", "volume", "restart", "repeat", "reset", "help", "shuffle", "splay"};
     private static String[] cmdsOrdered = {"help", "join", "list", "leave", "np", "pause", "play", "pplay", "queue", "resume", "restart", "repeat", "reset", "shuffle", "skip", "stop", "volume"};
     private static String[] cmdsOrderedHelp = {
             "Shows you this help message!",
@@ -99,50 +100,58 @@ public class MusicControl extends ListenerAdapter {
         if (event.getMessage().getRawContent().startsWith(Reference.MUSIC_PREFIX) && Arrays.asList(commands).contains(command[0].substring(Reference.MUSIC_PREFIX.length()))) {
             if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[0])) {
                 //Join Channel Command
-                if (command.length == 1) {
-                    EmbedBuilder eb = new EmbedBuilder();
-                    eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
-                    eb.setColor(Color.red);
-                    eb.setTitle("Error!");
-                    eb.setDescription("No channel name was provided to search with to join!");
-                    MessageEmbed embed = eb.build();
-                    event.getTextChannel().sendMessage(embed).queue();
-                } else {
-                    VoiceChannel vc = guild.getVoiceChannelById(command[1]);
-                    if (vc == null) {
-                        vc = guild.getVoiceChannelsByName(command[1], true).stream().findFirst().orElse(null);
-                    }
-                    if (vc == null) {
+                if (UserPrivs.isUserStaff(event.getAuthor())) {
+                    if (command.length == 1) {
                         EmbedBuilder eb = new EmbedBuilder();
                         eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
                         eb.setColor(Color.red);
                         eb.setTitle("Error!");
-                        eb.setDescription("Could not find Voice Channel by name or ID: " + command[1]);
+                        eb.setDescription("No channel name was provided to search with to join!");
                         MessageEmbed embed = eb.build();
                         event.getTextChannel().sendMessage(embed).queue();
                     } else {
-                        event.getMessage().addReaction("\u2705").complete();
-                        guild.getAudioManager().setSendingHandler(mng.sendHandler);
-                        try {
-                            guild.getAudioManager().openAudioConnection(vc);
-                        } catch (PermissionException e) {
-                            if (e.getPermission() == Permission.VOICE_CONNECT || e.getPermission() == Permission.VOICE_SPEAK) {
-                                EmbedBuilder eb = new EmbedBuilder();
-                                eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
-                                eb.setColor(Color.red);
-                                eb.setTitle("Permission Alert");
-                                eb.setDescription("I don't have the permission to connect or speak in channel: " + vc.getName());
-                                MessageEmbed embed = eb.build();
-                                event.getTextChannel().sendMessage(embed).queue();
+                        VoiceChannel vc = guild.getVoiceChannelById(command[1]);
+                        if (vc == null) {
+                            vc = guild.getVoiceChannelsByName(command[1], true).stream().findFirst().orElse(null);
+                        }
+                        if (vc == null) {
+                            EmbedBuilder eb = new EmbedBuilder();
+                            eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
+                            eb.setColor(Color.red);
+                            eb.setTitle("Error!");
+                            eb.setDescription("Could not find Voice Channel by name or ID: " + command[1]);
+                            MessageEmbed embed = eb.build();
+                            event.getTextChannel().sendMessage(embed).queue();
+                        } else {
+                            event.getMessage().addReaction("\u2705").complete();
+                            guild.getAudioManager().setSendingHandler(mng.sendHandler);
+                            try {
+                                guild.getAudioManager().openAudioConnection(vc);
+                            } catch (PermissionException e) {
+                                if (e.getPermission() == Permission.VOICE_CONNECT || e.getPermission() == Permission.VOICE_SPEAK) {
+                                    EmbedBuilder eb = new EmbedBuilder();
+                                    eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
+                                    eb.setColor(Color.red);
+                                    eb.setTitle("Permission Alert");
+                                    eb.setDescription("I don't have the permission to connect or speak in channel: " + vc.getName());
+                                    MessageEmbed embed = eb.build();
+                                    event.getTextChannel().sendMessage(embed).queue();
+                                }
                             }
                         }
                     }
+                } else {
+                    sendErrorMessage(event);
                 }
             } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[1])) {
                 //Leave Comamnd
-                guild.getAudioManager().setSendingHandler(null);
-                guild.getAudioManager().closeAudioConnection();
-                event.getMessage().addReaction("\u2705").complete();
+                if (UserPrivs.isUserStaff(event.getAuthor())) {
+                    guild.getAudioManager().setSendingHandler(null);
+                    guild.getAudioManager().closeAudioConnection();
+                    event.getMessage().addReaction("\u2705").complete();
+                } else {
+                    sendErrorMessage(event);
+                }
             } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[2])) {
                 //Play Command
                 event.getMessage().addReaction("\u231B").complete();
@@ -180,61 +189,73 @@ public class MusicControl extends ListenerAdapter {
                 }
             } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[5])) {
                 //Pause Command
-                if (player.getPlayingTrack() == null) {
-                    event.getMessage().addReaction("\u26A0").queue();
-                    EmbedBuilder eb = new EmbedBuilder();
-                    eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
-                    eb.setColor(Color.red);
-                    eb.setTitle("Error");
-                    eb.setDescription("Cannot pause or resume player because no track is loaded for playing.");
-                    MessageEmbed embed = eb.build();
-                    event.getChannel().sendMessage(embed).queue();
-                    return;
+                if (UserPrivs.isUserStaff(event.getAuthor())) {
+                    if (player.getPlayingTrack() == null) {
+                        event.getMessage().addReaction("\u26A0").queue();
+                        EmbedBuilder eb = new EmbedBuilder();
+                        eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
+                        eb.setColor(Color.red);
+                        eb.setTitle("Error");
+                        eb.setDescription("Cannot pause or resume player because no track is loaded for playing.");
+                        MessageEmbed embed = eb.build();
+                        event.getChannel().sendMessage(embed).queue();
+                        return;
+                    }
+                    player.setPaused(!player.isPaused());
+                    if (player.isPaused()) {
+                        event.getMessage().addReaction("\u2705").queue();
+                        EmbedBuilder eb = new EmbedBuilder();
+                        eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
+                        eb.setColor(Color.green);
+                        eb.setTitle("Notification");
+                        eb.setDescription("The player has been `paused`");
+                        MessageEmbed embed = eb.build();
+                        event.getChannel().sendMessage(embed).queue();
+                    } else {
+                        event.getMessage().addReaction("\u2705").queue();
+                        EmbedBuilder eb = new EmbedBuilder();
+                        eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
+                        eb.setColor(Color.green);
+                        eb.setTitle("Error");
+                        eb.setDescription("The player has `resumed playing`");
+                        MessageEmbed embed = eb.build();
+                        event.getChannel().sendMessage(embed).queue();
+                    }
+                } else {
+                    sendErrorMessage(event);
                 }
-                player.setPaused(!player.isPaused());
-                if (player.isPaused()) {
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[6])) {
+                //Stop Command
+                if (UserPrivs.isUserStaff(event.getAuthor())) {
                     event.getMessage().addReaction("\u2705").queue();
+                    scheduler.queue.clear();
+                    player.stopTrack();
+                    player.setPaused(false);
                     EmbedBuilder eb = new EmbedBuilder();
                     eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
                     eb.setColor(Color.green);
                     eb.setTitle("Notification");
-                    eb.setDescription("The player has been `paused`");
+                    eb.setDescription("Playback has been completely stopped and the queue has been cleared.");
                     MessageEmbed embed = eb.build();
                     event.getChannel().sendMessage(embed).queue();
                 } else {
-                    event.getMessage().addReaction("\u2705").queue();
-                    EmbedBuilder eb = new EmbedBuilder();
-                    eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
-                    eb.setColor(Color.green);
-                    eb.setTitle("Error");
-                    eb.setDescription("The player has `resumed playing`");
-                    MessageEmbed embed = eb.build();
-                    event.getChannel().sendMessage(embed).queue();
+                    sendErrorMessage(event);
                 }
-            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[6])) {
-                //Stop Command
-                event.getMessage().addReaction("\u2705").queue();
-                scheduler.queue.clear();
-                player.stopTrack();
-                player.setPaused(false);
-                EmbedBuilder eb = new EmbedBuilder();
-                eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
-                eb.setColor(Color.green);
-                eb.setTitle("Notification");
-                eb.setDescription("Playback has been completely stopped and the queue has been cleared.");
-                MessageEmbed embed = eb.build();
-                event.getChannel().sendMessage(embed).queue();
             } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[7])) {
                 //Skip Command
-                if (command.length == 1) {
-                    scheduler.nextTrack();
-                    event.getMessage().addReaction("\u2705").queue();
+                if (UserPrivs.isUserStaff(event.getAuthor())) {
+                    if (command.length == 1) {
+                        scheduler.nextTrack();
+                        event.getMessage().addReaction("\u2705").queue();
+                    } else {
+                        int numberToSkip = Integer.parseInt(command[1]);
+                        for (int x = 0; x < numberToSkip; x++) {
+                            scheduler.nextTrack();
+                        }
+                        event.getMessage().addReaction("\u2705").queue();
+                    }
                 } else {
-                 int numberToSkip = Integer.parseInt(command[1]);
-                 for (int x = 0; x < numberToSkip; x++) {
-                     scheduler.nextTrack();
-                 }
-                    event.getMessage().addReaction("\u2705").queue();
+                    sendErrorMessage(event);
                 }
             } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[8]) || command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase("nowplaying")) {
                 //Now Playing Command
@@ -294,35 +315,39 @@ public class MusicControl extends ListenerAdapter {
                 }
             } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[11])) {
                 //Volume Command
-                if (command.length == 1) {
-                    EmbedBuilder eb = new EmbedBuilder();
-                    eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
-                    eb.setColor(Color.cyan);
-                    eb.setTitle("Information");
-                    eb.setDescription("Current player volume: **" + player.getVolume() + "**");
-                    MessageEmbed embed = eb.build();
-                    event.getChannel().sendMessage(embed).queue();
-                } else {
-                    try {
-                        int newVolume = Math.max(10, Math.min(100, Integer.parseInt(command[1])));
-                        int oldVolume = player.getVolume();
-                        player.setVolume(newVolume);
+                if (UserPrivs.isUserStaff(event.getAuthor())) {
+                    if (command.length == 1) {
                         EmbedBuilder eb = new EmbedBuilder();
                         eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
-                        eb.setColor(Color.green);
-                        eb.setTitle("Player Volume Changed");
-                        eb.setDescription("Volume changed from `" + oldVolume + "` to `" + newVolume + "`");
+                        eb.setColor(Color.cyan);
+                        eb.setTitle("Information");
+                        eb.setDescription("Current player volume: **" + player.getVolume() + "**");
                         MessageEmbed embed = eb.build();
                         event.getChannel().sendMessage(embed).queue();
-                    } catch (NumberFormatException e) {
-                        EmbedBuilder eb = new EmbedBuilder();
-                        eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
-                        eb.setColor(Color.red);
-                        eb.setTitle("Error");
-                        eb.setDescription("`" + command[1] + "` is not a valid integer! (10 - 100)");
-                        MessageEmbed embed = eb.build();
-                        event.getChannel().sendMessage(embed).queue();
+                    } else {
+                        try {
+                            int newVolume = Math.max(10, Math.min(100, Integer.parseInt(command[1])));
+                            int oldVolume = player.getVolume();
+                            player.setVolume(newVolume);
+                            EmbedBuilder eb = new EmbedBuilder();
+                            eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
+                            eb.setColor(Color.green);
+                            eb.setTitle("Player Volume Changed");
+                            eb.setDescription("Volume changed from `" + oldVolume + "` to `" + newVolume + "`");
+                            MessageEmbed embed = eb.build();
+                            event.getChannel().sendMessage(embed).queue();
+                        } catch (NumberFormatException e) {
+                            EmbedBuilder eb = new EmbedBuilder();
+                            eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
+                            eb.setColor(Color.red);
+                            eb.setTitle("Error");
+                            eb.setDescription("`" + command[1] + "` is not a valid integer! (10 - 100)");
+                            MessageEmbed embed = eb.build();
+                            event.getChannel().sendMessage(embed).queue();
+                        }
                     }
+                } else {
+                    sendErrorMessage(event);
                 }
             } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[12])) {
                 //Restart Command
@@ -350,38 +375,63 @@ public class MusicControl extends ListenerAdapter {
                 }
             } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[13])) {
                 //Repeat Command
-                scheduler.setRepeating(!scheduler.isRepeating());
-                EmbedBuilder eb = new EmbedBuilder();
-                eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
-                eb.setColor(Color.green);
-                eb.setTitle("Replay Mode");
-                eb.setDescription("Player was set to: `" + (scheduler.isRepeating() ? "repeat" : "not repeat") + "`");
-                MessageEmbed embed = eb.build();
-                event.getChannel().sendMessage(embed).queue();
+                if (UserPrivs.isUserStaff(event.getAuthor())) {
+                    scheduler.setRepeating(!scheduler.isRepeating());
+                    EmbedBuilder eb = new EmbedBuilder();
+                    eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
+                    eb.setColor(Color.green);
+                    eb.setTitle("Replay Mode");
+                    eb.setDescription("Player was set to: `" + (scheduler.isRepeating() ? "repeat" : "not repeat") + "`");
+                    MessageEmbed embed = eb.build();
+                    event.getChannel().sendMessage(embed).queue();
+                } else {
+                    sendErrorMessage(event);
+                }
             } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[14])) {
                 //Reset Command
-                synchronized (musicManagers) {
-                    scheduler.queue.clear();
-                    player.destroy();
-                    guild.getAudioManager().setSendingHandler(null);
-                    musicManagers.remove(guild.getId());
+                if (UserPrivs.isUserStaff(event.getAuthor())) {
+                    synchronized (musicManagers) {
+                        scheduler.queue.clear();
+                        player.destroy();
+                        guild.getAudioManager().setSendingHandler(null);
+                        musicManagers.remove(guild.getId());
+                    }
+                    mng = getMusicManager(guild);
+                    guild.getAudioManager().setSendingHandler(mng.sendHandler);
+                    event.getMessage().addReaction("\u2705").queue();
                 }
-                mng = getMusicManager(guild);
-                guild.getAudioManager().setSendingHandler(mng.sendHandler);
-                event.getMessage().addReaction("\u2705").queue();
             } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[15])) {
                 sendHelpMessage(event);
             } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[16])) {
-                event.getMessage().addReaction("\u2705").queue();
-                mng.scheduler.shuffle();
+                //Shuffle Command
+                if (UserPrivs.isUserStaff(event.getAuthor())) {
+                    event.getMessage().addReaction("\u2705").queue();
+                    mng.scheduler.shuffle();
+                } else {
+                    sendErrorMessage(event);
+                }
+            } else if (command[0].substring(Reference.MUSIC_PREFIX.length()).equalsIgnoreCase(commands[17])) {
+                //Silent Playlist Play
+                if (UserPrivs.isUserStaff(event.getAuthor())) {
+                    if (command.length == 2) {
+                        silentLoadAndPlay(mng, event.getChannel(), command[1], true);
+                        event.getMessage().addReaction("\u2705").queue();
+                    } else {
+                        int numberToSkip = Integer.parseInt(command[2]);
+                        for (int x = 0; x < numberToSkip; x++) {
+                            silentLoadAndPlay(mng, event.getChannel(), command[1], true);
+                        }
+                        event.getMessage().addReaction("\u2705").queue();
+                    }
+                } else {
+                    sendErrorMessage(event);
+                }
             }
         }
     }
 
     private void loadAndPlay(GuildMusicManager mng, final MessageChannel channel, final String trackUrl, final boolean addPlaylist) {
-
         playerManager.loadItemOrdered(mng, trackUrl, new AudioLoadResultHandler() {
-
             @Override
             public void trackLoaded(AudioTrack track) {
                 String msg = "Adding to queue: " + track.getInfo().title;
@@ -450,6 +500,39 @@ public class MusicControl extends ListenerAdapter {
         });
     }
 
+    private void silentLoadAndPlay(GuildMusicManager mng, final MessageChannel channel, final String trackUrl, final boolean addPlaylist) {
+        playerManager.loadItemOrdered(mng, trackUrl, new AudioLoadResultHandler() {
+            @Override
+            public void trackLoaded(AudioTrack track) {
+                mng.scheduler.queue(track);
+            }
+
+            @Override
+            public void playlistLoaded(AudioPlaylist playlist) {
+                AudioTrack firstTrack = playlist.getSelectedTrack();
+                List<AudioTrack> tracks = playlist.getTracks();
+                if (firstTrack == null) {
+                    firstTrack = playlist.getTracks().get(0);
+                }
+                if (addPlaylist) {
+                    tracks.forEach(mng.scheduler::queue);
+                } else {
+                    mng.scheduler.queue(firstTrack);
+                }
+            }
+
+            @Override
+            public void noMatches() {
+                channel.sendMessage("No matches found").queue();
+            }
+
+            @Override
+            public void loadFailed(FriendlyException exception) {
+                channel.sendMessage("Error while silently playing").queue();
+            }
+        });
+    }
+
     private GuildMusicManager getMusicManager(Guild guild) {
         String guildId = guild.getId();
         GuildMusicManager mng = musicManagers.get(guildId);
@@ -487,6 +570,16 @@ public class MusicControl extends ListenerAdapter {
         for (int x = 0; x < cmdsOrdered.length; x++) {
             eb.addField("__**" + cmdsOrdered[x] + "**__", cmdsOrderedHelp[x], true);
         }
+        MessageEmbed embed = eb.build();
+        event.getTextChannel().sendMessage(embed).queue();
+    }
+
+    private static void sendErrorMessage(MessageReceivedEvent event) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setAuthor(Reference.EMBED_AUTHOR, Reference.EMBED_AUTHOR_URL, Reference.EMBED_AUTHOR_IMAGE);
+        eb.setColor(Color.red);
+        eb.setTitle("Error");
+        eb.setDescription("You aren't part of the Staff Team, so you cannot use that command!");
         MessageEmbed embed = eb.build();
         event.getTextChannel().sendMessage(embed).queue();
     }
