@@ -44,7 +44,7 @@ public class Main {
 
     public static String DISCORD_TOKEN;
     public static boolean enableAutoMessages = true;
-    public static boolean enableSpellChecker = true;
+    public static boolean enableSpellChecker = false;
     public static boolean enableUsernameChecker = true;
 
     public static boolean debugMode = true;
